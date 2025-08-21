@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Contact;
+use Illuminate\Http\Request;
+
+class ContactController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $contacts = Contact::latest()->get();
+        return view('contact.index', compact('contacts'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('contact.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'email_dpp' => 'required|email|max:255',
+            'email_dpd' => 'required|email|max:255',
+            'alamat' => 'required|string',
+            'notlp' => 'required|numeric',
+            'url_ig' => 'nullable|url|max:255',
+            'url_twit' => 'nullable|url|max:255',
+            'url_yt' => 'nullable|url|max:255',
+            'url_fb' => 'nullable|url|max:255',
+        ]);
+
+        Contact::create($request->all());
+
+        return redirect()->route('contact.index')->with('success', 'Contact created successfully.');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        $contact = Contact::findOrFail($id);
+        return view('contact.edit', compact('contact'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'email_dpp' => 'required|email|max:255',
+            'email_dpd' => 'required|email|max:255',
+            'alamat' => 'required|string',
+            'notlp' => 'required|numeric',
+            'url_ig' => 'nullable|url|max:255',
+            'url_twit' => 'nullable|url|max:255',
+            'url_yt' => 'nullable|url|max:255',
+            'url_fb' => 'nullable|url|max:255',
+        ]);
+
+        $contact = Contact::findOrFail($id);
+        $contact->update($request->all());
+
+        return redirect()->route('contact.index')->with('success', 'Contact updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $contact = Contact::findOrFail($id);
+        $contact->delete();
+
+        return redirect()->route('contact.index')->with('success', 'Contact deleted successfully.');
+    }
+}
