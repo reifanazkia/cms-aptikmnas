@@ -98,41 +98,7 @@ class KegiatanController extends Controller
 
         $kegiatan->delete();
 
-        return response()->json(['message' => 'Kegiatan berhasil dihapus']);
-    }
+        return redirect()->route('kegiatan.index')->with('success', 'Kegiatan berhasil Di Hapus');
+}
 
-    public function bulkDelete(Request $request)
-    {
-        $request->validate([
-            'ids' => 'required|array',
-            'ids.*' => 'integer',
-        ]);
-
-        try {
-            $kegiatans = Kegiatan::whereIn('id', $request->ids)->get();
-
-            foreach ($kegiatans as $kegiatan) {
-                if ($kegiatan->image && Storage::disk('public')->exists($kegiatan->image)) {
-                    Storage::disk('public')->delete($kegiatan->image);
-                }
-                $kegiatan->delete();
-            }
-
-            return back()->with('success', 'Kegiatan terpilih berhasil dihapus.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menghapus kegiatan: ' . $e->getMessage());
-        }
-    }
-
-    public function byCategory($id)
-    {
-        $kegiatans = Kegiatan::with('category')
-            ->where('category_kegiatan_id', $id)
-            ->latest()
-            ->get();
-
-        $categories = CategoryKegiatan::all();
-
-        return view('kegiatan.index', compact('kegiatans', 'categories'));
-    }
 }

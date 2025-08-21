@@ -7,23 +7,43 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        .card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .table th {
+            border-top: none;
+            font-weight: 600;
+        }
+        .btn-group-sm .btn {
+            padding: 0.25rem 0.5rem;
+        }
+        .img-thumbnail {
+            border-radius: 0.375rem;
+        }
+        .alert {
+            border: none;
+            border-radius: 0.5rem;
+        }
+        .btn {
+            border-radius: 0.375rem;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-light">
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="mb-0">
-                            <i class="fas fa-calendar-alt me-2"></i>Daftar Kegiatan
+                    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+                        <h3 class="mb-0 text-dark">
+                            <i class="fas fa-calendar-alt me-2 text-primary"></i>Daftar Kegiatan
                         </h3>
-                        <div>
+                        <div class="d-flex gap-2">
                             <a href="{{ route('kegiatan.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus me-1"></i>Tambah Kegiatan
                             </a>
-                            <button type="button" class="btn btn-danger" id="bulkDeleteBtn" style="display: none;">
-                                <i class="fas fa-trash me-1"></i>Hapus Terpilih
-                            </button>
                         </div>
                     </div>
 
@@ -44,7 +64,7 @@
 
                         <!-- Filter Kategori -->
                         <div class="mb-4">
-                            <h6>Filter berdasarkan Kategori:</h6>
+                            <h6 class="text-muted">Filter berdasarkan Kategori:</h6>
                             <div class="btn-group flex-wrap" role="group">
                                 <a href="{{ route('kegiatan.index') }}" class="btn btn-outline-secondary">
                                     <i class="fas fa-list me-1"></i>Semua
@@ -58,88 +78,76 @@
                             </div>
                         </div>
 
-                        <form id="bulkDeleteForm" method="POST" action="{{ route('kegiatan.bulkDelete') }}">
-                            @csrf
-                            @method('DELETE')
-
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="table-dark">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th width="80">Gambar</th>
+                                        <th>Judul</th>
+                                        <th>Kategori</th>
+                                        <th>Deskripsi</th>
+                                        <th>Tanggal</th>
+                                        <th width="120">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($kegiatans as $kegiatan)
                                         <tr>
-                                            <th width="30">
-                                                <input type="checkbox" id="selectAll" class="form-check-input">
-                                            </th>
-                                            <th width="80">Gambar</th>
-                                            <th>Judul</th>
-                                            <th>Kategori</th>
-                                            <th>Deskripsi</th>
-                                            <th>Tanggal</th>
-                                            <th width="150">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse($kegiatans as $kegiatan)
-                                            <tr>
-                                                <td>
-                                                    <input type="checkbox" name="ids[]" value="{{ $kegiatan->id }}"
-                                                           class="form-check-input item-checkbox">
-                                                </td>
-                                                <td>
-                                                    @if($kegiatan->image)
-                                                        <img src="{{ asset('storage/' . $kegiatan->image) }}"
-                                                             alt="{{ $kegiatan->title }}"
-                                                             class="img-thumbnail"
-                                                             style="width: 60px; height: 60px; object-fit: cover;">
-                                                    @else
-                                                        <div class="bg-light d-flex align-items-center justify-content-center"
-                                                             style="width: 60px; height: 60px;">
-                                                            <i class="fas fa-image text-muted"></i>
-                                                        </div>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <strong>{{ $kegiatan->title }}</strong>
-                                                </td>
-                                                <td>
-                                                    <span class="badge bg-info">{{ $kegiatan->category->name }}</span>
-                                                </td>
-                                                <td>
-                                                    {{ Str::limit($kegiatan->description ?? 'Tidak ada deskripsi', 50) }}
-                                                </td>
-                                                <td>
-                                                    <small class="text-muted">{{ $kegiatan->created_at->format('d M Y, H:i') }}</small>
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group btn-group-sm" role="group">
-                                                        <a href="{{ route('kegiatan.show', $kegiatan->id) }}"
-                                                           class="btn btn-outline-info" title="Lihat">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
-                                                        <a href="{{ route('kegiatan.edit', $kegiatan->id) }}"
-                                                           class="btn btn-outline-warning" title="Edit">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        <button type="button" class="btn btn-outline-danger delete-btn"
-                                                                data-id="{{ $kegiatan->id }}"
-                                                                data-title="{{ $kegiatan->title }}" title="Hapus">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
+                                            <td>
+                                                @if($kegiatan->image)
+                                                    <img src="{{ asset('storage/' . $kegiatan->image) }}"
+                                                         alt="{{ $kegiatan->title }}"
+                                                         class="img-thumbnail"
+                                                         style="width: 60px; height: 60px; object-fit: cover;">
+                                                @else
+                                                    <div class="bg-light d-flex align-items-center justify-content-center rounded"
+                                                         style="width: 60px; height: 60px;">
+                                                        <i class="fas fa-image text-muted"></i>
                                                     </div>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="7" class="text-center py-5">
-                                                    <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
-                                                    <h5 class="text-muted">Belum ada kegiatan</h5>
-                                                    <p class="text-muted">Silakan tambah kegiatan baru</p>
-                                                </td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <strong class="text-dark">{{ $kegiatan->title }}</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">{{ $kegiatan->category->name }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="text-muted">{{ Str::limit($kegiatan->description ?? 'Tidak ada deskripsi', 50) }}</span>
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">{{ $kegiatan->created_at->format('d M Y, H:i') }}</small>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="{{ route('kegiatan.show', $kegiatan->id) }}"
+                                                       class="btn btn-outline-info" title="Lihat">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ route('kegiatan.edit', $kegiatan->id) }}"
+                                                       class="btn btn-outline-warning" title="Edit">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <button type="button" class="btn btn-outline-danger delete-btn"
+                                                            title="Hapus" data-id="{{ $kegiatan->id }}"
+                                                            data-title="{{ $kegiatan->title }}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center py-5">
+                                                <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                                                <h5 class="text-muted">Belum ada kegiatan</h5>
+                                                <p class="text-muted mb-0">Silakan tambah kegiatan baru</p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -151,127 +159,98 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                        Konfirmasi Hapus
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Apakah Anda yakin ingin menghapus kegiatan "<span id="deleteTitle"></span>"?</p>
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Apakah Anda yakin ingin menghapus kegiatan <strong id="modalItemTitle"></strong>?
+                    </div>
+                    <p class="text-muted mb-0">Tindakan ini tidak dapat dibatalkan.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-danger" id="confirmDelete">Hapus</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Batal
+                    </button>
+                    <form id="deleteForm" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-1"></i>Ya, Hapus
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Konfirmasi Bulk Delete -->
-    <div class="modal fade" id="bulkDeleteModal" tabindex="-1">
-        <div class="modal-dialog">
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Konfirmasi Hapus Massal</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Apakah Anda yakin ingin menghapus <span id="selectedCount"></span> kegiatan yang dipilih?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-danger" id="confirmBulkDelete">Hapus</button>
+                <div class="modal-body text-center py-4">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5>Menghapus kegiatan...</h5>
+                    <p class="text-muted mb-0">Mohon tunggu sebentar</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // CSRF Token untuk Ajax
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        // Select All Functionality
-        document.getElementById('selectAll').addEventListener('change', function() {
-            const checkboxes = document.querySelectorAll('.item-checkbox');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = this.checked;
-            });
-            toggleBulkDeleteBtn();
-        });
-
-        // Individual checkbox change
-        document.querySelectorAll('.item-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                toggleBulkDeleteBtn();
-
-                // Update select all status
-                const allCheckboxes = document.querySelectorAll('.item-checkbox');
-                const checkedCheckboxes = document.querySelectorAll('.item-checkbox:checked');
-                document.getElementById('selectAll').checked = allCheckboxes.length === checkedCheckboxes.length;
-            });
-        });
-
-        // Toggle bulk delete button
-        function toggleBulkDeleteBtn() {
-            const checkedCheckboxes = document.querySelectorAll('.item-checkbox:checked');
-            const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
-
-            if (checkedCheckboxes.length > 0) {
-                bulkDeleteBtn.style.display = 'inline-block';
-            } else {
-                bulkDeleteBtn.style.display = 'none';
-            }
-        }
-
-        // Delete single item
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.dataset.id;
-                const title = this.dataset.title;
-
-                document.getElementById('deleteTitle').textContent = title;
-                document.getElementById('confirmDelete').dataset.id = id;
-
-                new bootstrap.Modal(document.getElementById('deleteModal')).show();
-            });
-        });
-
-        // Confirm single delete
-        document.getElementById('confirmDelete').addEventListener('click', function() {
-            const id = this.dataset.id;
-
-            fetch(`{{ url('kegiatan') }}/${id}`, {
-                method: 'DELETE',
+        $(document).ready(function() {
+            // CSRF Token untuk Ajax
+            $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            })
-            .then(response => response.json())
-            .then(data => {
-                bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
-                location.reload();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat menghapus data');
             });
-        });
 
-        // Bulk delete
-        document.getElementById('bulkDeleteBtn').addEventListener('click', function() {
-            const checkedCheckboxes = document.querySelectorAll('.item-checkbox:checked');
-            document.getElementById('selectedCount').textContent = checkedCheckboxes.length;
+            // Handle delete button click
+            $('.delete-btn').on('click', function() {
+                const id = $(this).data('id');
+                const title = $(this).data('title');
 
-            new bootstrap.Modal(document.getElementById('bulkDeleteModal')).show();
-        });
+                // Set modal content
+                $('#modalItemTitle').text(title);
 
-        // Confirm bulk delete
-        document.getElementById('confirmBulkDelete').addEventListener('click', function() {
-            document.getElementById('bulkDeleteForm').submit();
+                // Set form action
+                $('#deleteForm').attr('action', '/kegiatan/' + id);
+
+                // Show modal
+                $('#deleteModal').modal('show');
+            });
+
+            // Handle form submission
+            $('#deleteForm').on('submit', function(e) {
+                e.preventDefault();
+
+                // Hide confirmation modal and show loading
+                $('#deleteModal').modal('hide');
+                $('#loadingModal').modal('show');
+
+                // Submit the form
+                this.submit();
+            });
+
+            // Auto-hide alerts after 5 seconds
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
         });
     </script>
 </body>
