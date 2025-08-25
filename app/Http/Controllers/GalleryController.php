@@ -24,8 +24,9 @@ class GalleryController extends Controller
 
         // Search functionality
         if ($request->has('search') && $request->search) {
-            $query->where('title', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            $query->where(function($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%');
+            });
         }
 
         $galleries = $query->orderByPubDate()->paginate(12);
@@ -159,12 +160,18 @@ class GalleryController extends Controller
         return view('gallery.home', compact('galleries'));
     }
 
+    /**
+     * Display gallery items by category.
+     */
     public function byCategory($id)
     {
+        // Validate that the category exists
+        $category = CategoryGallery::findOrFail($id);
+
         $galleries = Gallery::with('category')
             ->where('category_gallery_id', $id)
-            ->latest()
-            ->get();
+            ->orderByPubDate() // Use consistent ordering
+            ->paginate(12); // Add pagination like in index method
 
         $categories = CategoryGallery::all();
 

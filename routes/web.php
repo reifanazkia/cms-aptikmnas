@@ -1,13 +1,17 @@
 <?php
 
+use App\Http\Controllers\CategoryDaftarDPDController;
 use App\Http\Controllers\CategoryGalleryController;
 use App\Http\Controllers\CategoryKegiatanController;
+use App\Http\Controllers\CategoryPengurusController;
 use App\Http\Controllers\CategoryStoreController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PengurusController;
 use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
@@ -87,4 +91,54 @@ Route::prefix('category-gallery')->name('category-gallery.')->group(function () 
     Route::post('/store', [CategoryGalleryController::class, 'store'])->name('store');
     Route::put('/update/{id}', [CategoryGalleryController::class, 'update'])->name('update');
     Route::delete('/{id}', [CategoryGalleryController::class, 'destroy'])->name('destroy');
+});
+Route::prefix('category-daftar')->name('category-daftar.')->group(function () {
+    Route::get('/', [CategoryDaftarDPDController::class, 'index'])->name('index');
+    Route::post('/store', [CategoryDaftarDPDController::class, 'store'])->name('store');
+    Route::put('/update/{id}', [CategoryDaftarDPDController::class, 'update'])->name('update');
+    Route::delete('/{id}', [CategoryDaftarDPDController::class, 'destroy'])->name('destroy');
+});
+Route::prefix('category-pengurus')->name('category-pengurus.')->group(function () {
+    Route::get('/', [CategoryPengurusController::class, 'index'])->name('index');
+    Route::post('/store', [CategoryPengurusController::class, 'store'])->name('store');
+    Route::put('/update/{id}', [CategoryPengurusController::class, 'update'])->name('update');
+    Route::delete('/{id}', [CategoryPengurusController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('pengurus')->name('pengurus.')->group(function () {
+    // Index dan Show
+    Route::get('/', [PengurusController::class, 'index'])->name('index');
+    Route::get('/{id}', [PengurusController::class, 'show'])->name('show');
+
+    // Create Routes (3 steps)
+    Route::get('/create/step1', [PengurusController::class, 'create'])->name('create');
+    Route::post('/create/step1', [PengurusController::class, 'storeStep1'])->name('create.step1.store');
+
+    Route::get('/create/{id}/step2', [PengurusController::class, 'createStep2'])->name('create.step2');
+    Route::post('/create/{id}/step2', [PengurusController::class, 'storeStep2'])->name('create.step2.store');
+
+    Route::get('/create/{id}/step3', [PengurusController::class, 'createStep3'])->name('create.step3');
+    Route::post('/create/{id}/step3', [PengurusController::class, 'storeStep3'])->name('create.step3.store');
+
+    // Edit Routes (3 steps)
+    Route::get('/{id}/edit/step1', [PengurusController::class, 'edit'])->name('edit');
+    Route::put('/{id}/edit/step1', [PengurusController::class, 'updateStep1'])->name('edit.step1.update');
+
+    Route::get('/{id}/edit/step2', [PengurusController::class, 'editStep2'])->name('edit.step2');
+    Route::put('/{id}/edit/step2', [PengurusController::class, 'updateStep2'])->name('edit.step2.update');
+
+    Route::get('/{id}/edit/step3', [PengurusController::class, 'editStep3'])->name('edit.step3');
+    Route::put('/{id}/edit/step3', [PengurusController::class, 'updateStep3'])->name('edit.step3.update');
+
+    // Delete
+    Route::delete('/{id}', [PengurusController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('partners')->name('partners.')->group(function () {
+    Route::get('/', [PartnerController::class, 'index'])->name('index');
+    Route::get('/create', [PartnerController::class, 'create'])->name('create');
+    Route::post('/store', [PartnerController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [PartnerController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [PartnerController::class, 'update'])->name('update');
+    Route::delete('/{id}', [PartnerController::class, 'destroy'])->name('destroy');
 });
