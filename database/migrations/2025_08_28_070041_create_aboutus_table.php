@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('partners', function (Blueprint $table) {
+        Schema::create('aboutus', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('web_address')->nullable();
-            $table->text('description')->nullable();
-            $table->text('details')->nullable();
-            $table->string('image')->nullable();
+            $table->boolean('display_on_home')->default(false);
+            $table->string('title');
+            $table->foreignId('category_aboutus_id')->constrained('aboutus_categories')->onDelete('cascade');
+            $table->text('description');
+            $table->string('image');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('partners');
+        Schema::dropIfExists('aboutus');
     }
 };

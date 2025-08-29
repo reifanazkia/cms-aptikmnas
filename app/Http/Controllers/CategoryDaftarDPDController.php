@@ -9,9 +9,14 @@ use Illuminate\Support\Facades\Storage;
 class CategoryDaftarDPDController extends Controller
 {
     // Menampilkan semua data
-    public function index()
+    public function index(Request $request)
     {
         $categories = CategoryDaftar::latest()->get();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $categories->where('name', 'like', '%' . $request->search . '%');
+        }
+
         return view('category-daftar.index', compact('categories'));
     }
 

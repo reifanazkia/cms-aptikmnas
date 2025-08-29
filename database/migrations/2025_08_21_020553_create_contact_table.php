@@ -18,9 +18,13 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('notlp');
             $table->string('url_ig')->nullable();
-            $table->string('url_twit')->nullable();
-            $table->string('url_yt')->nullable();
             $table->string('url_fb')->nullable();
+            $table->string('url_yt')->nullable();
+            $table->string('url_in')->nullable();
+            $table->string('url_twit')->nullable();
+            $table->string('url_tiktok')->nullable();
+            $table->dateTime('start_datetime');
+            $table->dateTime('end_datetime')->nullable();
 
             $table->timestamps();
         });

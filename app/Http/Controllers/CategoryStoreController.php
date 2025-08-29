@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 
 class CategoryStoreController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Ubah variabel dari $store ke $kegiatan agar sesuai dengan view
         $kegiatan = CategoryStore::latest()->get();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $kegiatan->where('title', 'like', '%' . $request->search . '%');
+        }
+
         return view('category-store.index', compact('kegiatan'));
     }
 

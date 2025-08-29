@@ -8,9 +8,14 @@ use Illuminate\Support\Facades\Storage;
 
 class PartnerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $partners = Partner::latest()->get();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $partners->where('name', 'like', '%' . $request->search . '%');
+        }
+
         return view('partners.index', compact('partners'));
     }
 
@@ -26,10 +31,10 @@ class PartnerController extends Controller
             'web_address' => 'nullable|url',
             'description' => 'nullable|string',
             'details'     => 'nullable|string',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:750',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:750',
         ]);
 
-        $data = $request->only(['name','web_address','description','details']);
+        $data = $request->only(['name', 'web_address', 'description', 'details']);
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('partners', 'public');
@@ -58,7 +63,7 @@ class PartnerController extends Controller
 
         $partner = Partner::findOrFail($id);
 
-        $data = $request->only(['name','web_address','description','details']);
+        $data = $request->only(['name', 'web_address', 'description', 'details']);
 
         if ($request->hasFile('image')) {
             if ($partner->image && Storage::disk('public')->exists($partner->image)) {

@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kegiatan_categories', function (Blueprint $table) {
+        Schema::create('testimonies', function (Blueprint $table) {
             $table->id();
+            $table->boolean('display_homepage')->default(false);
+            $table->foreignId('category_dpd_id')->nullable()->constrained('daftar_dpd_categories')->onDelete('cascade');
             $table->string('name');
+            $table->string('title');
+            $table->longText('description');
+            $table->string('image'); // path gambar
             $table->timestamps();
         });
     }
@@ -23,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kegiatan_categories');
+        Schema::dropIfExists('testimonies');
     }
 };
