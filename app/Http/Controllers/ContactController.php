@@ -33,11 +33,15 @@ class ContactController extends Controller
             'email_dpp' => 'required|email|max:255',
             'email_dpd' => 'required|email|max:255',
             'alamat' => 'required|string',
-            'notlp' => 'required|numeric',
-            'url_ig' => 'nullable|url|max:255',
-            'url_twit' => 'nullable|url|max:255',
-            'url_yt' => 'nullable|url|max:255',
-            'url_fb' => 'nullable|url|max:255',
+            'notlp' => ['required', 'regex:/^[0-9+\-\s()]+$/'],
+            'url_ig' => 'nullable|url',
+            'url_fb' => 'nullable|url',
+            'url_yt' => 'nullable|url',
+            'url_in' => 'nullable|url',
+            'url_twit' => 'nullable|url',
+            'url_tiktok' => 'nullable|url',
+            'start_datetime' => 'required|date',
+            'end_datetime'   => 'nullable|date|after_or_equal:start_datetime',
         ]);
 
         Contact::create($request->all());
@@ -63,11 +67,15 @@ class ContactController extends Controller
             'email_dpp' => 'required|email|max:255',
             'email_dpd' => 'required|email|max:255',
             'alamat' => 'required|string',
-            'notlp' => 'required|numeric',
-            'url_ig' => 'nullable|url|max:255',
-            'url_twit' => 'nullable|url|max:255',
-            'url_yt' => 'nullable|url|max:255',
-            'url_fb' => 'nullable|url|max:255',
+            'notlp' => ['required', 'regex:/^[0-9+\-\s()]+$/'],
+            'url_ig' => 'nullable|url',
+            'url_fb' => 'nullable|url',
+            'url_yt' => 'nullable|url',
+            'url_in' => 'nullable|url',
+            'url_twit' => 'nullable|url',
+            'url_tiktok' => 'nullable|url',
+            'start_datetime' => 'required|date',
+            'end_datetime'   => 'nullable|date|after_or_equal:start_datetime',
         ]);
 
         $contact = Contact::findOrFail($id);

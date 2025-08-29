@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 
 class CategoryPengurusController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $pengurus = CategoryPengurus::latest()->get();
+
+         if ($request->has('search') && !empty($request->search)) {
+            $pengurus->where('name', 'like', '%' . $request->search . '%');
+        }
+
         return view('category-pengurus.index', compact('pengurus'));
     }
 

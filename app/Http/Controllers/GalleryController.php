@@ -24,7 +24,7 @@ class GalleryController extends Controller
 
         // Search functionality
         if ($request->has('search') && $request->search) {
-            $query->where(function($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->search . '%');
             });
         }
@@ -52,7 +52,7 @@ class GalleryController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:750',
             'pub_date' => 'nullable|date',
             'url' => 'nullable|url',
             'category_gallery_id' => 'nullable|exists:gallery_categories,id',

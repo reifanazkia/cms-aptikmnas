@@ -9,10 +9,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $products = Product::with('category')->paginate(10);
         $categories = CategoryStore::all();
+
+         if ($request->has('search') && !empty($request->search)) {
+            $products->where('title', 'like', '%' . $request->search . '%');
+        }
+
         return view('products.index', compact('products', 'categories'));
     }
 

@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 
 class CategoryGalleryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $gallery = CategoryGallery::latest()->get();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $gallery->where('name', 'like', '%' . $request->search . '%');
+        }   
+
         return view('category-gallery.index', compact('gallery'));
     }
 

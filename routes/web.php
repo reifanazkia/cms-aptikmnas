@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CategoryDaftarDPDController;
 use App\Http\Controllers\CategoryGalleryController;
 use App\Http\Controllers\CategoryKegiatanController;
@@ -13,6 +17,8 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PengurusController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SliderController;
+use App\Http\Controllers\TestimonyController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -36,25 +42,6 @@ Route::prefix('contact')->name('contact.')->group(function () {
     Route::get('/{id}/edit', [ContactController::class, 'edit'])->name('edit');
     Route::put('/{id}', [ContactController::class, 'update'])->name('update');
     Route::delete('/{id}', [ContactController::class, 'destroy'])->name('destroy');
-});
-
-
-
-Route::prefix('kegiatan')->name('kegiatan.')->group(function () {
-    Route::get('/', [KegiatanController::class, 'index'])->name('index');
-    Route::get('/create', [KegiatanController::class, 'create'])->name('create');
-    Route::post('/', [KegiatanController::class, 'store'])->name('store');
-    Route::get('/{id}', [KegiatanController::class, 'show'])->name('show');
-    Route::get('/{id}/edit', [KegiatanController::class, 'edit'])->name('edit');
-    Route::put('/{id}', [KegiatanController::class, 'update'])->name('update');
-    Route::delete('/{id}', [KegiatanController::class, 'destroy'])->name('destroy');
-    Route::get('/category/{id}', [KegiatanController::class, 'byCategory'])->name('byCategory');
-});
-Route::prefix('category-kegiatan')->name('category-kegiatan.')->group(function () {
-    Route::get('/', [CategoryKegiatanController::class, 'index'])->name('index');
-    Route::post('/', [CategoryKegiatanController::class, 'store'])->name('store');
-    Route::put('/{id}', [CategoryKegiatanController::class, 'update'])->name('update');
-    Route::delete('/{id}', [CategoryKegiatanController::class, 'destroy'])->name('destroy');
 });
 
 Route::prefix('products')->name('products.')->group(function () {
@@ -141,4 +128,62 @@ Route::prefix('partners')->name('partners.')->group(function () {
     Route::get('/{id}/edit', [PartnerController::class, 'edit'])->name('edit');
     Route::put('/{id}', [PartnerController::class, 'update'])->name('update');
     Route::delete('/{id}', [PartnerController::class, 'destroy'])->name('destroy');
+});
+
+
+Route::prefix('testimonies')->name('testimonies.')->group(function () {
+    Route::get('/', [TestimonyController::class, 'index'])->name('index');
+    Route::get('/create', [TestimonyController::class, 'create'])->name('create');
+    Route::post('/store', [TestimonyController::class, 'store'])->name('store');
+    Route::get('/edit/{testimony}', [TestimonyController::class, 'edit'])->name('edit');
+    Route::post('/update/{testimony}', [TestimonyController::class, 'update'])->name('update');
+    Route::delete('/delete/{testimony}', [TestimonyController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('aboutus')->name('aboutus.')->group(function () {
+    Route::get('/', [AboutController::class, 'index'])->name('index');
+    Route::get('/create', [AboutController::class, 'create'])->name('create');
+    Route::post('/store', [AboutController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [AboutController::class, 'edit'])->name('edit');
+    Route::post('/update/{id}', [AboutController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}', [AboutController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('agenda')->name('agenda.')->group(function () {
+    Route::get('/', [AgendaController::class, 'index'])->name('index');
+    Route::get('/create', [AgendaController::class, 'create'])->name('create');
+    Route::post('/store', [AgendaController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [AgendaController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [AgendaController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}', [AgendaController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('career')->name('career.')->group(function () {
+    Route::get('/', [CareerController::class, 'index'])->name('index');
+    Route::get('/create', [CareerController::class, 'create'])->name('create');
+    Route::post('/store', [CareerController::class, 'store'])->name('store');
+    Route::get('/{id}/show', [CareerController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [CareerController::class, 'edit'])->name('edit');
+    Route::put('/{id}/update', [CareerController::class, 'update'])->name('update');
+    Route::delete('/{id}/delete', [CareerController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('applications')->name('applications.')->group(function () {
+    Route::get('/', [ApplicationController::class, 'index'])->name('index');
+    Route::get('/create', [ApplicationController::class, 'create'])->name('create');
+    Route::post('/store', [ApplicationController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [ApplicationController::class, 'edit'])->name('edit');
+    Route::put('/{id}/update', [ApplicationController::class, 'update'])->name('update');
+    Route::delete('/{id}/delete', [ApplicationController::class, 'destroy'])->name('destroy');
+    Route::get('/{id}/download', [ApplicationController::class, 'downloadFile'])->name('download');
+    Route::post('/bulk-delete', [ApplicationController::class, 'bulkDelete'])->name('bulk-delete');
+});
+
+Route::prefix('slider')->name('slider.')->group(function () {
+    Route::get('/', [SliderController::class, 'index'])->name('index');
+    Route::get('/create', [SliderController::class, 'create'])->name('slider.create');
+    Route::post('/', [SliderController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [SliderController::class, 'edit'])->name('slider.edit');
+    Route::put('/{id}', [SliderController::class, 'update'])->name('update');
+    Route::delete('/{id}', [SliderController::class, 'destroy'])->name('destroy');
 });

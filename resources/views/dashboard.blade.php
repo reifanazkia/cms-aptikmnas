@@ -28,48 +28,5 @@
                 </a>
             </div>
         </div>
-
-        <!-- Quick Links / Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-            <!-- Kategori -->
-            <a href="{{ route('category-kegiatan.index') }}"
-               class="bg-white border border-emerald-100 rounded-xl p-6 shadow-sm hover:shadow-md transition flex flex-col items-center text-center">
-                <div class="w-12 h-12 flex items-center justify-center rounded-full bg-emerald-100 mb-3">
-                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path d="M3 10h18M9 21V3m6 18V3" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <h3 class="font-bold text-emerald-700">Kategori</h3>
-                <p class="text-sm text-emerald-500">Kelola kategori konten</p>
-            </a>
-
-            <!-- Konten -->
-            <a href="{{ route('kegiatan.index') }}"
-               class="bg-white border border-emerald-100 rounded-xl p-6 shadow-sm hover:shadow-md transition flex flex-col items-center text-center">
-                <div class="w-12 h-12 flex items-center justify-center rounded-full bg-emerald-100 mb-3">
-                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path d="M12 8v8m-4-4h8" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <h3 class="font-bold text-emerald-700">Tambah Konten</h3>
-                <p class="text-sm text-emerald-500">Upload kegiatan / produk</p>
-            </a>
-
-            <!-- Profil -->
-            <a href="#"
-               class="bg-white border border-emerald-100 rounded-xl p-6 shadow-sm hover:shadow-md transition flex flex-col items-center text-center">
-                <div class="w-12 h-12 flex items-center justify-center rounded-full bg-emerald-100 mb-3">
-                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2m12 0h4m-10-8a4 4 0 100-8 4 4 0 000 8z"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <h3 class="font-bold text-emerald-700">Akun Saya</h3>
-                <p class="text-sm text-emerald-500">Kelola profil pengguna</p>
-            </a>
-        </div>
     </div>
 @endsection
