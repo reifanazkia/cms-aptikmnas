@@ -1,116 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .social-icon {
-            font-size: 1.2rem;
-            margin-right: 8px;
-        }
-        .action-buttons {
-            white-space: nowrap;
-        }
-        .table th, .table td {
-            vertical-align: middle;
-        }
-    </style>
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">Contact Management</h4>
-                        <a href="{{ route('contact.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Add New Contact
-                        </a>
-                    </div>
-                    <div class="card-body">
-                        @if(session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                        @endif
+@extends('layouts.app', ['title' => 'Contact Management'])
 
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Email DPP</th>
-                                        <th>Email DPD</th>
-                                        <th>Alamat</th>
-                                        <th>No Telepon</th>
-                                        <th>Social Media</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($contacts as $contact)
-                                        <tr>
-                                            <td>{{ $contact->id }}</td>
-                                            <td>{{ $contact->email_dpp }}</td>
-                                            <td>{{ $contact->email_dpd }}</td>
-                                            <td>{{ Str::limit($contact->alamat, 50) }}</td>
-                                            <td>{{ $contact->notlp }}</td>
-                                            <td>
-                                                @if($contact->url_ig)
-                                                    <a href="{{ $contact->url_ig }}" target="_blank" class="social-icon text-decoration-none">
-                                                        <i class="fab fa-instagram text-danger"></i>
-                                                    </a>
-                                                @endif
-                                                @if($contact->url_twit)
-                                                    <a href="{{ $contact->url_twit }}" target="_blank" class="social-icon text-decoration-none">
-                                                        <i class="fab fa-twitter text-info"></i>
-                                                    </a>
-                                                @endif
-                                                @if($contact->url_yt)
-                                                    <a href="{{ $contact->url_yt }}" target="_blank" class="social-icon text-decoration-none">
-                                                        <i class="fab fa-youtube text-danger"></i>
-                                                    </a>
-                                                @endif
-                                                @if($contact->url_fb)
-                                                    <a href="{{ $contact->url_fb }}" target="_blank" class="social-icon text-decoration-none">
-                                                        <i class="fab fa-facebook text-primary"></i>
-                                                    </a>
-                                                @endif
-                                                @if(!$contact->url_ig && !$contact->url_twit && !$contact->url_yt && !$contact->url_fb)
-                                                    <span class="text-muted">No social media</span>
-                                                @endif
-                                            </td>
-                                            <td class="action-buttons">
-                                                <a href="{{ route('contact.edit', $contact->id) }}" class="btn btn-sm btn-warning">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <form action="{{ route('contact.destroy', $contact->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this contact?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center">No contacts found.</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
+@section('content')
+    <div class="max-w-7xl mx-auto">
+        <!-- Card Container -->
+        <div class="bg-white rounded-2xl shadow-lg floating-card p-6 space-y-6">
+            <!-- Header -->
+            <div class="flex items-center justify-between border-b border-emerald-100 pb-4">
+                <h1 class="text-2xl font-bold text-emerald-700 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-emerald-600" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Contact Management
+                </h1>
+                <a href="{{ route('contact.create') }}"
+                    class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white rounded-xl shadow-md hover:bg-emerald-700 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add New Contact
+                </a>
+            </div>
+
+            <!-- Flash message -->
+            <!-- Flash message -->
+            @if (session('success'))
+                <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-95"
+                    class="flex items-center justify-between bg-emerald-100 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-lg shadow-md mb-4"
+                    role="alert">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span class="font-medium">{{ session('success') }}</span>
                     </div>
+                    <button @click="show = false" class="text-emerald-600 hover:text-emerald-800 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
+            @endif
+
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left border-collapse">
+                    <thead>
+                        <tr class="bg-emerald-50 text-emerald-800 font-semibold">
+                            <th class="px-4 py-3 border-b border-emerald-100">ID</th>
+                            <th class="px-4 py-3 border-b border-emerald-100">Email DPP</th>
+                            <th class="px-4 py-3 border-b border-emerald-100">Email DPD</th>
+                            <th class="px-4 py-3 border-b border-emerald-100">Alamat</th>
+                            <th class="px-4 py-3 border-b border-emerald-100">No Telepon</th>
+                            <th class="px-4 py-3 border-b border-emerald-100">Social Media</th>
+                            <th class="px-4 py-3 border-b border-emerald-100 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($contacts as $contact)
+                            <tr class="hover:bg-gray-50 border-b border-emerald-50">
+                                <td class="px-4 py-3 border-b border-emerald-50">{{ $contact->id }}</td>
+                                <td class="px-4 py-3 border-b border-emerald-50">{{ $contact->email_dpp }}</td>
+                                <td class="px-4 py-3 border-b border-emerald-50">{{ $contact->email_dpd }}</td>
+                                <td class="px-4 py-3 border-b border-emerald-50">{{ Str::limit($contact->alamat, 50) }}</td>
+                                <td class="px-4 py-3 border-b border-emerald-50">{{ $contact->notlp }}</td>
+                                <td class="px-4 py-3 border-b border-emerald-50">
+                                    <div class="flex items-center gap-2">
+                                        @if ($contact->url_ig)
+                                            <a href="{{ $contact->url_ig }}" target="_blank"
+                                                class="text-pink-500 hover:text-pink-600">
+                                                <i class="fab fa-instagram"></i>
+                                            </a>
+                                        @endif
+                                        @if ($contact->url_twit)
+                                            <a href="{{ $contact->url_twit }}" target="_blank"
+                                                class="text-sky-500 hover:text-sky-600">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
+                                        @endif
+                                        @if ($contact->url_yt)
+                                            <a href="{{ $contact->url_yt }}" target="_blank"
+                                                class="text-red-500 hover:text-red-600">
+                                                <i class="fab fa-youtube"></i>
+                                            </a>
+                                        @endif
+                                        @if ($contact->url_fb)
+                                            <a href="{{ $contact->url_fb }}" target="_blank"
+                                                class="text-blue-600 hover:text-blue-700">
+                                                <i class="fab fa-facebook"></i>
+                                            </a>
+                                        @endif
+                                        @if (!$contact->url_ig && !$contact->url_twit && !$contact->url_yt && !$contact->url_fb)
+                                            <span class="text-gray-400 text-xs">No social media</span>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="px-4 py-2 text-center">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <!-- Tombol Edit -->
+                                        <a href="{{ route('contact.edit', $contact->id) }}"
+                                            class="inline-flex items-center gap-1 justify-center px-4 py-2 rounded-lg bg-green-100 text-green-500 hover:bg-yellow-200 transition text-sm"
+                                            title="Edit">
+                                            <!-- Icon Edit -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <path
+                                                    d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                                <path
+                                                    d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                            </svg>
+                                            Edit
+                                        </a>
+
+                                        <!-- Tombol Hapus -->
+                                        <form action="{{ route('contact.destroy', $contact->id) }}" method="POST"
+                                            class="inline-block form-delete">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button"
+                                                class="btn-delete gap-1 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition text-sm"
+                                                data-action="{{ route('contact.destroy', $contact->id) }}"
+                                                title="Delete">
+                                                <!-- Icon Delete -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="-3 -2 24 24" fill="currentColor">
+                                                    <path
+                                                        d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
+                                                </svg>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="px-4 py-6 text-center text-gray-500">
+                                    No contacts found.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Konfirmasi delete
+            document.querySelectorAll('.btn-delete').forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    let form = this.closest('form');
+                    let action = this.getAttribute('data-action');
+
+                    Swal.fire({
+                        title: 'Yakin ingin menghapus?',
+                        text: "Data akan dihapus secara permanen!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Ya, hapus!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+
+            // Notifikasi sukses
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: "{{ session('success') }}",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            @endif
+        });
+
+        @if (session('success'))
+            <
+            script >
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: "{{ session('success') }}",
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+                });
+    </script>
+    @endif
+    </script>
+@endsection

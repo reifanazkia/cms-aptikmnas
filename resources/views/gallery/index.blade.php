@@ -1,241 +1,156 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">Gallery</h1>
-        <a href="{{ route('gallery.create') }}"
-           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Add New Item
-        </a>
-    </div>
+@extends('layouts.app', ['title' => 'Gallery'])
 
-    <!-- Filter and Search Section -->
-    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-        <form method="GET" action="{{ route('gallery.index') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Category Filter -->
-            <div>
-                <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Filter by Category</label>
-                <select name="category" id="category"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        onchange="this.form.submit()">
-                    <option value="">All Categories</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}"
-                            {{ request('category') == $category->id ? 'selected' : '' }}>
-                            {{ $category->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- Search -->
-            <div>
-                <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Search</label>
-                <input type="text" name="search" id="search"
-                       value="{{ request('search') }}"
-                       placeholder="Search title..."
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-
-            <!-- Search Button -->
-            <div class="flex items-end">
-                <button type="submit"
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-                    Search
-                </button>
-                @if(request('category') || request('search'))
-                    <a href="{{ route('gallery.index') }}"
-                       class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded">
-                        Clear
-                    </a>
-                @endif
-            </div>
-        </form>
-    </div>
-
-    <!-- Results Info -->
-    @if(request('category') || request('search'))
-        <div class="mb-4">
-            <p class="text-gray-600">
-                @if(request('category'))
-                    @php
-                        $selectedCategory = $categories->find(request('category'));
-                    @endphp
-                    @if($selectedCategory)
-                        Showing results for category: <strong>{{ $selectedCategory->name }}</strong>
-                    @endif
-                @endif
-                @if(request('search'))
-                    @if(request('category')) | @endif
-                    Search: <strong>"{{ request('search') }}"</strong>
-                @endif
-                - {{ $galleries->total() }} item(s) found
-            </p>
-        </div>
-    @endif
-
-    <!-- Success Message -->
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <!-- Gallery Grid -->
-    @if($galleries->count() > 0)
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-            @foreach($galleries as $gallery)
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                    <!-- Image -->
-                    @if($gallery->image)
-                        <div class="h-48 overflow-hidden">
-                            <img src="{{ Storage::url($gallery->image) }}"
-                                 alt="{{ $gallery->title }}"
-                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                        </div>
-                    @else
-                        <div class="h-48 bg-gray-200 flex items-center justify-center">
-                            <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                        </div>
-                    @endif
-
-                    <!-- Content -->
-                    <div class="p-4">
-                        <!-- Title -->
-                        <h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-2">
-                            {{ $gallery->title }}
-                        </h3>
-
-                        <!-- Category Badge -->
-                        @if($gallery->category)
-                            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mb-2">
-                                {{ $gallery->category->name }}
-                            </span>
-                        @endif
-
-                        <!-- Home Display Badge -->
-                        @if($gallery->display_on_home)
-                            <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mb-2 ml-1">
-                                On Home
-                            </span>
-                        @endif
-
-                        <!-- Description -->
-                        @if($gallery->description)
-                            <p class="text-gray-600 text-sm mb-3 line-clamp-3">
-                                {{ Str::limit($gallery->description, 100) }}
-                            </p>
-                        @endif
-
-                        <!-- Date -->
-                        @if($gallery->pub_date)
-                            <p class="text-gray-500 text-xs mb-3">
-                                {{ $gallery->pub_date->format('M d, Y') }}
-                            </p>
-                        @endif
-
-                        <!-- URL Link -->
-                        @if($gallery->url)
-                            <a href="{{ $gallery->url }}" target="_blank"
-                               class="text-blue-600 hover:text-blue-800 text-sm mb-3 block">
-                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                </svg>
-                                View Link
-                            </a>
-                        @endif
-
-                        <!-- Actions -->
-                        <div class="flex justify-between items-center mt-4">
-                            <a href="{{ route('gallery.show', $gallery) }}"
-                               class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                View Details
-                            </a>
-                            <div class="flex space-x-2">
-                                <a href="{{ route('gallery.edit', $gallery) }}"
-                                   class="text-yellow-600 hover:text-yellow-800">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                    </svg>
-                                </a>
-                                <form method="POST" action="{{ route('gallery.destroy', $gallery) }}"
-                                      class="inline"
-                                      onsubmit="return confirm('Are you sure you want to delete this item?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-800">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        <!-- Pagination -->
-        <div class="flex justify-center">
-            {{ $galleries->appends(request()->query())->links() }}
-        </div>
-    @else
-        <!-- No Results -->
-        <div class="text-center py-12">
-            <svg class="w-24 h-24 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-            </svg>
-            <h3 class="text-xl font-medium text-gray-900 mb-2">No gallery items found</h3>
-            <p class="text-gray-600 mb-4">
-                @if(request('category') || request('search'))
-                    Try adjusting your filters or search terms.
-                @else
-                    Get started by creating your first gallery item.
-                @endif
-            </p>
-            @if(request('category') || request('search'))
-                <a href="{{ route('gallery.index') }}"
-                   class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-                    View All Items
-                </a>
-            @endif
+@section('content')
+    <div class="bg-white rounded-2xl shadow-lg floating-card p-6 space-y-6">
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold text-emerald-700 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-emerald-600" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
+                </svg>
+                Gallery
+            </h1>
             <a href="{{ route('gallery.create') }}"
-               class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                Create New Item
+                class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 shadow-sm transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Tambah Item
             </a>
         </div>
-    @endif
-</div>
 
-<!-- Custom Styles for line-clamp -->
-<style>
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    .line-clamp-3 {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-</style>
-</body>
-</html>
+        <!-- Alert -->
+        @if (session('success'))
+            <div class="p-4 bg-green-50 border-l-4 border-green-500 rounded-lg text-green-700">
+                <strong>Sukses!</strong> {{ session('success') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="p-4 bg-red-50 border-l-4 border-red-500 rounded-lg text-red-700">
+                <strong>Gagal!</strong> {{ session('error') }}
+            </div>
+        @endif
+
+        <!-- Filter -->
+        <div>
+            <h6 class="text-gray-600 mb-2">Filter berdasarkan Kategori:</h6>
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('gallery.index') }}"
+                    class="px-3 py-1 rounded-lg border text-sm {{ request('category') ? 'text-gray-700 border-gray-300 hover:bg-gray-50' : 'bg-emerald-600 text-white border-emerald-600' }}">
+                    Semua
+                </a>
+                @foreach ($categories as $category)
+                    <a href="{{ route('gallery.index', ['category' => $category->id]) }}"
+                        class="px-3 py-1 rounded-lg border text-sm {{ request('category') == $category->id ? 'bg-emerald-600 text-white border-emerald-600' : 'text-gray-700 border-gray-300 hover:bg-gray-50' }}">
+                        {{ $category->name }}
+                    </a>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Table -->
+        @if ($galleries->count() > 0)
+            <div class="overflow-x-auto bg-white shadow-md rounded-2xl">
+                <table class="min-w-full text-sm text-left border-collapse">
+                    <thead>
+                        <tr class="bg-emerald-50 text-emerald-800 font-semibold">
+                            <th class="px-4 py-3 border-b border-emerald-100 text-center">No</th>
+                            <th class="px-4 py-3 border-b border-emerald-100 text-center">Gambar</th>
+                            <th class="px-4 py-3 border-b border-emerald-100 text-center">Judul</th>
+                            <th class="px-4 py-3 border-b border-emerald-100 text-center">Kategori</th>
+                            <th class="px-4 py-3 border-b border-emerald-100 text-center">Deskripsi</th>
+                            <th class="px-4 py-3 border-b border-emerald-100 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($galleries as $index => $gallery)
+                            <tr class="hover:bg-gray-50 border-b border-emerald-50">
+                                <td class="px-4 py-3 border-b border-emerald-50 text-center text-gray-700">
+                                    {{ $loop->iteration + ($galleries->currentPage() - 1) * $galleries->perPage() }}
+                                </td>
+                                <td class="px-4 py-3 border-b border-emerald-50 text-center">
+                                    @if ($gallery->image)
+                                        <img src="{{ Storage::url($gallery->image) }}" alt="{{ $gallery->title }}"
+                                            class="h-14 w-1/2 mx-auto rounded">
+                                    @else
+                                        <div
+                                            class="h-14 w-20 flex items-center justify-center bg-gray-100 text-gray-400 rounded">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-3 border-b border-emerald-50 text-center font-medium text-gray-800">
+                                    {{ $gallery->title }}</td>
+                                <td class="px-4 py-3 border-b border-emerald-50 text-center">
+                                    @if ($gallery->category)
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-full">
+                                            {{ $gallery->category->name }}
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-3 border-b border-emerald-50 text-center text-gray-600">
+                                    {{ Str::limit($gallery->description, 50) }}
+                                </td>
+                                <td class="px-4 py-3 border-b border-emerald-50 text-center">
+                                    <div class="flex justify-center gap-2">
+                                        <!-- Tombol Edit -->
+                                        <a href="{{ route('gallery.edit', $gallery) }}"
+                                            class="px-4 py-2 bg-green-100 text-green-500 rounded-lg hover:bg-green-200 text-sm inline-flex items-center gap-1.5">
+                                            <!-- Icon edit (pencil) -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <path
+                                                    d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                                <path
+                                                    d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                            </svg>
+                                            Edit
+                                        </a>
+
+                                        <!-- Tombol Hapus -->
+                                        <form action="{{ route('gallery.destroy', $gallery) }}" method="POST"
+                                            class="inline" onsubmit="return confirm('Yakin ingin menghapus item ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm inline-flex items-center gap-1.5">
+                                                <!-- Icon delete (trash) -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="-3 -2 24 24" fill="currentColor">
+                                                    <path
+                                                        d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
+                                                </svg>
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-6 flex justify-center">
+                {{ $galleries->appends(request()->query())->links() }}
+            </div>
+        @else
+            <div class="text-center py-12 text-gray-500">
+                <p>Belum ada item gallery</p>
+                <a href="{{ route('gallery.create') }}"
+                    class="mt-4 inline-block px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700">
+                    Tambah Item
+                </a>
+            </div>
+        @endif
+    </div>
+@endsection
