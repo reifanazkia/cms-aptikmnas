@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('testimonies', function (Blueprint $table) {
             $table->id();
             $table->boolean('display_homepage')->default(false);
-            $table->foreignId('category_testimony_id')->nullable()->constrained('testimony_categories')->onDelete('cascade');
+            $table->foreignId('category_dpd_id')->nullable()->constrained('daftar_dpd_categories')->onDelete('cascade');
             $table->string('name');
-            $table->string('title')();
-            $table->longText('description')();
-            $table->string('image')(); // path gambar
+            $table->string('title');
+            $table->longText('description');
+            $table->string('image'); // path gambar
             $table->timestamps();
         });
     }
