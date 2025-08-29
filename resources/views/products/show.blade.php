@@ -1,89 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Detail Produk</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 p-6">
+@extends('layouts.app', ['title' => 'Detail Produk'])
 
-    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow p-6">
-        <h1 class="text-2xl font-bold mb-6">Detail Produk</h1>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Gambar Produk -->
+@section('content')
+<div class="space-y-6">
+    <!-- Header Detail -->
+    <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-6 flex items-center justify-between floating-card">
+        <div class="flex items-center space-x-4">
+            <div class="p-3 bg-emerald-100 rounded-full">
+                <i class="fas fa-box text-2xl text-emerald-600"></i>
+            </div>
             <div>
-                @if($product->image)
-                    <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->title }}" class="rounded-lg shadow w-full">
-                @else
-                    <div class="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-500">
-                        Tidak ada gambar
-                    </div>
-                @endif
-            </div>
-
-            <!-- Detail Produk -->
-            <div class="space-y-4">
-                <h2 class="text-xl font-semibold">{{ $product->title }}</h2>
-                <p class="text-gray-600">{{ $product->description ?? 'Tidak ada deskripsi' }}</p>
-
-                <div>
-                    <span class="font-semibold">Harga: </span>
-                    @if($product->has_discount)
-                        <span class="line-through text-gray-500">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-                    @else
-                        <span class="text-green-600 font-bold">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-                    @endif
-                </div>
-
-                @if($product->has_discount)
-                <div>
-                    <span class="font-semibold">Diskon: </span>
-                    <span class="text-red-500">{{ $product->discount }}%</span>
-                </div>
-
-                <div>
-                    <span class="font-semibold">Harga Setelah Diskon: </span>
-                    <span class="text-green-600 font-bold">Rp {{ number_format($product->final_price, 0, ',', '.') }}</span><br>
-                    <span class="text-sm text-green-500">(Anda hemat Rp {{ number_format($product->total_discount, 0, ',', '.') }})</span>
-                </div>
-                @endif
-
-                <div>
-                    <span class="font-semibold">Kategori: </span>
-                    <span>{{ $product->category->name ?? '-' }}</span>
-                </div>
-
-                <div>
-                    <span class="font-semibold">Disusun Oleh: </span>
-                    <span>{{ $product->disusun }}</span>
-                </div>
-
-                <div>
-                    <span class="font-semibold">Jumlah Modul: </span>
-                    <span>{{ $product->jumlah_modul }}</span>
-                </div>
-
-                <div>
-                    <span class="font-semibold">Bahasa: </span>
-                    <span>{{ $product->bahasa }}</span>
-                </div>
-
-                <div>
-                    <span class="font-semibold">No. Telepon: </span>
-                    <span>{{ $product->notlp ?? '-' }}</span>
-                    @if($product->formatted_phone)
-                        <span class="text-sm text-gray-500">({{ $product->formatted_phone }})</span>
-                    @endif
-                </div>
+                <h1 class="text-2xl font-bold text-emerald-700">{{ $product->title }}</h1>
+                <p class="text-emerald-600 text-sm">
+                    Dibuat: {{ $product->created_at->format('d F Y H:i') }}
+                </p>
             </div>
         </div>
-
-        <div class="mt-6 flex gap-3">
-            <a href="{{ route('products.edit', $product->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</a>
-            <a href="{{ route('products.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>
-        </div>
+        <a href="{{ route('products.index') }}"
+           class="px-4 py-2 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 transition-all flex items-center space-x-2">
+            <i class="fas fa-arrow-left"></i>
+            <span>Kembali</span>
+        </a>
     </div>
 
-</body>
-</html>
+    <div class="grid lg:grid-cols-3 gap-6">
+        <!-- Konten Utama -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Gambar Produk -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-md overflow-hidden floating-card">
+                <div class="group">
+                    @if($product->image)
+                        <img src="{{ asset('storage/'.$product->image) }}"
+                             alt="{{ $product->title }}"
+                             class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+                    @else
+                        <div class="h-80 bg-emerald-50 flex items-center justify-center">
+                            <i class="fas fa-image text-6xl text-emerald-300"></i>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Deskripsi -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-6 floating-card">
+                <h2 class="text-xl font-semibold text-emerald-700 mb-2 flex items-center">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Deskripsi Produk
+                </h2>
+                <p class="text-gray-700 leading-relaxed">
+                    {{ $product->description ?? 'Tidak ada deskripsi untuk produk ini.' }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            <!-- Tombol Aksi -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-6 floating-card">
+                <h3 class="text-lg font-semibold text-emerald-700 mb-3 flex items-center">
+                    <i class="fas fa-cogs mr-2"></i> Aksi
+                </h3>
+                <div class="space-y-2">
+                    <a href="{{ route('products.edit', $product->id) }}"
+                       class="w-full px-4 py-2 bg-gradient-to-r from-emerald-400 to-teal-500 text-white rounded-lg hover:scale-105 flex items-center justify-center space-x-2 transition-all">
+                        <i class="fas fa-edit"></i>
+                        <span>Edit</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Informasi Produk -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-6 floating-card">
+                <h3 class="text-lg font-semibold text-emerald-700 mb-3 flex items-center">
+                    <i class="fas fa-info-circle mr-2"></i> Informasi
+                </h3>
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span>Harga</span>
+                        @if($product->has_discount)
+                            <span class="font-semibold line-through text-gray-500">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                        @else
+                            <span class="font-semibold text-emerald-600">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                        @endif
+                    </div>
+                    @if($product->has_discount)
+                        <div class="flex justify-between">
+                            <span>Diskon</span>
+                            <span class="font-semibold text-red-500">{{ $product->discount }}%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Harga Akhir</span>
+                            <span class="font-semibold text-emerald-600">Rp {{ number_format($product->final_price, 0, ',', '.') }}</span>
+                        </div>
+                    @endif
+                    <div class="flex justify-between">
+                        <span>Kategori</span>
+                        <span class="font-semibold text-emerald-600">{{ $product->category->name ?? '-' }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Disusun Oleh</span>
+                        <span class="font-semibold">{{ $product->disusun }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Jumlah Modul</span>
+                        <span class="font-semibold">{{ $product->jumlah_modul }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Bahasa</span>
+                        <span class="font-semibold">{{ $product->bahasa }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>No. Telepon</span>
+                        <span class="font-semibold">{{ $product->notlp ?? '-' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

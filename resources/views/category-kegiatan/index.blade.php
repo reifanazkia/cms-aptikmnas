@@ -1,117 +1,176 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Category Kegiatan</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen p-6">
+@extends('layouts.app', ['title' => 'Kategori Kegiatan'])
 
-    <div class="bg-white shadow-md rounded-2xl p-6">
-        <div class="flex justify-between items-center mb-4">
-            <h1 class="text-xl font-bold">Daftar Kategori Kegiatan</h1>
-            <button onclick="openAddModal()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                Tambah Kategori
-            </button>
+@section('content')
+    <div class="bg-white p-6 rounded-lg space-y-6">
+        <!-- Judul -->
+        <div>
+            <h1 class="text-3xl font-bold text-emerald-700">Daftar Kategori Kegiatan</h1>
+            <p class="text-sm text-emerald-600">Kelola data kategori kegiatan</p>
         </div>
 
-        <!-- Alert -->
-        @if(session('success'))
-            <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">
-                {{ session('success') }}
-            </div>
+        <!-- Alert Sukses (akan digantikan oleh SweetAlert) -->
+        @if (session('success'))
+            <div class="hidden" id="success-message">{{ session('success') }}</div>
         @endif
 
-        <table class="w-full border border-gray-200 rounded-lg overflow-hidden">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="border px-4 py-2">#</th>
-                    <th class="border px-4 py-2">Nama Kategori</th>
-                    <th class="border px-4 py-2">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($kegiatan as $index => $item)
-                    <tr>
-                        <td class="border px-4 py-2 text-center">{{ $index + 1 }}</td>
-                        <td class="border px-4 py-2">{{ $item->name }}</td>
-                        <td class="border px-4 py-2 text-center">
-                            <!-- Tombol Edit -->
-                            <button
-                                onclick="openEditModal({{ $item->id }}, '{{ $item->name }}')"
-                                class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
-                                Edit
-                            </button>
+        <!-- Tombol Tambah -->
+        <button onclick="openAddModal()"
+            class="px-5 py-3 rounded-xl bg-emerald-600 text-white font-semibold shadow-md hover:bg-emerald-700 transition">
+            + Tambah Kategori
+        </button>
 
-                            <!-- Tombol Hapus -->
-                            <form action="{{ route('category-kegiatan.destroy', $item->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                                    Hapus
+        <!-- Table -->
+        <div class="overflow-x-auto bg-white shadow-md rounded-xl border border-emerald-100">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-emerald-50 text-emerald-700 font-semibold">
+                    <tr>
+                        <th class="px-6 py-4 text-center">No</th>
+                        <th class="px-6 py-4 text-center">Nama Kategori</th>
+                        <th class="px-6 py-4 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-emerald-100">
+                    @forelse ($kegiatan as $index => $item)
+                        <tr class="hover:bg-gray-50 border-b border-emerald-50">
+                            <td class="px-6 py-4 text-center">{{ $index + 1 }}</td>
+                            <td class="px-6 py-4 text-center font-medium">{{ $item->name }}</td>
+                            <td class="px-6 py-4 flex space-x-3 justify-center">
+                                <!-- Tombol Edit -->
+                                <button onclick="openEditModal({{ $item->id }}, '{{ $item->name }}')"
+                                    class="flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-green-200 text-green-500 text-sm rounded-lg shadow">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                        <path
+                                            d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                    </svg>
+                                    <span>Edit</span>
                                 </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
 
-                @if($kegiatan->isEmpty())
-                    <tr>
-                        <td colspan="3" class="text-center py-4 text-gray-500">Belum ada data</td>
-                    </tr>
-                @endif
-            </tbody>
-        </table>
+                                <!-- Tombol Hapus -->
+                                <button onclick="confirmDelete({{ $item->id }}, '{{ $item->name }}')"
+                                    class="flex items-center gap-2 px-4 py-2 bg-red-200 hover:bg-red-300 text-red-600 text-sm rounded-lg shadow">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                        viewBox="-3 -2 24 24" fill="currentColor">
+                                        <path
+                                            d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
+                                    </svg>
+                                    <span>Hapus</span>
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="px-6 py-10 text-center text-emerald-600 font-medium">
+                                Belum ada data
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Modal Tambah -->
-    <div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-2xl shadow-lg p-6 w-96">
-            <h2 class="text-lg font-semibold mb-4">Tambah Kategori</h2>
-            <form action="{{ route('category-kegiatan.store') }}" method="POST">
+    <div id="addModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md">
+            <!-- Header Modal -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-emerald-700">Tambah Kategori Baru</h2>
+                <button onclick="closeAddModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Body Modal -->
+            <form id="addForm" action="{{ route('category-kegiatan.store') }}" method="POST" class="p-6 space-y-4">
                 @csrf
-                <div class="mb-4">
-                    <label class="block text-sm font-medium">Nama Kategori</label>
-                    <input type="text" name="name" class="w-full border rounded-lg px-3 py-2 mt-1" required>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Kategori</label>
+                    <input type="text" name="name" id="addName"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                        placeholder="Masukkan nama kategori" required>
                 </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Simpan</button>
+
+                <!-- Footer Modal -->
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" onclick="closeAddModal()"
+                        class="px-5 py-2.5 rounded-lg bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="px-5 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition shadow-md">
+                        Simpan
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Modal Edit -->
-    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-2xl shadow-lg p-6 w-96">
-            <h2 class="text-lg font-semibold mb-4">Edit Kategori</h2>
-            <form id="editForm" method="POST">
+    <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md">
+            <!-- Header Modal -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-emerald-700">Edit Kategori</h2>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Body Modal -->
+            <form id="editForm" method="POST" class="p-6 space-y-4">
                 @csrf
                 @method('PUT')
-                <div class="mb-4">
-                    <label class="block text-sm font-medium">Nama Kategori</label>
-                    <input type="text" name="name" id="editName" class="w-full border rounded-lg px-3 py-2 mt-1" required>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Kategori</label>
+                    <input type="text" name="name" id="editName"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                        required>
                 </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">Update</button>
+
+                <!-- Footer Modal -->
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" onclick="closeEditModal()"
+                        class="px-5 py-2.5 rounded-lg bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="px-5 py-2.5 rounded-lg bg-amber-500 text-white font-semibold hover:bg-amber-600 transition shadow-md">
+                        Update
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- Form Hapus Tersembunyi -->
+    <form id="deleteForm" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
+
+    <!-- Script untuk SweetAlert dan Modal -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // Fungsi untuk modal
         function openAddModal() {
             document.getElementById('addModal').classList.remove('hidden');
         }
+
         function closeAddModal() {
             document.getElementById('addModal').classList.add('hidden');
         }
 
         function openEditModal(id, name) {
-            let url = '{{ route("category-kegiatan.update", ":id") }}';
+            let url = '{{ route('category-kegiatan.update', ':id') }}';
             url = url.replace(':id', id);
 
             const form = document.getElementById('editForm');
@@ -120,9 +179,61 @@
 
             document.getElementById('editModal').classList.remove('hidden');
         }
+
         function closeEditModal() {
             document.getElementById('editModal').classList.add('hidden');
         }
+
+        // Tutup modal ketika mengklik di luar area modal
+        document.addEventListener('click', function(event) {
+            const addModal = document.getElementById('addModal');
+            const editModal = document.getElementById('editModal');
+
+            if (event.target === addModal) {
+                closeAddModal();
+            }
+            if (event.target === editModal) {
+                closeEditModal();
+            }
+        });
+
+        // SweetAlert untuk notifikasi sukses dari session
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = document.getElementById('success-message');
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses!',
+                    text: successMessage.textContent,
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            }
+        });
+
+        // SweetAlert untuk konfirmasi hapus
+        function confirmDelete(id, name) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                html: `Kategori <b>${name}</b> akan dihapus secara permanen.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Set action form delete
+                    const form = document.getElementById('deleteForm');
+                    let url = '{{ route('category-kegiatan.destroy', ':id') }}';
+                    url = url.replace(':id', id);
+                    form.action = url;
+
+                    // Submit form
+                    form.submit();
+                }
+            });
+        }
     </script>
-</body>
-</html>
+@endsection

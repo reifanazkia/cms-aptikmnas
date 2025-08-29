@@ -55,7 +55,7 @@ class GalleryController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:750',
             'pub_date' => 'nullable|date',
             'url' => 'nullable|url',
-            'category_gallery_id' => 'required|exists:gallery_categories,id',
+            'category_gallery_id' => 'nullable|exists:gallery_categories,id',
             'display_on_home' => 'boolean',
         ]);
 

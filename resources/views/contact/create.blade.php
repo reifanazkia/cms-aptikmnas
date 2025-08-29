@@ -1,96 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Contact</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">Create New Contact</h4>
-                        <a href="{{ route('contact.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Back
-                        </a>
-                    </div>
-                    <div class="card-body">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+@extends('layouts.app', ['title' => 'Tambah Kontak'])
 
-                        <form action="{{ route('contact.store') }}" method="POST">
-                            @csrf
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Email DPP *</label>
-                                        <input type="email" class="form-control" name="email_dpp" value="{{ old('email_dpp') }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Email DPD *</label>
-                                        <input type="email" class="form-control" name="email_dpd" value="{{ old('email_dpd') }}" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Alamat *</label>
-                                <textarea class="form-control" name="alamat" rows="3" required>{{ old('alamat') }}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">No Telepon *</label>
-                                <input type="number" class="form-control" name="notlp" value="{{ old('notlp') }}" required>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Instagram URL</label>
-                                        <input type="url" class="form-control" name="url_ig" value="{{ old('url_ig') }}" placeholder="https://instagram.com/username">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Twitter URL</label>
-                                        <input type="url" class="form-control" name="url_twit" value="{{ old('url_twit') }}" placeholder="https://twitter.com/username">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">YouTube URL</label>
-                                        <input type="url" class="form-control" name="url_yt" value="{{ old('url_yt') }}" placeholder="https://youtube.com/channel/">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Facebook URL</label>
-                                        <input type="url" class="form-control" name="url_fb" value="{{ old('url_fb') }}" placeholder="https://facebook.com/username">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <button type="submit" class="btn btn-primary">Save Contact</button>
-                            </div>
-                        </form>
-                    </div>
+@section('content')
+<div class="max-w-3xl mx-auto">
+    <!-- Card -->
+    <div class="bg-white rounded-2xl shadow-md p-8 space-y-6">
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b pb-4">
+            <h1 class="text-2xl font-bold text-emerald-700 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Tambah Kontak Baru
+            </h1>
+            <a href="{{ route('contact.index') }}"
+                class="px-4 py-2 text-sm font-medium bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl hover:bg-emerald-100 transition">
+                ← Kembali
+            </a>
+        </div>
+
+        <!-- Alert Error -->
+        @if ($errors->any())
+        <div class="p-4 mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg">
+            <p class="font-semibold mb-2">Terdapat kesalahan:</p>
+            <ul class="list-disc pl-5 space-y-1">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <!-- Form -->
+        <form action="{{ route('contact.store') }}" method="POST" class="space-y-6">
+            @csrf
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Email DPP -->
+                <div>
+                    <label for="email_dpp" class="block text-sm font-medium text-gray-700 mb-1">Email DPP *</label>
+                    <input type="email" name="email_dpp" id="email_dpp" value="{{ old('email_dpp') }}"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('email_dpp') border-red-500 @enderror"
+                        required>
+                    @error('email_dpp')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Email DPD -->
+                <div>
+                    <label for="email_dpd" class="block text-sm font-medium text-gray-700 mb-1">Email DPD *</label>
+                    <input type="email" name="email_dpd" id="email_dpd" value="{{ old('email_dpd') }}"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('email_dpd') border-red-500 @enderror"
+                        required>
+                    @error('email_dpd')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Alamat -->
+                <div class="md:col-span-2">
+                    <label for="alamat" class="block text-sm font-medium text-gray-700 mb-1">Alamat *</label>
+                    <textarea name="alamat" id="alamat" rows="3"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('alamat') border-red-500 @enderror"
+                        required>{{ old('alamat') }}</textarea>
+                    @error('alamat')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Nomor Telepon -->
+                <div class="md:col-span-2">
+                    <label for="notlp" class="block text-sm font-medium text-gray-700 mb-1">No Telepon *</label>
+                    <input type="number" name="notlp" id="notlp" value="{{ old('notlp') }}"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('notlp') border-red-500 @enderror"
+                        required>
+                    @error('notlp')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Instagram -->
+                <div>
+                    <label for="url_ig" class="block text-sm font-medium text-gray-700 mb-1">Instagram URL</label>
+                    <input type="url" name="url_ig" id="url_ig" value="{{ old('url_ig') }}"
+                        placeholder="https://instagram.com/username"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('url_ig') border-red-500 @enderror">
+                    @error('url_ig')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Twitter -->
+                <div>
+                    <label for="url_twit" class="block text-sm font-medium text-gray-700 mb-1">Twitter URL</label>
+                    <input type="url" name="url_twit" id="url_twit" value="{{ old('url_twit') }}"
+                        placeholder="https://twitter.com/username"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('url_twit') border-red-500 @enderror">
+                    @error('url_twit')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- YouTube -->
+                <div>
+                    <label for="url_yt" class="block text-sm font-medium text-gray-700 mb-1">YouTube URL</label>
+                    <input type="url" name="url_yt" id="url_yt" value="{{ old('url_yt') }}"
+                        placeholder="https://youtube.com/channel/"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('url_yt') border-red-500 @enderror">
+                    @error('url_yt')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Facebook -->
+                <div>
+                    <label for="url_fb" class="block text-sm font-medium text-gray-700 mb-1">Facebook URL</label>
+                    <input type="url" name="url_fb" id="url_fb" value="{{ old('url_fb') }}"
+                        placeholder="https://facebook.com/username"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('url_fb') border-red-500 @enderror">
+                    @error('url_fb')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
-        </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+            <!-- Footer Buttons -->
+            <div class="flex items-center justify-between border-t pt-4">
+                <a href="{{ route('contact.index') }}"
+                    class="px-4 py-2 text-sm font-medium bg-gray-100 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-200 transition">
+                    Batal
+                </a>
+                <button type="submit"
+                    class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 transition">
+                    Simpan Kontak
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection

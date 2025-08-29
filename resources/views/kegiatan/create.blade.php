@@ -1,253 +1,190 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Kegiatan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container-fluid py-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">
-                                <i class="fas fa-plus-circle me-2"></i>Tambah Kegiatan Baru
-                            </h4>
-                            <a href="{{ route('kegiatan.index') }}" class="btn btn-light btn-sm">
-                                <i class="fas fa-arrow-left me-1"></i>Kembali
-                            </a>
+@extends('layouts.app', ['title' => 'Tambah Kegiatan'])
+
+@section('content')
+    <div class="max-w-3xl mx-auto">
+        <!-- Card -->
+        <div class="bg-white rounded-2xl shadow-md p-8 space-y-6">
+            <!-- Header -->
+            <div class="flex items-center justify-between border-b pb-4">
+                <h1 class="text-2xl font-bold text-emerald-700 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Tambah Kegiatan Baru
+                </h1>
+                <a href="{{ route('kegiatan.index') }}"
+                    class="px-4 py-2 text-sm font-medium bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl hover:bg-emerald-100 transition">
+                    ← Kembali
+                </a>
+            </div>
+
+            <!-- Alert Error -->
+            @if ($errors->any())
+                <div class="p-4 mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="font-semibold mb-2">Terdapat kesalahan:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <!-- Form -->
+            <form action="{{ route('kegiatan.store') }}" method="POST" enctype="multipart/form-data" id="kegiatanForm"
+                class="space-y-6">
+                @csrf
+
+                <!-- Kategori & Judul -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="relative">
+                        <label for="category_kegiatan_id" class="block text-sm font-medium text-gray-700 mb-1">
+                            Kategori Kegiatan <span class="text-red-500">*</span>
+                        </label>
+                        <select name="category_kegiatan_id" id="category_kegiatan_id"
+                            class="w-full appearance-none rounded-lg px-3 py-2 pr-10 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('category_kegiatan_id') border-red-500 @enderror"
+                            required>
+                            <option value="">Pilih Kategori</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ old('category_kegiatan_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        <!-- SVG Icon -->
+                        <div class="pointer-events-none absolute inset-y-0 right-3 top-6 flex items-center">
+                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
                         </div>
+
+                        @error('category_kegiatan_id')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    <div class="card-body">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Terdapat kesalahan:</h6>
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        <form action="{{ route('kegiatan.store') }}" method="POST" enctype="multipart/form-data" id="kegiatanForm">
-                            @csrf
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="category_kegiatan_id" class="form-label required">
-                                            <i class="fas fa-tag me-1"></i>Kategori Kegiatan
-                                        </label>
-                                        <select class="form-select @error('category_kegiatan_id') is-invalid @enderror"
-                                                id="category_kegiatan_id" name="category_kegiatan_id" required>
-                                            <option value="">Pilih Kategori</option>
-                                            @foreach($categories as $category)
-                                                <option value="{{ $category->id }}"
-                                                        {{ old('category_kegiatan_id') == $category->id ? 'selected' : '' }}>
-                                                    {{ $category->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('category_kegiatan_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="title" class="form-label required">
-                                            <i class="fas fa-heading me-1"></i>Judul Kegiatan
-                                        </label>
-                                        <input type="text"
-                                               class="form-control @error('title') is-invalid @enderror"
-                                               id="title" name="title"
-                                               value="{{ old('title') }}"
-                                               placeholder="Masukkan judul kegiatan"
-                                               maxlength="255" required>
-                                        @error('title')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                        <div class="form-text">Maksimal 255 karakter</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="description" class="form-label">
-                                    <i class="fas fa-align-left me-1"></i>Deskripsi
-                                </label>
-                                <textarea class="form-control @error('description') is-invalid @enderror"
-                                          id="description" name="description" rows="4">{{ old('description') }}</textarea>
-                                @error('description')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="image" class="form-label required">
-                                    <i class="fas fa-image me-1"></i>Gambar Kegiatan
-                                </label>
-                                <input type="file"
-                                       class="form-control @error('image') is-invalid @enderror"
-                                       id="image" name="image"
-                                       accept="image/jpeg,image/jpg,image/png"
-                                       required>
-                                @error('image')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <div class="form-text">Format: JPG, JPEG, PNG. Maksimal 2MB</div>
-
-                                <!-- Preview Image -->
-                                <div id="imagePreview" class="mt-3" style="display: none;">
-                                    <img id="previewImg" src="" alt="Preview" class="img-thumbnail" style="max-width: 200px;">
-                                    <div class="mt-2">
-                                        <button type="button" class="btn btn-sm btn-outline-danger" id="removeImage">
-                                            <i class="fas fa-times me-1"></i>Hapus Gambar
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="border-top pt-3">
-                                <div class="d-flex justify-content-between">
-                                    <a href="{{ route('kegiatan.index') }}" class="btn btn-secondary">
-                                        <i class="fas fa-times me-1"></i>Batal
-                                    </a>
-                                    <div>
-                                        <button type="reset" class="btn btn-outline-secondary me-2">
-                                            <i class="fas fa-undo me-1"></i>Reset
-                                        </button>
-                                        <button type="submit" class="btn btn-primary" id="submitBtn">
-                                            <i class="fas fa-save me-1"></i>Simpan Kegiatan
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700 mb-1">
+                            Judul Kegiatan <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="title" id="title" value="{{ old('title') }}" maxlength="255"
+                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('title') border-red-500 @enderror"
+                            placeholder="Masukkan judul kegiatan" required>
+                        @error('title')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
-            </div>
+
+                <!-- Deskripsi -->
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
+                        Deskripsi
+                    </label>
+                    <textarea name="description" id="description" rows="5"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
+                    @error('description')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Upload Gambar -->
+                <div>
+                    <label for="image" class="block text-sm font-medium text-gray-700 mb-1">
+                        Gambar Kegiatan <span class="text-red-500">*</span>
+                    </label>
+                    <input type="file" name="image" id="image" accept="image/jpeg,image/png"
+                        class="w-full rounded-lg px-3 py-2 text-sm cursor-pointer border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('image') border-red-500 @enderror"
+                        required>
+                    
+                    @error('image')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+
+                    <!-- Preview -->
+                    <div id="imagePreview" class="hidden mt-3 rounded-lg border border-gray-200 bg-gray-50 p-3">
+                        <img id="previewImg" class="rounded-lg max-h-40 mx-auto" alt="Preview">
+                        <button type="button" id="removeImage"
+                            class="mt-2 w-full py-1.5 text-sm text-red-600 border border-red-300 rounded-lg hover:bg-red-50">
+                            Hapus Gambar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="flex items-center justify-between border-t pt-4">
+                    <a href="{{ route('kegiatan.index') }}"
+                        class="px-4 py-2 text-sm font-medium bg-gray-100 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-200 transition">
+                        Batal
+                    </a>
+                    <div class="flex gap-2">
+                        <button type="reset"
+                            class="px-4 py-2 text-sm font-medium bg-white border border-gray-300 rounded-xl hover:bg-gray-50">
+                            Reset
+                        </button>
+                        <button type="submit" id="submitBtn"
+                            class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 transition">
+                            Simpan Kegiatan
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script -->
     <script>
-        // Image Preview
-        document.getElementById('image').addEventListener('change', function(e) {
+        // Counter Judul
+        const titleInput = document.getElementById('title');
+        const counter = document.getElementById('titleCounter');
+        titleInput.addEventListener('input', function() {
+            const maxLength = 255;
+            const currentLength = this.value.length;
+            counter.textContent = `${currentLength}/${maxLength} karakter`;
+            counter.classList.toggle('text-red-500', maxLength - currentLength < 20);
+            counter.classList.toggle('text-gray-500', maxLength - currentLength >= 20);
+        });
+
+        // Preview Gambar
+        const imageInput = document.getElementById('image');
+        const preview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const removeBtn = document.getElementById('removeImage');
+
+        imageInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
-                // Validate file type
-                if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
-                    alert('Format file harus JPG, JPEG, atau PNG');
-                    this.value = '';
+                if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                    alert('Format harus JPG/PNG');
+                    imageInput.value = '';
                     return;
                 }
-
-                // Validate file size (2MB = 2048KB = 2097152 bytes)
                 if (file.size > 2097152) {
-                    alert('Ukuran file maksimal 2MB');
-                    this.value = '';
+                    alert('Ukuran maksimal 2MB');
+                    imageInput.value = '';
                     return;
                 }
-
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImg').src = e.target.result;
-                    document.getElementById('imagePreview').style.display = 'block';
+                reader.onload = (e) => {
+                    previewImg.src = e.target.result;
+                    preview.classList.remove('hidden');
                 }
                 reader.readAsDataURL(file);
             }
         });
 
-        // Remove image preview
-        document.getElementById('removeImage').addEventListener('click', function() {
-            document.getElementById('image').value = '';
-            document.getElementById('imagePreview').style.display = 'none';
+        removeBtn.addEventListener('click', () => {
+            imageInput.value = '';
+            preview.classList.add('hidden');
         });
 
-        // Form validation and submission
-        document.getElementById('kegiatanForm').addEventListener('submit', function(e) {
-            const submitBtn = document.getElementById('submitBtn');
-            const originalText = submitBtn.innerHTML;
-
-            // Disable submit button and show loading
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Menyimpan...';
-
-            // Re-enable button after 3 seconds (in case of error)
-            setTimeout(function() {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-            }, 3000);
-        });
-
-        // Character counter for title
-        document.getElementById('title').addEventListener('input', function() {
-            const maxLength = 255;
-            const currentLength = this.value.length;
-            const remaining = maxLength - currentLength;
-
-            // Update or create character counter
-            let counter = document.getElementById('titleCounter');
-            if (!counter) {
-                counter = document.createElement('div');
-                counter.id = 'titleCounter';
-                counter.className = 'form-text';
-                this.parentNode.appendChild(counter);
-            }
-
-            counter.textContent = `${currentLength}/${maxLength} karakter`;
-            counter.style.color = remaining < 20 ? '#dc3545' : '#6c757d';
-        });
-
-        // Reset form
-        document.querySelector('button[type="reset"]').addEventListener('click', function() {
-            document.getElementById('imagePreview').style.display = 'none';
-
-            // Reset character counter
-            const counter = document.getElementById('titleCounter');
-            if (counter) {
-                counter.textContent = '0/255 karakter';
-                counter.style.color = '#6c757d';
-            }
-        });
-
-        // Auto-resize textarea
-        document.getElementById('description').addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
-        });
+        // CKEditor
+        ClassicEditor
+            .create(document.querySelector('#description'))
+            .catch(error => {
+                console.error(error);
+            });
     </script>
-
-    <style>
-        .required::after {
-            content: " *";
-            color: #dc3545;
-        }
-
-        .form-control:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-        }
-
-        .img-thumbnail {
-            border: 2px dashed #dee2e6;
-            padding: 10px;
-        }
-
-        #imagePreview {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 0.375rem;
-            border: 1px solid #dee2e6;
-        }
-    </style>
-</body>
-</html>
+@endsection

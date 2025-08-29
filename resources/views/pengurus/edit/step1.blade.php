@@ -1,222 +1,225 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Pengurus - Step 1</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">Edit Pengurus - Step 1 dari 3</h4>
-                            <div>
-                                <a href="{{ route('pengurus.show', $pengurus->id) }}" class="btn btn-info">
-                                    <i class="fas fa-eye"></i> Lihat Detail
-                                </a>
-                                <a href="{{ route('pengurus.index') }}" class="btn btn-secondary">
-                                    <i class="fas fa-arrow-left"></i> Kembali
-                                </a>
-                            </div>
-                        </div>
-                        <!-- Progress Bar -->
-                        <div class="progress mt-3" style="height: 5px;">
-                            <div class="progress-bar" role="progressbar" style="width: 33%"></div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        @if($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+@extends('layouts.app', ['title' => 'Edit Pengurus - Step 1'])
 
-                        <form action="{{ route('pengurus.edit.step1.update', $pengurus->id) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
+@section('content')
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg floating-card p-6 space-y-6">
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="title" class="form-label">Nama <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                               id="title" name="title" value="{{ old('title', $pengurus->title) }}" required>
-                                        @error('title')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="descroption" class="form-label">Deskripsi <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('descroption') is-invalid @enderror"
-                                               id="descroption" name="descroption" value="{{ old('descroption', $pengurus->descroption) }}" required>
-                                        @error('descroption')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="address" class="form-label">Alamat <span class="text-danger">*</span></label>
-                                <textarea class="form-control @error('address') is-invalid @enderror"
-                                          id="address" name="address" rows="3" required>{{ old('address', $pengurus->address) }}</textarea>
-                                @error('address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="phone" class="form-label">Telepon <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('phone') is-invalid @enderror"
-                                               id="phone" name="phone" value="{{ old('phone', $pengurus->phone) }}" required>
-                                        @error('phone')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                               id="email" name="email" value="{{ old('email', $pengurus->email) }}" required>
-                                        @error('email')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="category_daftar_id" class="form-label">Kategori Daftar</label>
-                                        <select class="form-select @error('category_daftar_id') is-invalid @enderror"
-                                                id="category_daftar_id" name="category_daftar_id">
-                                            <option value="">Pilih Kategori Daftar</option>
-                                            @foreach($categoryDaftar as $category)
-                                                <option value="{{ $category->id }}"
-                                                        {{ old('category_daftar_id', $pengurus->category_daftar_id) == $category->id ? 'selected' : '' }}>
-                                                    {{ $category->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('category_daftar_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="category_pengurus_id" class="form-label">Kategori Pengurus</label>
-                                        <select class="form-select @error('category_pengurus_id') is-invalid @enderror"
-                                                id="category_pengurus_id" name="category_pengurus_id">
-                                            <option value="">Pilih Kategori Pengurus</option>
-                                            @foreach($categoryPengurus as $category)
-                                                <option value="{{ $category->id }}"
-                                                        {{ old('category_pengurus_id', $pengurus->category_pengurus_id) == $category->id ? 'selected' : '' }}>
-                                                    {{ $category->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('category_pengurus_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="image" class="form-label">Foto Profil</label>
-                                @if($pengurus->image)
-                                    <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $pengurus->image) }}" alt="Current Image"
-                                             class="img-thumbnail" width="100">
-                                        <small class="text-muted d-block">Gambar saat ini</small>
-                                    </div>
-                                @endif
-                                <input type="file" class="form-control @error('image') is-invalid @enderror"
-                                       id="image" name="image" accept="image/*">
-                                <div class="form-text">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB. Kosongkan jika tidak ingin mengganti.</div>
-                                @error('image')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="fb" class="form-label">Facebook</label>
-                                        <input type="url" class="form-control @error('fb') is-invalid @enderror"
-                                               id="fb" name="fb" value="{{ old('fb', $pengurus->fb) }}"
-                                               placeholder="https://facebook.com/username">
-                                        @error('fb')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="ig" class="form-label">Instagram</label>
-                                        <input type="url" class="form-control @error('ig') is-invalid @enderror"
-                                               id="ig" name="ig" value="{{ old('ig', $pengurus->ig) }}"
-                                               placeholder="https://instagram.com/username">
-                                        @error('ig')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="tiktok" class="form-label">TikTok</label>
-                                        <input type="url" class="form-control @error('tiktok') is-invalid @enderror"
-                                               id="tiktok" name="tiktok" value="{{ old('tiktok', $pengurus->tiktok) }}"
-                                               placeholder="https://tiktok.com/@username">
-                                        @error('tiktok')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="yt" class="form-label">YouTube</label>
-                                        <input type="url" class="form-control @error('yt') is-invalid @enderror"
-                                               id="yt" name="yt" value="{{ old('yt', $pengurus->yt) }}"
-                                               placeholder="https://youtube.com/channel/...">
-                                        @error('yt')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary">
-                                    Lanjut ke Step 2 <i class="fas fa-arrow-right"></i>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+            <!-- Header & Progress -->
+            <div
+                class="flex flex-col md:flex-row items-start md:items-center justify-between border-b border-emerald-100 pb-4 mb-4">
+                <h1 class="text-2xl font-bold text-emerald-700 mb-2 md:mb-0">Edit Pengurus - Step 1 dari 3</h1>
+                <div class="flex gap-2">
+                    <a href="{{ route('pengurus.show', $pengurus->id) }}"
+                        class="px-4 py-2 bg-blue-500 text-white border-gray-300 rounded-lg hover:bg-blue-600 flex items-center gap-1">
+                        <i class="fas fa-eye"></i> Lihat Detail
+                    </a>
+                    <a href="{{ route('pengurus.index') }}"
+                        class="px-4 py-2 bg-gray-200 border-gray-300 rounded-lg hover:bg-gray-300 flex items-center gap-1">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </a>
                 </div>
             </div>
+
+            <!-- Progress Bar -->
+            <div class="h-2 w-full bg-gray-200 rounded-full mb-4 overflow-hidden">
+                <div class="h-2 bg-emerald-500 rounded-full" style="width: 33%"></div>
+            </div>
+
+            <!-- Alerts -->
+            @if ($errors->any())
+                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md shadow-sm mb-3">
+                    <ul class="list-disc pl-5 mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <!-- Form -->
+            <form action="{{ route('pengurus.edit.step1.update', $pengurus->id) }}" method="POST"
+                enctype="multipart/form-data" class="space-y-6">
+                @csrf
+                @method('PUT')
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label for="title" class="block text-sm font-medium text-gray-700">Nama <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="title" name="title" value="{{ old('title', $pengurus->title) }}"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('title') border-red-500 @enderror"
+                            required>
+                        @error('title')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="address" class="block text-sm font-medium text-gray-700">Alamat <span
+                                class="text-red-500">*</span></label>
+                        <textarea id="address" name="address" rows="3"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('address') border-red-500 @enderror"
+                            required>{{ old('address', $pengurus->address) }}</textarea>
+                        @error('address')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="descroption" class="block text-sm font-medium text-gray-700">Deskripsi <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="descroption" name="descroption"
+                            value="{{ old('descroption', $pengurus->descroption) }}"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('descroption') border-red-500 @enderror"
+                            required>
+                        @error('descroption')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700">Telepon <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="phone" name="phone" value="{{ old('phone', $pengurus->phone) }}"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('phone') border-red-500 @enderror"
+                            required>
+                        @error('phone')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email <span
+                                class="text-red-500">*</span></label>
+                        <input type="email" id="email" name="email" value="{{ old('email', $pengurus->email) }}"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('email') border-red-500 @enderror"
+                            required>
+                        @error('email')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="category_daftar_id" class="block text-sm font-medium text-gray-700">Kategori
+                            Daftar</label>
+                        <select id="category_daftar_id" name="category_daftar_id"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('category_daftar_id') border-red-500 @enderror">
+                            <option value="">Pilih Kategori Daftar</option>
+                            @foreach ($categoryDaftar as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ old('category_daftar_id', $pengurus->category_daftar_id) == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category_daftar_id')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="category_pengurus_id" class="block text-sm font-medium text-gray-700">Kategori
+                            Pengurus</label>
+                        <select id="category_pengurus_id" name="category_pengurus_id"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('category_pengurus_id') border-red-500 @enderror">
+                            <option value="">Pilih Kategori Pengurus</option>
+                            @foreach ($categoryPengurus as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ old('category_pengurus_id', $pengurus->category_pengurus_id) == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category_pengurus_id')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div>
+                    <label for="image" class="block text-sm font-medium text-gray-700">Foto Profil</label>
+                    @if ($pengurus->image)
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/' . $pengurus->image) }}" alt="Current Image"
+                                class=border-gray-300"rounded-lg w-32">
+                            <small class="text-gray-500 block">Gambar saat ini</small>
+                        </div>
+                    @endif
+                    <input type="file" id="image" name="image"
+                        class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('image') border-red-500 @enderror"
+                        accept="image/*">
+                    <p class="text-xs text-gray-500 mt-1">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB. Kosongkan jika tidak
+                        ingin mengganti.</p>
+                    @error('image')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="fb" class="block text-sm font-medium text-gray-700">Facebook</label>
+                        <input type="url" id="fb" name="fb" value="{{ old('fb', $pengurus->fb) }}"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('fb') border-red-500 @enderror"
+                            placeholder="https://facebook.com/username">
+                        @error('fb')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="ig" class="block text-sm font-medium text-gray-700">Instagram</label>
+                        <input type="url" id="ig" name="ig" value="{{ old('ig', $pengurus->ig) }}"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('ig') border-red-500 @enderror"
+                            placeholder="https://instagram.com/username">
+                        @error('ig')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="tiktok" class="block text-sm font-medium text-gray-700">TikTok</label>
+                        <input type="url" id="tiktok" name="tiktok"
+                            value="{{ old('tiktok', $pengurus->tiktok) }}"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('tiktok') border-red-500 @enderror"
+                            placeholder="https://tiktok.com/@username">
+                        @error('tiktok')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="yt" class="block text-sm font-medium text-gray-700">YouTube</label>
+                        <input type="url" id="yt" name="yt" value="{{ old('yt', $pengurus->yt) }}"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-emerald-400 focus:border-emerald-500 @error('yt') border-red-500 @enderror"
+                            placeholder="https://youtube.com/channel/...">
+                        @error('yt')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-4">
+                    <button type="submit"
+                        class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white border-gray-300 rounded-lg flex items-center gap-1">
+                        Lanjut ke Step 2 <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+            </form>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#descroption'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+@endsection
