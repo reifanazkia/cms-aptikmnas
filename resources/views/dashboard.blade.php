@@ -15,7 +15,6 @@
                 Platform terpadu untuk membantu tim berkolaborasi, mengelola kegiatan, dan mencapai hasil terbaik.
                 Sederhanakan proses Anda dan fokus pada hal yang paling penting.
             </p>
-
         </div>
     </div>
 @endsection

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\ApiAboutController;
 use App\Http\Controllers\Api\ApiAgendaController;
 use App\Http\Controllers\Api\ApiApplicationController;
 use App\Http\Controllers\Api\ApiCareerController;
@@ -10,7 +9,10 @@ use App\Http\Controllers\Api\ApiPartnerController;
 use App\Http\Controllers\Api\ApiPengurusController;
 use App\Http\Controllers\Api\ApiTestimonyController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AboutusController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\Api\ApiAboutController;
+use App\Http\Controllers\Api\ApiAboutusController;
 use App\Http\Controllers\Api\ApiSliderController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CareerController;
@@ -33,10 +35,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/aboutus', [ApiAboutController::class, 'index']);
-Route::get('/category/{id}', [ApiAboutController::class, 'getByCategory']);
-Route::get('/category-name/{name}', [ApiAboutController::class, 'getByCategoryName']);
-Route::get('/display/home', [ApiAboutController::class, 'getDisplayOnHome']);
+Route::get('/aboutus', [ApiAboutusController::class, 'index']);
+Route::get('/category/{id}', [ApiAboutusController::class, 'getByCategory']);
+Route::get('/category-name/{name}', [ApiAboutusController::class, 'getByCategoryName']);
+Route::get('/display/home', [ApiAboutusController::class, 'getDisplayOnHome']);
 Route::get('/agenda', [ApiAgendaController::class, 'index']);
 Route::get('/agenda/{id}', [ApiAgendaController::class, 'show']);
 Route::get('/application', [ApiApplicationController::class, 'index']);
@@ -58,6 +60,8 @@ Route::get('/testimonies', [ApiTestimonyController::class, 'index']);
 Route::get('/testimonies/{id}', [ApiTestimonyController::class, 'show']);
 Route::get('/slider', [ApiSliderController::class, 'index']);
 Route::get('/slider/home', [ApiSliderController::class, 'showHomeSlider']);
+Route::get('/about', [ApiAboutController::class, 'index']);
+Route::get('/about/{id}', [ApiAboutController::class, 'show']);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -127,9 +131,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix('aboutus')->name('aboutus.')->group(function () {
-        Route::post('/store', [AboutController::class, 'store'])->name('store');
-        Route::post('/update/{id}', [AboutController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [AboutController::class, 'destroy'])->name('destroy');
+        Route::post('/store', [AboutusController::class, 'store'])->name('store');
+        Route::post('/update/{id}', [AboutusController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [AboutusController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('agenda')->name('agenda.')->group(function () {
@@ -155,6 +159,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [SliderController::class, 'store'])->name('store');
         Route::put('/{id}', [SliderController::class, 'update'])->name('update');
         Route::delete('/{id}', [SliderController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('about')->name('about.')->group(function () {
+        Route::post('/', [AboutController::class, 'store'])->name('store');
+        Route::put('/{id}', [AboutController::class, 'update'])->name('update');
+        Route::delete('/{id}', [AboutController::class, 'destroy'])->name('destroy');
     });
 
     Route::post('/logout', [UserController::class, 'logout']);

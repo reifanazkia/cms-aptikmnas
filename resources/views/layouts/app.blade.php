@@ -220,16 +220,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 9l-7 7-7-7" />
                                 </svg>
-                            </button>
-                            <div x-show="open" @click.away="open = false" x-transition
-                                class="absolute right-0 mt-2 w-56 rounded-xl bg-white shadow-xl border border-emerald-200 dropdown-menu">
-                                <div class="p-4 border-b border-emerald-100">
-                                    <p class="text-xs text-emerald-600 mb-2 font-medium">Status Akun</p>
-                                    <div
-                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                        <div class="w-2 h-2 bg-emerald-500 rounded-full mr-2"></div>
-                                        {{ $isAdmin ? 'Administrator' : 'Member' }}
-                                    </div>
+
                                 </div>
                                 <div class="p-2">
                                     <form method="POST" action="{{ route('logout') }}">

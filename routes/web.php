@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AboutusController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CategoryDaftarDPDController;
 use App\Http\Controllers\CategoryGalleryController;
-use App\Http\Controllers\CategoryKegiatanController;
 use App\Http\Controllers\CategoryPengurusController;
 use App\Http\Controllers\CategoryStoreController;
 use App\Http\Controllers\CategoryAboutusController;
@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
-use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PengurusController;
 use App\Http\Controllers\ProductController;
@@ -152,12 +151,12 @@ Route::prefix('testimonies')->name('testimonies.')->group(function () {
 });
 
 Route::prefix('aboutus')->name('aboutus.')->group(function () {
-    Route::get('/', [AboutController::class, 'index'])->name('index');
-    Route::get('/create', [AboutController::class, 'create'])->name('create');
-    Route::post('/store', [AboutController::class, 'store'])->name('store');
-    Route::get('/edit/{id}', [AboutController::class, 'edit'])->name('edit');
-    Route::post('/update/{id}', [AboutController::class, 'update'])->name('update');
-    Route::delete('/delete/{id}', [AboutController::class, 'destroy'])->name('destroy');
+    Route::get('/', [AboutusController::class, 'index'])->name('index');
+    Route::get('/create', [AboutusController::class, 'create'])->name('create');
+    Route::post('/store', [AboutusController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [AboutusController::class, 'edit'])->name('edit');
+    Route::post('/update/{id}', [AboutusController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}', [AboutusController::class, 'destroy'])->name('destroy');
 });
 
 Route::prefix('agenda')->name('agenda.')->group(function () {
@@ -198,4 +197,13 @@ Route::prefix('slider')->name('slider.')->group(function () {
     Route::get('/edit/{id}', [SliderController::class, 'edit'])->name('edit');
     Route::put('/{id}', [SliderController::class, 'update'])->name('update');
     Route::delete('/{id}', [SliderController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('about')->name('about.')->group(function () {
+    Route::get('/', [AboutController::class, 'index'])->name('index');
+    Route::get('/create', [AboutController::class, 'create'])->name('create');
+    Route::post('/store', [AboutController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [AboutController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [AboutController::class, 'update'])->name('about.update');
+    Route::delete('/delete/{id}', [AboutController::class, 'destroy'])->name('destroy');
 });
