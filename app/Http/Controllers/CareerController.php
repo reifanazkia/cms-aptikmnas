@@ -9,12 +9,16 @@ class CareerController extends Controller
 {
     public function index(Request $request)
     {
-        $careers = Career::latest()->get();
+        $query = Career::latest();
+
         if ($request->has('search') && !empty($request->search)) {
-            $careers->where('position_title', 'like', '%' . $request->search . '%');
+            $query->where('position_title', 'like', '%' . $request->search . '%');
         }
+
+        $careers = $query->paginate(10); // <-- gunakan paginate
         return view('career.index', compact('careers'));
     }
+
 
     public function create()
     {
@@ -32,13 +36,13 @@ class CareerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'job_type' => 'required|string',
             'position_title' => 'required|string',
+            'job_type' => 'required|string',
             'lokasi' => 'required|string',
+            'ringkasan' => 'required|string',
             'pengalaman' => 'required|string',
             'jam_kerja' => 'required|string',
             'hari_kerja' => 'required|string',
-            'ringkasan' => 'required|string',
             'klasifikasi' => 'required|array',
             'klasifikasi.*' => 'required|string',
             'deskripsi' => 'required|array',

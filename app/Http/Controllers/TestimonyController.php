@@ -11,11 +11,14 @@ class TestimonyController extends Controller
 {
     public function index(Request $request)
     {
-        $testimonies = Testimony::with('category')->latest()->paginate(10);
+        $query = Testimony::with('category')->latest();
 
-        if ($request->has('search') && !empty($request->search)) {
-            $testimonies->where('title', 'like', '%' . $request->search . '%');
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
         }
+
+        $testimonies = $query->paginate(10);
+
 
         return view('testimonies.index', compact('testimonies'));
     }

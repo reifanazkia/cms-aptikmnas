@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Gallery'])
 
 @section('content')
-    <div class="bg-white rounded-2xl shadow-lg floating-card p-6 space-y-6">
+    <div class="rounded-2xl floating-card p-6 space-y-6">
         <!-- Header -->
         <div class="flex items-center justify-between">
             <h1 class="text-3xl font-bold text-emerald-700 flex items-center gap-2">

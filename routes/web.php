@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryGalleryController;
 use App\Http\Controllers\CategoryKegiatanController;
 use App\Http\Controllers\CategoryPengurusController;
 use App\Http\Controllers\CategoryStoreController;
+use App\Http\Controllers\CategoryAboutusController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\PengurusController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TestimonyController;
+
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -79,12 +81,21 @@ Route::prefix('category-gallery')->name('category-gallery.')->group(function () 
     Route::put('/update/{id}', [CategoryGalleryController::class, 'update'])->name('update');
     Route::delete('/{id}', [CategoryGalleryController::class, 'destroy'])->name('destroy');
 });
+
+Route::prefix('category-aboutus')->name('category-aboutus.')->group(function () {
+    Route::get('/', [CategoryAboutusController::class, 'index'])->name('index');
+    Route::post('/store', [CategoryAboutusController::class, 'store'])->name('store');
+    Route::put('/update/{id}', [CategoryAboutusController::class, 'update'])->name('update');
+    Route::delete('/{id}', [CategoryAboutusController::class, 'destroy'])->name('destroy');
+});
+
 Route::prefix('category-daftar')->name('category-daftar.')->group(function () {
     Route::get('/', [CategoryDaftarDPDController::class, 'index'])->name('index');
     Route::post('/store', [CategoryDaftarDPDController::class, 'store'])->name('store');
     Route::put('/update/{id}', [CategoryDaftarDPDController::class, 'update'])->name('update');
     Route::delete('/{id}', [CategoryDaftarDPDController::class, 'destroy'])->name('destroy');
 });
+
 Route::prefix('category-pengurus')->name('category-pengurus.')->group(function () {
     Route::get('/', [CategoryPengurusController::class, 'index'])->name('index');
     Route::post('/store', [CategoryPengurusController::class, 'store'])->name('store');
@@ -132,11 +143,11 @@ Route::prefix('partners')->name('partners.')->group(function () {
 
 
 Route::prefix('testimonies')->name('testimonies.')->group(function () {
-    Route::get('/', [TestimonyController::class, 'index'])->name('index');
+    Route::get('/index', [TestimonyController::class, 'index'])->name('index');
     Route::get('/create', [TestimonyController::class, 'create'])->name('create');
     Route::post('/store', [TestimonyController::class, 'store'])->name('store');
     Route::get('/edit/{testimony}', [TestimonyController::class, 'edit'])->name('edit');
-    Route::post('/update/{testimony}', [TestimonyController::class, 'update'])->name('update');
+    Route::put('/update/{testimony}', [TestimonyController::class, 'update'])->name('update');
     Route::delete('/delete/{testimony}', [TestimonyController::class, 'destroy'])->name('destroy');
 });
 
@@ -150,7 +161,7 @@ Route::prefix('aboutus')->name('aboutus.')->group(function () {
 });
 
 Route::prefix('agenda')->name('agenda.')->group(function () {
-    Route::get('/', [AgendaController::class, 'index'])->name('index');
+    Route::get('/index', [AgendaController::class, 'index'])->name('index');
     Route::get('/create', [AgendaController::class, 'create'])->name('create');
     Route::post('/store', [AgendaController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [AgendaController::class, 'edit'])->name('edit');
@@ -176,14 +187,15 @@ Route::prefix('applications')->name('applications.')->group(function () {
     Route::put('/{id}/update', [ApplicationController::class, 'update'])->name('update');
     Route::delete('/{id}/delete', [ApplicationController::class, 'destroy'])->name('destroy');
     Route::get('/{id}/download', [ApplicationController::class, 'downloadFile'])->name('download');
-    Route::post('/bulk-delete', [ApplicationController::class, 'bulkDelete'])->name('bulk-delete');
+    Route::delete('/bulk-delete', [ApplicationController::class, 'bulkDelete'])->name('bulk-delete');
 });
+
 
 Route::prefix('slider')->name('slider.')->group(function () {
     Route::get('/', [SliderController::class, 'index'])->name('index');
-    Route::get('/create', [SliderController::class, 'create'])->name('slider.create');
+    Route::get('/create', [SliderController::class, 'create'])->name('create');
     Route::post('/', [SliderController::class, 'store'])->name('store');
-    Route::get('/edit/{id}', [SliderController::class, 'edit'])->name('slider.edit');
+    Route::get('/edit/{id}', [SliderController::class, 'edit'])->name('edit');
     Route::put('/{id}', [SliderController::class, 'update'])->name('update');
     Route::delete('/{id}', [SliderController::class, 'destroy'])->name('destroy');
 });

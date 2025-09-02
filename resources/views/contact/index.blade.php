@@ -49,6 +49,19 @@
                 </div>
             @endif
 
+            <div class="flex items-center justify-between mb-4">
+                <!-- Search -->
+                <form method="GET" action="{{ route('contact.index') }}" class="flex items-center gap-2">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari kontak..."
+                        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    <button type="submit"
+                        class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+                        Search
+                    </button>
+                </form>
+            </div>
+
+
 
             <!-- Table -->
             <div class="overflow-x-auto">
@@ -56,11 +69,10 @@
                     <thead>
                         <tr class="bg-emerald-50 text-emerald-800 font-semibold">
                             <th class="px-4 py-3 border-b border-emerald-100">ID</th>
-                            <th class="px-4 py-3 border-b border-emerald-100">Email DPP</th>
-                            <th class="px-4 py-3 border-b border-emerald-100">Email DPD</th>
+                            <th class="px-4 py-3 border-b border-emerald-100">Email DPP ( Pusat )</th>
+                            <th class="px-4 py-3 border-b border-emerald-100">Email DPD ( Daerah )</th>
                             <th class="px-4 py-3 border-b border-emerald-100">Alamat</th>
                             <th class="px-4 py-3 border-b border-emerald-100">No Telepon</th>
-                            <th class="px-4 py-3 border-b border-emerald-100">Social Media</th>
                             <th class="px-4 py-3 border-b border-emerald-100 text-center">Actions</th>
                         </tr>
                     </thead>
@@ -72,37 +84,6 @@
                                 <td class="px-4 py-3 border-b border-emerald-50">{{ $contact->email_dpd }}</td>
                                 <td class="px-4 py-3 border-b border-emerald-50">{{ Str::limit($contact->alamat, 50) }}</td>
                                 <td class="px-4 py-3 border-b border-emerald-50">{{ $contact->notlp }}</td>
-                                <td class="px-4 py-3 border-b border-emerald-50">
-                                    <div class="flex items-center gap-2">
-                                        @if ($contact->url_ig)
-                                            <a href="{{ $contact->url_ig }}" target="_blank"
-                                                class="text-pink-500 hover:text-pink-600">
-                                                <i class="fab fa-instagram"></i>
-                                            </a>
-                                        @endif
-                                        @if ($contact->url_twit)
-                                            <a href="{{ $contact->url_twit }}" target="_blank"
-                                                class="text-sky-500 hover:text-sky-600">
-                                                <i class="fab fa-twitter"></i>
-                                            </a>
-                                        @endif
-                                        @if ($contact->url_yt)
-                                            <a href="{{ $contact->url_yt }}" target="_blank"
-                                                class="text-red-500 hover:text-red-600">
-                                                <i class="fab fa-youtube"></i>
-                                            </a>
-                                        @endif
-                                        @if ($contact->url_fb)
-                                            <a href="{{ $contact->url_fb }}" target="_blank"
-                                                class="text-blue-600 hover:text-blue-700">
-                                                <i class="fab fa-facebook"></i>
-                                            </a>
-                                        @endif
-                                        @if (!$contact->url_ig && !$contact->url_twit && !$contact->url_yt && !$contact->url_fb)
-                                            <span class="text-gray-400 text-xs">No social media</span>
-                                        @endif
-                                    </div>
-                                </td>
                                 <td class="px-4 py-2 text-center">
                                     <div class="flex items-center justify-center gap-3">
                                         <!-- Tombol Edit -->
@@ -127,8 +108,7 @@
                                             @method('DELETE')
                                             <button type="button"
                                                 class="btn-delete gap-1 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition text-sm"
-                                                data-action="{{ route('contact.destroy', $contact->id) }}"
-                                                title="Delete">
+                                                data-action="{{ route('contact.destroy', $contact->id) }}" title="Delete">
                                                 <!-- Icon Delete -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                     viewBox="-3 -2 24 24" fill="currentColor">
@@ -140,18 +120,29 @@
                                         </form>
                                     </div>
                                 </td>
-
                             </tr>
                         @empty
                             <tr>
                                 <td colspan="7" class="px-4 py-6 text-center text-gray-500">
-                                    No contacts found.
+                                    <div class="flex flex-col items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-400"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M3 7l9 6 9-6" />
+                                        </svg>
+                                        <p>Belum ada data kontak.</p>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
+
+            <div class="mt-4">
+                {{ $contacts->links() }}
+            </div>
+
         </div>
     </div>
 
@@ -192,20 +183,5 @@
                 });
             @endif
         });
-
-        @if (session('success'))
-            <
-            script >
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil',
-                        text: "{{ session('success') }}",
-                        showConfirmButton: false,
-                        timer: 2500
-                    });
-                });
-    </script>
-    @endif
     </script>
 @endsection

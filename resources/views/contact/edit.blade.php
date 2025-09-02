@@ -65,6 +65,7 @@
                     class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
             </div>
 
+            <!-- Social Media -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Instagram -->
                 <div>
@@ -101,6 +102,32 @@
                     <input type="url" name="url_fb" id="url_fb"
                         value="{{ old('url_fb', $contact->url_fb) }}"
                         placeholder="https://facebook.com/username"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                </div>
+            </div>
+
+            <!-- LinkedIn -->
+            <div>
+                <label for="url_linkedin" class="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
+                <input type="url" name="url_linkedin" id="url_linkedin"
+                    value="{{ old('url_linkedin', $contact->url_linkedin) }}"
+                    placeholder="https://linkedin.com/in/username"
+                    class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+            </div>
+
+             <!-- Start & End Time -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="start_time" class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+                    <input type="time" name="start_time" id="start_time"
+                        value="{{ old('start_time', $contact->start_time) }}"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                </div>
+
+                <div>
+                    <label for="end_time" class="block text-sm font-medium text-gray-700 mb-1">End Time</label>
+                    <input type="time" name="end_time" id="end_time"
+                        value="{{ old('end_time', $contact->end_time) }}"
                         class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
             </div>

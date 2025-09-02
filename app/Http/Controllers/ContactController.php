@@ -12,7 +12,13 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::latest()->get();
+        $contacts = Contact::when(request('search'), function ($query) {
+            $query->where('email_dpp', 'like', '%' . request('search') . '%')
+                ->orWhere('email_dpd', 'like', '%' . request('search') . '%')
+                ->orWhere('alamat', 'like', '%' . request('search') . '%')
+                ->orWhere('notlp', 'like', '%' . request('search') . '%');
+        })->paginate(10);
+
         return view('contact.index', compact('contacts'));
     }
 
