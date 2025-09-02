@@ -196,7 +196,6 @@
                             </a>
                             <div class="dropdown-container">
                                 <div class="dropdown-menu">
-                                    <a href="{{ route('category-kegiatan.index') }}" class="dropdown-item">Category Kegiatan</a>
                                     <a href="{{ route('category-store.index') }}" class="dropdown-item">Category Store</a>
                                     <a href="{{ route('category-gallery.index') }}" class="dropdown-item">Category Gallery</a>
                                     <a href="{{ route('category-daftar.index') }}" class="dropdown-item">Category Daftar</a>
@@ -217,7 +216,6 @@
                             </a>
                             <div class="dropdown-container">
                                 <div class="dropdown-menu">
-                                    <a href="{{ route('kegiatan.index') }}" class="dropdown-item">Kegiatan</a>
                                     <a href="{{ route('gallery.index') }}" class="dropdown-item">Gallery</a>
                                     <a href="{{ route('products.index') }}" class="dropdown-item">Products</a>
                                 </div>

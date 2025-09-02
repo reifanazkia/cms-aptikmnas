@@ -18,11 +18,11 @@
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ route('kegiatan.index') }}"
+                {{-- <a href="{{ route('kegiatan.index') }}" --}}
                    class="inline-flex items-center px-6 py-3 rounded-xl bg-emerald-600 text-white font-medium hover:bg-emerald-700 transition">
                     Mulai Sekarang →
                 </a>
-                <a href="{{ route('category-kegiatan.index') }}"
+                {{-- <a href="{{ route('category-kegiatan.index') }}" --}}
                    class="inline-flex items-center px-6 py-3 rounded-xl border border-emerald-300 text-emerald-700 font-medium hover:bg-emerald-50 transition">
                     Kelola Kategori
                 </a>
