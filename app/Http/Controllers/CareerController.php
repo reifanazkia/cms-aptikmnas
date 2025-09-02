@@ -108,3 +108,4 @@ class CareerController extends Controller
         return redirect()->route('career.index')->with('success', 'Career deleted successfully.');
     }
 }
+
