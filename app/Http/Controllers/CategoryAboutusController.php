@@ -16,12 +16,12 @@ class CategoryAboutusController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255'
+            'name' => 'required|string|max:255'
         ]);
 
-        CategoryAboutus::create($request->only('nama'));
+        CategoryAboutus::create($request->only('name'));
 
-        return redirect()->back()->with('success', 'data berhasil di tambahkan');
+        return redirect()->back()->with('success', 'Data berhasil ditambahkan');
     }
 
     public function update(Request $request, $id)
@@ -29,12 +29,12 @@ class CategoryAboutusController extends Controller
         $kegiatan = CategoryAboutus::findOrFail($id);
 
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ]);
 
-        $kegiatan->update($request->only('nama'));
+        $kegiatan->update($request->only('name'));
 
-        return redirect()->back()->with('success', 'data berhasil ter update');
+        return redirect()->back()->with('success', 'Data berhasil terupdate');
     }
 
     public function destroy($id)
@@ -42,6 +42,6 @@ class CategoryAboutusController extends Controller
         $kegiatan = CategoryAboutus::findOrFail($id);
         $kegiatan->delete();
 
-        return redirect()->back()->with('success', 'Kategori berhasil dihapus.');
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 }

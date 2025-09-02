@@ -11,16 +11,12 @@ class AgendaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $agendas = Agenda::latest()->get();
-
-         if ($request->has('search') && !empty($request->search)) {
-            $agendas->where('title', 'like', '%' . $request->search . '%');
-        }
-
+        $agendas = Agenda::orderBy('start_datetime', 'desc')->paginate(10); // paginate
         return view('agenda.index', compact('agendas'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -40,7 +36,7 @@ class AgendaController extends Controller
             'description'    => 'required|string',
             'start_datetime' => 'required|date',
             'end_datetime'   => 'nullable|date|after_or_equal:start_datetime',
-            'event_organizer'=> 'nullable|string|max:255',
+            'event_organizer' => 'nullable|string|max:255',
             'location'       => 'required|string|max:255',
             'youtube_link'   => 'nullable|url',
             'type'           => 'nullable|string|max:100',
@@ -58,7 +54,7 @@ class AgendaController extends Controller
             'description'    => $request->description,
             'start_datetime' => $request->start_datetime,
             'end_datetime'   => $request->end_datetime,
-            'event_organizer'=> $request->event_organizer,
+            'event_organizer' => $request->event_organizer,
             'location'       => $request->location,
             'youtube_link'   => $request->youtube_link,
             'type'           => $request->type,
@@ -86,7 +82,7 @@ class AgendaController extends Controller
             'description'    => 'required|string',
             'start_datetime' => 'required|date',
             'end_datetime'   => 'nullable|date|after_or_equal:start_datetime',
-            'event_organizer'=> 'nullable|string|max:255',
+            'event_organizer' => 'nullable|string|max:255',
             'location'       => 'required|string|max:255',
             'youtube_link'   => 'nullable|url',
             'type'           => 'nullable|string|max:100',
@@ -107,7 +103,7 @@ class AgendaController extends Controller
             'description'    => $request->description,
             'start_datetime' => $request->start_datetime,
             'end_datetime'   => $request->end_datetime,
-            'event_organizer'=> $request->event_organizer,
+            'event_organizer' => $request->event_organizer,
             'location'       => $request->location,
             'youtube_link'   => $request->youtube_link,
             'type'           => $request->type,

@@ -1,32 +1,20 @@
 @extends('layouts.app', ['title' => 'Dashboard'])
 
 @section('content')
-    <div class="max-w-7xl mx-auto">
+    <div class="space-y-10 h-full bg-gradient-to-r from-emerald-50 to-emerald-100 ">
         <!-- Hero Section -->
-        <div class="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl shadow-lg p-10 text-center space-y-6 border border-emerald-100">
-            <span class="px-4 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium shadow">
+        <div class="bg-gradient-to-r h-full from-emerald-50 to-emerald-100 rounded-2xl shadow-md p-10 text-center">
+            <span
+                class="px-4 py-1 bg-emerald-200 text-emerald-700 text-sm font-medium rounded-full inline-flex items-center gap-1">
                 🚀 Launching Soon
             </span>
-
-            <h1 class="text-3xl md:text-5xl font-bold text-emerald-800 leading-tight">
+            <h1 class="text-4xl font-extrabold text-emerald-800 mt-4">
                 Elevate Your Workflow with <span class="text-emerald-600">APTIKNAS</span>
             </h1>
-
-            <p class="text-emerald-600 max-w-2xl mx-auto text-sm md:text-base">
+            <p class="text-gray-600 mt-3 max-w-2xl mx-auto">
                 Platform terpadu untuk membantu tim berkolaborasi, mengelola kegiatan, dan mencapai hasil terbaik.
                 Sederhanakan proses Anda dan fokus pada hal yang paling penting.
             </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                {{-- <a href="{{ route('kegiatan.index') }}" --}}
-                   class="inline-flex items-center px-6 py-3 rounded-xl bg-emerald-600 text-white font-medium hover:bg-emerald-700 transition">
-                    Mulai Sekarang →
-                </a>
-                {{-- <a href="{{ route('category-kegiatan.index') }}" --}}
-                   class="inline-flex items-center px-6 py-3 rounded-xl border border-emerald-300 text-emerald-700 font-medium hover:bg-emerald-50 transition">
-                    Kelola Kategori
-                </a>
-            </div>
         </div>
     </div>
 @endsection

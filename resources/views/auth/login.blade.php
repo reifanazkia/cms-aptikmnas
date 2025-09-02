@@ -49,7 +49,7 @@
             </button>
 
             {{-- Forgot Password --}}
-            <div class="text-right">
+            <div class="text-right hidden">
                 <a href="{{ route('password.request') }}" class="text-sm text-green-600 hover:underline">
                     Lupa Password?
                 </a>
