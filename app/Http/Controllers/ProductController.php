@@ -11,7 +11,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $products = Product::with('category')->get();
+        $products = Product::with('category')->paginate(10);
         $categories = CategoryStore::all();
 
          if ($request->has('search') && !empty($request->search)) {
