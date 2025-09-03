@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Daftar Career'])
 
 @section('content')
-    <div class="p-6 space-y-6">
+    <div class="bg-white rounded-lg p-6 space-y-6">
         <!-- Flash Message -->
         @if (session('success'))
             <div class="p-3 rounded bg-green-100 text-green-700 border border-green-200">

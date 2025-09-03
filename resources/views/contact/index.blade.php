@@ -14,14 +14,6 @@
                     </svg>
                     Contact Management
                 </h1>
-                <a href="{{ route('contact.create') }}"
-                    class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white rounded-xl shadow-md hover:bg-emerald-700 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Add New Contact
-                </a>
             </div>
 
             <!-- Flash message -->
@@ -59,6 +51,15 @@
                         Search
                     </button>
                 </form>
+
+                <a href="{{ route('contact.create') }}"
+                    class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white rounded-xl shadow-md hover:bg-emerald-700 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add New Contact
+                </a>
             </div>
 
 

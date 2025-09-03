@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Kategori Gallery'])
 
 @section('content')
-    <div class="space-y-6">
+    <div class="bg-white p-6 rounded-lg space-y-6">
         <!-- Judul -->
         <div>
             <h1 class="text-3xl font-bold text-emerald-700">Kategori Gallery</h1>
