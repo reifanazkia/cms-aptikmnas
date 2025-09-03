@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Produk'])
 
 @section('content')
-    <div class="space-y-6">
+    <div class="bg-white p-6 rounded-lg space-y-6">
         <!-- Header -->
         <div class="flex items-center justify-between">
             <h1 class="text-3xl font-bold text-emerald-700 flex items-center gap-2">

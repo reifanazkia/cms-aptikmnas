@@ -19,7 +19,7 @@ class AboutusController extends Controller
 
             $aboutus = Aboutus::with(['category'])->orderBy('created_at', 'desc')->get();
 
-            $categories = CategoryAboutus::orderBy('nama')->get();
+            $categories = CategoryAboutus::orderBy('name')->get();
 
             return view('aboutus.index', compact('aboutus', 'categories'));
         } catch (\Exception $e) {
@@ -32,7 +32,7 @@ class AboutusController extends Controller
     public function create()
     {
         try {
-            $categories = CategoryAboutus::orderBy('nama')->get();
+            $categories = CategoryAboutus::orderBy('name')->get();
             return view('aboutus.create', compact('categories'));
         } catch (\Exception $e) {
             Log::error('Error in AboutusController@create: ' . $e->getMessage());
@@ -45,13 +45,13 @@ class AboutusController extends Controller
         try {
             $request->validate([
                 'title' => 'required|string|max:255',
-                'category_tentangkami_id' => 'required|exists:tentangkami_categories,id',
+                'category_aboutus_id' => 'required|exists:aboutus_categories,id',
                 'description' => 'required|string',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'display_on_home' => 'sometimes|boolean',
             ]);
 
-            $categoryExists = CategoryAboutus::find($request->category_tentangkami_id);
+            $categoryExists = CategoryAboutus::find($request->category_aboutus_id);
             if (!$categoryExists) {
                 return redirect()->back()
                     ->with('error', 'Kategori yang dipilih tidak valid.')
@@ -62,14 +62,14 @@ class AboutusController extends Controller
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 if ($file->isValid()) {
-                    $path = $file->store('tentangkami', 'public');
+                    $path = $file->store('aboutus', 'public');
                     $imagePath = 'storage/' . $path;
                 }
             }
 
             $dataToStore = [
                 'title' => $request->title,
-                'category_tentangkami_id' => $request->category_tentangkami_id,
+                'category_aboutus_id' => $request->category_aboutus_id,
                 'description' => $request->description,
                 'image' => $imagePath,
                 'display_on_home' => $request->has('display_on_home') ? 1 : 0,
@@ -90,7 +90,7 @@ class AboutusController extends Controller
     {
         try {
             $aboutus = Aboutus::findOrFail($id);
-            $categories = CategoryAboutus::orderBy('nama')->get();
+            $categories = CategoryAboutus::orderBy('name')->get();
             return view('aboutus.edit', compact('aboutus', 'categories'));
         } catch (\Exception $e) {
             Log::error('Error in AboutusController@edit: ' . $e->getMessage());
@@ -105,7 +105,7 @@ class AboutusController extends Controller
 
             $request->validate([
                 'title' => 'required|string|max:255',
-                'category_tentangkami_id' => 'required|exists:tentangkami_categories,id',
+                'category_aboutus_id' => 'required|exists:aboutus_categories,id',
                 'description' => 'required|string',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'display_on_home' => 'sometimes|boolean',
@@ -113,7 +113,7 @@ class AboutusController extends Controller
 
             $updateData = [
                 'title' => $request->title,
-                'category_tentangkami_id' => $request->category_tentangkami_id,
+                'category_aboutus_id' => $request->category_aboutus_id,
                 'description' => $request->description,
                 'display_on_home' => $request->has('display_on_home') ? 1 : 0,
             ];
@@ -124,7 +124,7 @@ class AboutusController extends Controller
                     if ($aboutus->image && File::exists(public_path($aboutus->image))) {
                         File::delete(public_path($aboutus->image));
                     }
-                    $path = $file->store('tentangkami', 'public');
+                    $path = $file->store('aboutus', 'public');
                     $updateData['image'] = 'storage/' . $path;
                 }
             }
@@ -163,7 +163,7 @@ class AboutusController extends Controller
     {
         try {
             $aboutus = Aboutus::with('category')
-                ->where('category_tentangkami_id', $categoryId)
+                ->where('category_aboutus_id', $categoryId)
                 ->orderBy('created_at', 'desc')
                 ->get();
 
@@ -179,14 +179,14 @@ class AboutusController extends Controller
     public function getByCategoryName($categoryName)
     {
         try {
-            $category = CategoryAboutus::where('nama', $categoryName)->first();
+            $category = CategoryAboutus::where('name', $categoryName)->first();
 
             if (!$category) {
                 return response()->json(['success' => false, 'message' => 'Category not found'], 404);
             }
 
             $aboutus = Aboutus::with('category')
-                ->where('category_tentangkami_id', $category->id)
+                ->where('category_aboutus_id', $category->id)
                 ->orderBy('created_at', 'desc')
                 ->get();
 

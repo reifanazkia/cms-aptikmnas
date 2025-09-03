@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Daftar Kategori Store'])
 
 @section('content')
-    <div x-data="categoryHandler()" class="space-y-6">
+    <div x-data="categoryHandler()" class="bg-white p-6 rounded-lg space-y-6">
         <!-- Header -->
         <div class="flex flex-col gap-4">
             <div>

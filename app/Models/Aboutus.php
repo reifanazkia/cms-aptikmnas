@@ -9,7 +9,7 @@ class Aboutus extends Model
 {
     use HasFactory;
 
-    protected $table = 'tentang_kami';
+    protected $table = 'aboutus';
 
     protected $fillable = [
         'display_on_home',

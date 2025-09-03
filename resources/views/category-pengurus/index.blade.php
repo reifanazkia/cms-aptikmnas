@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Daftar Category Pengurus'])
 
 @section('content')
-    <div x-data="{ openCreate: false, openDetail: null, openEdit: null }" class="bg-white p-6 space-y-6">
+    <div x-data="{ openCreate: false, openDetail: null, openEdit: null }" class="bg-white p-6 rounded-lg space-y-6">
         <!-- Judul -->
         <div>
             <h1 class="text-3xl font-bold text-emerald-700">Daftar Category Pengurus</h1>
