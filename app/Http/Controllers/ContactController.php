@@ -46,7 +46,7 @@ class ContactController extends Controller
             'url_in' => 'nullable|url',
             'url_twit' => 'nullable|url',
             'url_tiktok' => 'nullable|url',
-            'start_datetime' => 'required|date',
+            'start_datetime' => 'nullable|date',
             'end_datetime'   => 'nullable|date|after_or_equal:start_datetime',
         ]);
 

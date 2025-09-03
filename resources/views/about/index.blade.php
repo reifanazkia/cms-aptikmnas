@@ -1,13 +1,9 @@
-@extends('layouts.app', ['title' => 'Daftar Testimonies'])
+@extends('layouts.app', ['title' => 'About'])
 
 @section('content')
     <div class="bg-white rounded-lg p-6 space-y-6">
         <!-- Flash Message -->
-        @if (session('success'))
-            <div class="p-3 rounded bg-green-100 text-green-700 border border-green-200">
-                {{ session('success') }}
-            </div>
-        @endif
+        {{-- Hapus notifikasi box, biar hanya pakai SweetAlert --}}
         @if (session('error'))
             <div class="p-3 rounded bg-red-100 text-red-700 border border-red-200">
                 {{ session('error') }}
@@ -17,53 +13,59 @@
         <!-- Header -->
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-bold text-emerald-700">Daftar Testimonies</h1>
-                <p class="text-sm text-emerald-600">Kelola data testimoni yang tampil di website Anda</p>
+                <h1 class="text-3xl font-bold text-emerald-700 flex items-center gap-1">
+                    <svg class="w-7 h-7 text-emerald-600" xmlns="http://www.w3.org/2000/svg" width="512" height="512"
+                        viewBox="0 0 512 512">
+                        <path fill="currentColor" fill-rule="evenodd"
+                            d="M256 42.667C138.18 42.667 42.667 138.179 42.667 256c0 117.82 95.513 213.334 213.333 213.334c117.822 0 213.334-95.513 213.334-213.334S373.822 42.667 256 42.667m0 384c-94.105 0-170.666-76.561-170.666-170.667S161.894 85.334 256 85.334c94.107 0 170.667 76.56 170.667 170.666S350.107 426.667 256 426.667m26.714-256c0 15.468-11.262 26.667-26.497 26.667c-15.851 0-26.837-11.2-26.837-26.963c0-15.15 11.283-26.37 26.837-26.37c15.235 0 26.497 11.22 26.497 26.666m-48 64h42.666v128h-42.666z" />
+                    </svg>
+                    About
+                </h1>
+                <p class="text-sm text-emerald-600 mt-1">Kelola informasi tentang organisasi / perusahaan Anda</p>
             </div>
-            <a href="{{ route('testimonies.create') }}"
+            <a href="{{ route('about.create') }}"
                 class="px-4 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">
-                + Tambah Testimony
+                + Tambah Data
             </a>
         </div>
 
-        <!-- Tabel -->
+        <!-- Table -->
         <div class="overflow-x-auto bg-white shadow rounded-lg">
             <table class="w-full text-sm text-left border border-gray-200">
                 <thead class="bg-emerald-600 text-white">
                     <tr>
                         <th class="px-4 py-2 text-center">No</th>
-                        <th class="px-4 py-2 text-center">Gambar</th>
-                        <th class="px-4 py-2 text-center">Nama</th>
                         <th class="px-4 py-2 text-center">Judul</th>
-                        <th class="px-4 py-2 text-center">Kategori</th>
-                        <th class="px-4 py-2 text-center">Homepage</th>
+                        <th class="px-4 py-2 text-center">Deskripsi</th>
+                        <th class="px-4 py-2 text-center">Gambar 1</th>
+                        <th class="px-4 py-2 text-center">Gambar 2</th>
                         <th class="px-4 py-2 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($testimonies as $index => $testimony)
+                    @forelse($abouts as $index => $about)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-2 text-center">{{ $testimonies->firstItem() + $index }}</td>
+                            <td class="px-4 py-2 text-center">{{ $abouts->firstItem() + $index }}</td>
+                            <td class="px-4 py-2 text-center">{{ $about->title }}</td>
+                            <td class="px-4 py-2 text-center truncate max-w-xs">{{ $about->description }}</td>
                             <td class="px-4 py-2 text-center">
-                                <img src="{{ asset($testimony->image) }}" alt="{{ $testimony->name }}"
-                                    class="h-12 w-12 object-cover rounded-lg mx-auto hover:scale-110 transition">
-                            </td>
-                            <td class="px-4 py-2 text-center">{{ $testimony->name }}</td>
-                            <td class="px-4 py-2 text-center">{{ $testimony->title }}</td>
-                            <td class="px-4 py-2 text-center">
-                                {{ $testimony->category?->name ?? '-' }}
-                            </td>
-                            <td class="px-4 py-2 text-center">
-                                @if ($testimony->display_homepage)
-                                    <span class="px-2 py-1 text-xs bg-emerald-100 text-emerald-700 rounded">Ya</span>
+                                @if ($about->image)
+                                    <img src="{{ asset('storage/' . $about->image) }}" class="w-20 rounded mx-auto">
                                 @else
-                                    <span class="px-2 py-1 text-xs bg-red-100 text-red-700 rounded">Tidak</span>
+                                    <span class="text-gray-400 text-sm">No Image</span>
+                                @endif
+                            </td>
+                            <td class="px-4 py-2 text-center">
+                                @if ($about->image2)
+                                    <img src="{{ asset('storage/' . $about->image2) }}" class="w-20 rounded mx-auto">
+                                @else
+                                    <span class="text-gray-400 text-sm">No Image</span>
                                 @endif
                             </td>
                             <td class="px-4 py-2 text-center">
                                 <div class="flex items-center justify-center gap-2">
-                                    <!-- Tombol Edit -->
-                                    <a href="{{ route('testimonies.edit', $testimony->id) }}"
+                                    <!-- Edit -->
+                                    <a href="{{ route('about.edit', $about->id) }}"
                                         class="flex items-center gap-1 px-3 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             fill="currentColor" viewBox="0 0 24 24">
@@ -75,8 +77,8 @@
                                         Edit
                                     </a>
 
-                                    <!-- Tombol Hapus -->
-                                    <form action="{{ route('testimonies.destroy', $testimony->id) }}" method="POST"
+                                    <!-- Delete -->
+                                    <form action="{{ route('about.destroy', $about->id) }}" method="POST"
                                         class="delete-form">
                                         @csrf
                                         @method('DELETE')
@@ -95,7 +97,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-4 py-4 text-center text-gray-500">Belum ada data testimony</td>
+                            <td colspan="6" class="px-4 py-4 text-center text-gray-500">Belum ada data About.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -104,18 +106,17 @@
 
         <!-- Pagination -->
         <div>
-            {{ $testimonies->links() }}
+            {{ $abouts->links() }}
         </div>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Konfirmasi hapus
             document.querySelectorAll('.delete-form').forEach(form => {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
                     Swal.fire({
-                        title: 'Yakin hapus testimony ini?',
+                        title: 'Yakin hapus data ini?',
                         text: "Data yang dihapus tidak bisa dikembalikan!",
                         icon: 'warning',
                         showCancelButton: true,
@@ -131,7 +132,6 @@
                 });
             });
 
-            // Flash message success
             @if (session('success'))
                 Swal.fire({
                     icon: 'success',
@@ -142,7 +142,6 @@
                 });
             @endif
 
-            // Flash message error
             @if (session('error'))
                 Swal.fire({
                     icon: 'error',

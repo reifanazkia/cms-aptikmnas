@@ -116,13 +116,13 @@ class AgendaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Agenda $agenda)
+    public function destroy(Agenda $id)
     {
-        if ($agenda->image && file_exists(public_path('agenda/' . $agenda->image))) {
-            unlink(public_path('agenda/' . $agenda->image));
+        if ($id->image && file_exists(public_path('agenda/' . $id->image))) {
+            unlink(public_path('agenda/' . $id->image));
         }
 
-        $agenda->delete();
+        $id->delete();
 
         return redirect()->route('agenda.index')->with('success', 'Agenda berhasil dihapus!');
     }

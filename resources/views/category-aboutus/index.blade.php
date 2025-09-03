@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Kategori About Us'])
 
 @section('content')
-    <div class="p-6 rounded-lg space-y-6">
+    <div class="bg-white p-6 rounded-lg space-y-6">
         <!-- Judul -->
         <div>
             <h1 class="text-3xl font-bold text-emerald-700">Daftar Kategori About Us</h1>

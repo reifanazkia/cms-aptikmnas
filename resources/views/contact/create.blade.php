@@ -147,23 +147,23 @@
                         @enderror
                     </div>
 
-                    <!-- Start Time -->
+                    <!-- Start DateTime -->
                     <div>
-                        <label for="start_time" class="block text-sm font-medium text-gray-700 mb-1">Start Time *</label>
-                        <input type="time" name="start_time" id="start_time" value="{{ old('start_time') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('start_time') border-red-500 @enderror"
+                        <label for="start_datetime" class="block text-sm font-medium text-gray-700 mb-1">Start DateTime *</label>
+                        <input type="datetime-local" name="start_datetime" id="start_datetime" value="{{ old('start_datetime') }}"
+                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('start_datetime') border-red-500 @enderror"
                             required>
-                        @error('start_time')
+                        @error('start_datetime')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- End Time -->
+                    <!-- End DateTime -->
                     <div>
-                        <label for="end_time" class="block text-sm font-medium text-gray-700 mb-1">End Time</label>
-                        <input type="time" name="end_time" id="end_time" value="{{ old('end_time') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('end_time') border-red-500 @enderror">
-                        @error('end_time')
+                        <label for="end_datetime" class="block text-sm font-medium text-gray-700 mb-1">End DateTime</label>
+                        <input type="datetime-local" name="end_datetime" id="end_datetime" value="{{ old('end_datetime') }}"
+                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('end_datetime') border-red-500 @enderror">
+                        @error('end_datetime')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>

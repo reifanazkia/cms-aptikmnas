@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Daftar Agenda'])
 
 @section('content')
-    <div class="p-6 space-y-6">
+    <div class="bg-white rounded-xl p-6 space-y-6">
         <!-- Flash Message -->
         @if (session('success'))
             <div class="p-3 rounded bg-green-100 text-green-700 border border-green-200">
@@ -20,21 +20,31 @@
                 <h1 class="text-3xl font-bold text-emerald-700">Daftar Agenda</h1>
                 <p class="text-sm text-emerald-600">Kelola semua agenda kegiatan Anda</p>
             </div>
-            <a href="{{ route('agenda.create') }}"
-                class="px-4 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">
-                + Tambah Agenda
-            </a>
         </div>
 
         <!-- Filter -->
-        <div class="flex items-center gap-2">
-            <select id="agendaFilter"
-                class="rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
-                <option value="">Semua Lokasi</option>
-                @foreach ($agendas->pluck('location')->unique() as $loc)
-                    <option value="{{ $loc }}">{{ $loc }}</option>
-                @endforeach
-            </select>
+        <div class="flex justify-between items-center gap-2">
+            <div class="relative w-64">
+                <select id="agendaFilter"
+                    class="appearance-none w-full bg-white border border-gray-300 rounded-lg px-4 py-3 pr-10 text-sm text-gray-700 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 shadow-sm hover:border-gray-400 transition">
+                    <option value="">Semua Lokasi</option>
+                    @foreach ($agendas->pluck('location')->unique() as $loc)
+                        <option value="{{ $loc }}">{{ $loc }}</option>
+                    @endforeach
+                </select>
+
+                <!-- Custom Arrow -->
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+
+            <a href="{{ route('agenda.create') }}"
+                class="px-4 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">
+                + Tambah Agenda
+            </a>
         </div>
 
         <!-- Tabel -->
@@ -75,12 +85,12 @@
                                         Edit
                                     </a>
 
-                                    <!-- Tombol Hapus -->
-                                    <form action="{{ route('agenda.destroy', $agenda->id) }}" method="POST"
-                                        class="delete-form">
+                                    <!-- Tombol Hapus - SOLUSI PERBAIKAN -->
+                                    <form action="{{ route('agenda.destroy', $agenda->id) }}" method="POST" 
+                                          class="delete-form inline" id="delete-form-{{ $agenda->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
+                                        <button type="button" onclick="confirmDelete(event, {{ $agenda->id }})"
                                             class="delete-btn flex items-center gap-1 px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                 fill="currentColor" viewBox="-3 -2 24 24">
@@ -108,59 +118,61 @@
         </div>
     </div>
 
+    <!-- Sertakan SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Konfirmasi hapus
-            document.querySelectorAll('.delete-form').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    Swal.fire({
-                        title: 'Yakin hapus agenda ini?',
-                        text: "Data yang dihapus tidak bisa dikembalikan!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#6c757d',
-                        confirmButtonText: 'Ya, Hapus!',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
+        // Fungsi konfirmasi hapus dengan perbaikan
+        function confirmDelete(event, id) {
+            event.preventDefault();
+            
+            Swal.fire({
+                title: 'Yakin hapus agenda ini?',
+                text: "Data yang dihapus tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Langsung submit form
+                    document.getElementById('delete-form-' + id).submit();
+                }
             });
+        }
 
-            // Flash message success
-            @if (session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: '{{ session('success') }}',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-            @endif
+        // Flash message success
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        @endif
 
-            // Flash message error
-            @if (session('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal',
-                    text: '{{ session('error') }}',
-                });
-            @endif
+        // Flash message error
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+            });
+        @endif
 
-            // Filter client-side
-            document.getElementById('agendaFilter').addEventListener('change', function() {
-                let selected = this.value;
-                document.querySelectorAll('.agenda-row').forEach(row => {
-                    if (selected === '' || row.dataset.location === selected) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
+        // Filter client-side
+        document.getElementById('agendaFilter').addEventListener('change', function() {
+            let selected = this.value;
+            document.querySelectorAll('.agenda-row').forEach(row => {
+                if (selected === '' || row.dataset.location === selected) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
             });
         });
     </script>

@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Bungkus dengan Alpine -->
-    <div x-data="{ openCreate: false, openEdit: null }" class="space-y-6">
+    <div x-data="{ openCreate: false, openEdit: null }" class="bg-white p-6 rounded-lg space-y-6">
         <!-- Judul -->
         <div>
             <h1 class="text-3xl font-bold text-emerald-700">Daftar DPD Categories</h1>
