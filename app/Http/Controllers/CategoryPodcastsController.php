@@ -15,7 +15,7 @@ class CategoryPodcastsController extends Controller
             $podcats->where('name', 'like', '%' . $request->search . '%');
         }
 
-        return view('category-podcats.index', compact('podcats'));
+        return view('category-podcasts.index', compact('podcats'));
     }
 
     public function store(Request $request)

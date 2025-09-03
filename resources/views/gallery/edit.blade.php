@@ -37,7 +37,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Title -->
-                    <div class="md:col-span-2">
+                    <div>
                         <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Judul <span
                                 class="text-red-500">*</span></label>
                         <input type="text" name="title" id="title" value="{{ old('title', $gallery->title) }}"
@@ -79,7 +79,6 @@
                         @enderror
                     </div>
 
-
                     <!-- Publication Date -->
                     <div>
                         <label for="pub_date" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Publikasi</label>
@@ -91,13 +90,15 @@
                         @enderror
                     </div>
 
-                    <!-- URL -->
-                    <div class="md:col-span-2">
-                        <label for="url" class="block text-sm font-medium text-gray-700 mb-1">URL</label>
-                        <input type="url" name="url" id="url" value="{{ old('url', $gallery->url) }}"
-                            placeholder="https://example.com"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('url') border-red-500 @enderror">
-                        @error('url')
+                    <!-- Waktu Baca -->
+                    <div>
+                        <label for="waktu_baca" class="block text-sm font-medium text-gray-700 mb-1">Waktu Baca <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" name="waktu_baca" id="waktu_baca"
+                            value="{{ old('waktu_baca', $gallery->waktu_baca) }}" placeholder="contoh: 5 menit"
+                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('waktu_baca') border-red-500 @enderror"
+                            required>
+                        @error('waktu_baca')
                             <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -130,24 +131,14 @@
                         </label>
                         <input type="file" name="image" id="image" accept="image/*"
                             class="w-full rounded-lg px-3 py-2 text-sm cursor-pointer border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('image') border-red-500 @enderror">
-                        <p class="text-sm text-gray-500 mt-1">Format: JPG, PNG, GIF. Max 2MB.
+                        <p class="text-sm text-gray-500 mt-1">Format: JPG, PNG, WEBP. Max 2MB.
                             {{ $gallery->image ? 'Kosongkan jika tidak ingin mengubah' : '' }}</p>
                         @error('image')
                             <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-
-                    <!-- Display on Home -->
-                    <div class="md:col-span-2">
-                        <div class="flex items-center">
-                            <input type="checkbox" name="display_on_home" id="display_on_home" value="1"
-                                {{ old('display_on_home', $gallery->display_on_home) ? 'checked' : '' }}
-                                class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
-                            <label for="display_on_home" class="ml-2 block text-sm text-gray-700">Tampilkan di
-                                Beranda</label>
-                        </div>
-                    </div>
                 </div>
+
 
                 <!-- Footer -->
                 <div class="flex items-center justify-between border-t pt-4">

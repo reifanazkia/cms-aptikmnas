@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Tambah Kontak'])
+@extends('layouts.app', ['title' => 'Tambah Gallery'])
 
 @section('content')
     <div class="max-w-3xl mx-auto">
@@ -10,9 +10,9 @@
                     <svg class="w-6 h-6 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                    Tambah Kontak Baru
+                    Tambah Gallery Baru
                 </h1>
-                <a href="{{ route('contact.index') }}"
+                <a href="{{ route('gallery.index') }}"
                     class="px-4 py-2 text-sm font-medium bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl hover:bg-emerald-100 transition">
                     ← Kembali
                 </a>
@@ -31,111 +31,114 @@
             @endif
 
             <!-- Form -->
-            <form action="{{ route('contact.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('gallery.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Email DPP -->
+                <!-- Title -->
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Judul *</label>
+                    <input type="text" name="title" id="title" value="{{ old('title') }}"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('title') border-red-500 @enderror"
+                        required>
+                    @error('title')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Deskripsi -->
+                <div class="md:col-span-2">
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                    <textarea name="description" id="description" rows="4"
+                        class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
+                    @error('description')
+                        <p cla ss="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Image -->
+                <div>
+                    <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Gambar</label>
+                    <input type="file" name="image" id="image"
+                        class="w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0
+                               file:text-sm file:font-medium file:bg-emerald-50 file:text-emerald-700
+                               hover:file:bg-emerald-100 @error('image') border-red-500 @enderror">
+                    @error('image')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Pub Date -->
+                <div class="grid grid-cols-2 gap-6">
                     <div>
-                        <label for="email_dpp" class="block text-sm font-medium text-gray-700 mb-1">Email DPP *</label>
-                        <input type="email" name="email_dpp" id="email_dpp" value="{{ old('email_dpp') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('email_dpp') border-red-500 @enderror"
+                        <label for="pub_date" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Publikasi</label>
+                        <input type="date" name="pub_date" id="pub_date" value="{{ old('pub_date') }}"
+                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('pub_date') border-red-500 @enderror">
+                        @error('pub_date')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Waktu Baca -->
+                    <div>
+                        <label for="waktu_baca" class="block text-sm font-medium text-gray-700 mb-1">Waktu Baca *</label>
+                        <input type="text" name="waktu_baca" id="waktu_baca" value="{{ old('waktu_baca') }}"
+                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('waktu_baca') border-red-500 @enderror"
                             required>
-                        @error('email_dpp')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Email DPD -->
-                    <div>
-                        <label for="email_dpd" class="block text-sm font-medium text-gray-700 mb-1">Email DPD *</label>
-                        <input type="email" name="email_dpd" id="email_dpd" value="{{ old('email_dpd') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('email_dpd') border-red-500 @enderror"
-                            required>
-                        @error('email_dpd')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Alamat -->
-                    <div class="md:col-span-2">
-                        <label for="alamat" class="block text-sm font-medium text-gray-700 mb-1">Alamat *</label>
-                        <textarea name="alamat" id="alamat" rows="3"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('alamat') border-red-500 @enderror"
-                            required>{{ old('alamat') }}</textarea>
-                        @error('alamat')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Nomor Telepon -->
-                    <div class="md:col-span-2">
-                        <label for="notlp" class="block text-sm font-medium text-gray-700 mb-1">No Telepon *</label>
-                        <input type="number" name="notlp" id="notlp" value="{{ old('notlp') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('notlp') border-red-500 @enderror"
-                            required>
-                        @error('notlp')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Instagram -->
-                    <div>
-                        <label for="url_ig" class="block text-sm font-medium text-gray-700 mb-1">Instagram URL</label>
-                        <input type="url" name="url_ig" id="url_ig" value="{{ old('url_ig') }}"
-                            placeholder="https://instagram.com/username"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('url_ig') border-red-500 @enderror">
-                        @error('url_ig')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Twitter -->
-                    <div>
-                        <label for="url_twit" class="block text-sm font-medium text-gray-700 mb-1">Twitter URL</label>
-                        <input type="url" name="url_twit" id="url_twit" value="{{ old('url_twit') }}"
-                            placeholder="https://twitter.com/username"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('url_twit') border-red-500 @enderror">
-                        @error('url_twit')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- YouTube -->
-                    <div>
-                        <label for="url_yt" class="block text-sm font-medium text-gray-700 mb-1">YouTube URL</label>
-                        <input type="url" name="url_yt" id="url_yt" value="{{ old('url_yt') }}"
-                            placeholder="https://youtube.com/channel/"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('url_yt') border-red-500 @enderror">
-                        @error('url_yt')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Facebook -->
-                    <div>
-                        <label for="url_fb" class="block text-sm font-medium text-gray-700 mb-1">Facebook URL</label>
-                        <input type="url" name="url_fb" id="url_fb" value="{{ old('url_fb') }}"
-                            placeholder="https://facebook.com/username"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('url_fb') border-red-500 @enderror">
-                        @error('url_fb')
+                        @error('waktu_baca')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
 
+                <!-- Category -->
+                <div>
+                    <label for="category_gallery_id" class="block text-sm font-medium text-gray-700 mb-1">Kategori *</label>
+                    <div class="relative">
+                        <select name="category_gallery_id" id="category_gallery_id"
+                            class="appearance-none w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 pr-10 @error('category_gallery_id') border-red-500 @enderror"
+                            required>
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ old('category_gallery_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        <!-- SVG Icon -->
+                        <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+                            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    @error('category_gallery_id')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+
                 <!-- Footer Buttons -->
                 <div class="flex items-center justify-between border-t pt-4">
-                    <a href="{{ route('contact.index') }}"
+                    <a href="{{ route('gallery.index') }}"
                         class="px-4 py-2 text-sm font-medium bg-gray-100 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-200 transition">
                         Batal
                     </a>
                     <button type="submit"
                         class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 transition">
-                        Simpan Kontak
+                        Simpan
                     </button>
                 </div>
             </form>
         </div>
     </div>
+
+    <script>
+        // CKEditor
+        ClassicEditor
+            .create(document.querySelector('#description'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 @endsection

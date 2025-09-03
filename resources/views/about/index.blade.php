@@ -25,14 +25,14 @@
             </div>
             <a href="{{ route('about.create') }}"
                 class="px-4 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">
-                + Tambah Data
+                Tambah Data
             </a>
         </div>
 
         <!-- Table -->
         <div class="overflow-x-auto bg-white shadow rounded-lg">
             <table class="w-full text-sm text-left border border-gray-200">
-                <thead class="bg-emerald-600 text-white">
+                <thead class="bg-emerald-50 text-white">
                     <tr>
                         <th class="px-4 py-2 text-center">No</th>
                         <th class="px-4 py-2 text-center">Judul</th>

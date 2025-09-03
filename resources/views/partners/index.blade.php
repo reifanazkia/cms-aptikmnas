@@ -14,12 +14,12 @@
                     Daftar Partner
                 </h1>
                 <a href="{{ route('partners.create') }}"
-                    class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white rounded-xl shadow-md hover:bg-emerald-700 transition-all duration-200 text-sm font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"
+                    class="inline-flex items-center px-4 py-3 bg-emerald-600 text-white rounded-xl shadow-md hover:bg-emerald-700 transition-all duration-200 text-sm font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                    + Tambah Partner
+                    Tambah Partner
                 </a>
             </div>
 
@@ -102,11 +102,6 @@
                             <tr>
                                 <td colspan="6" class="px-4 py-6 text-center text-gray-500">
                                     <div class="flex flex-col items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-300"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M3 7l9 6 9-6" />
-                                        </svg>
                                         <p>Belum ada data partner.</p>
                                     </div>
                                 </td>
