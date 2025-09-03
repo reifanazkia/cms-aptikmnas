@@ -14,6 +14,7 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\Api\ApiAboutController;
 use App\Http\Controllers\Api\ApiAboutusController;
 use App\Http\Controllers\Api\ApiSliderController;
+use App\Http\Controllers\Api\PodcastApiController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CategoryDaftarDPDController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PengurusController;
+use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TestimonyController;
@@ -62,6 +64,8 @@ Route::get('/slider', [ApiSliderController::class, 'index']);
 Route::get('/slider/home', [ApiSliderController::class, 'showHomeSlider']);
 Route::get('/about', [ApiAboutController::class, 'index']);
 Route::get('/about/{id}', [ApiAboutController::class, 'show']);
+Route::get('/', [PodcastApiController::class, 'index']);
+Route::get('/{id}', [PodcastApiController::class, 'show']);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -165,6 +169,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [AboutController::class, 'store'])->name('store');
         Route::put('/{id}', [AboutController::class, 'update'])->name('update');
         Route::delete('/{id}', [AboutController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('podcasts')->name('podcasts.')->group(function () {
+        Route::post('/store', [PodcastController::class, 'store'])->name('store');
+        Route::put('/{id}', [PodcastController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PodcastController::class, 'destroy'])->name('destroy');
     });
 
     Route::post('/logout', [UserController::class, 'logout']);

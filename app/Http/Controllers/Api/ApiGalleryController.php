@@ -63,34 +63,7 @@ class ApiGalleryController extends Controller
             'data' => $gallery
         ], 200);
     }
-
-    /**
-     * Get galleries for home page (display_on_home = true)
-     */
-    public function home()
-    {
-        $galleries = Gallery::with('category')
-            ->where('display_on_home', true)
-            ->orderBy('pub_date', 'desc')
-            ->limit(100)
-            ->get();
-
-        // Tambahkan full URL image
-        $galleries->transform(function ($item) {
-            $item->image_url = $item->image ? url('storage/' . $item->image) : null;
-            return $item;
-        });
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Data gallery untuk home berhasil diambil',
-            'data' => $galleries
-        ], 200);
-    }
-
-    /**
-     * Get galleries by category ID
-     */
+    
     public function byCategory($id)
     {
         $category = CategoryGallery::find($id);

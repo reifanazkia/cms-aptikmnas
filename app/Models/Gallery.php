@@ -9,25 +9,23 @@ class Gallery extends Model
 {
     use HasFactory;
 
-    protected $table = 'gallery'; // Using your table name from migration
+    protected $table = 'gallery';
 
     protected $fillable = [
-        'display_on_home',
         'title',
         'description',
         'image',
         'pub_date',
-        'url',
+        'waktu_baca',
         'category_gallery_id',
     ];
 
     protected $casts = [
-        'display_on_home' => 'boolean',
         'pub_date' => 'date',
     ];
 
     /**
-     * Get the category that owns the gallery item.
+     * Relasi ke kategori galeri.
      */
     public function category()
     {
@@ -35,15 +33,7 @@ class Gallery extends Model
     }
 
     /**
-     * Scope a query to only include items displayed on home.
-     */
-    public function scopeDisplayOnHome($query)
-    {
-        return $query->where('display_on_home', true);
-    }
-
-    /**
-     * Scope a query to order by publication date.
+     * Scope urutkan berdasarkan tanggal publikasi.
      */
     public function scopeOrderByPubDate($query, $direction = 'desc')
     {
