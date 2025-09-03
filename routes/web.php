@@ -19,6 +19,7 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PengurusController;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TestimonyController;
 
@@ -225,4 +226,14 @@ Route::prefix('podcasts')->name('podcasts.')->group(function () {
     Route::get('/{id}/edit', [PodcastController::class, 'edit'])->name('edit');
     Route::put('/{id}', [PodcastController::class, 'update'])->name('update');
     Route::delete('/{id}', [PodcastController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('report')->name('report.')->group(function () {
+    Route::get('/', [ReportController::class, 'index'])->name('index');
+    Route::get('/create', [ReportController::class, 'create'])->name('create');
+    Route::post('/store', [ReportController::class, 'store'])->name('store');
+    Route::get('/{id}', [ReportController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [ReportController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [ReportController::class, 'update'])->name('update');
+    Route::delete('/{id}', [ReportController::class, 'destroy'])->name('destroy');
 });

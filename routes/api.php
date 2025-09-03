@@ -13,6 +13,7 @@ use App\Http\Controllers\AboutusController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\Api\ApiAboutController;
 use App\Http\Controllers\Api\ApiAboutusController;
+use App\Http\Controllers\Api\ApiReportController;
 use App\Http\Controllers\Api\ApiSliderController;
 use App\Http\Controllers\Api\PodcastApiController;
 use App\Http\Controllers\ApplicationController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PengurusController;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TestimonyController;
 use App\Http\Controllers\UserController;
@@ -66,6 +68,9 @@ Route::get('/about', [ApiAboutController::class, 'index']);
 Route::get('/about/{id}', [ApiAboutController::class, 'show']);
 Route::get('/', [PodcastApiController::class, 'index']);
 Route::get('/{id}', [PodcastApiController::class, 'show']);
+Route::get('/', [ApiReportController::class, 'index']);
+Route::get('/{id}', [ApiReportController::class, 'show']);
+Route::post('/', [ApiReportController::class, 'store']);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -176,6 +181,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/{id}', [PodcastController::class, 'update'])->name('update');
         Route::delete('/{id}', [PodcastController::class, 'destroy'])->name('destroy');
     });
+
+    Route::prefix('report')->name('report.')->group(function () {
+        Route::post('/store', [ReportController::class, 'store'])->name('store');
+        Route::put('/{id}', [ReportController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ReportController::class, 'destroy'])->name('destroy');
+    });
+
 
     Route::post('/logout', [UserController::class, 'logout']);
 });
