@@ -10,13 +10,16 @@ use App\Http\Controllers\CategoryGalleryController;
 use App\Http\Controllers\CategoryPengurusController;
 use App\Http\Controllers\CategoryStoreController;
 use App\Http\Controllers\CategoryAboutusController;
+use App\Http\Controllers\CategoryPodcastsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PengurusController;
+use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TestimonyController;
 
@@ -100,6 +103,13 @@ Route::prefix('category-pengurus')->name('category-pengurus.')->group(function (
     Route::post('/store', [CategoryPengurusController::class, 'store'])->name('store');
     Route::put('/update/{id}', [CategoryPengurusController::class, 'update'])->name('update');
     Route::delete('/{id}', [CategoryPengurusController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('category-podcasts')->name('category-podcasts.')->group(function () {
+    Route::get('/', [CategoryPodcastsController::class, 'index'])->name('index');
+    Route::post('/store', [CategoryPodcastsController::class, 'store'])->name('store');
+    Route::put('/update/{id}', [CategoryPodcastsController::class, 'update'])->name('update');
+    Route::delete('/{id}', [CategoryPodcastsController::class, 'destroy'])->name('destroy');
 });
 
 Route::prefix('pengurus')->name('pengurus.')->group(function () {
@@ -206,4 +216,24 @@ Route::prefix('about')->name('about.')->group(function () {
     Route::get('/edit/{id}', [AboutController::class, 'edit'])->name('edit');
     Route::put('/update/{id}', [AboutController::class, 'update'])->name('about.update');
     Route::delete('/delete/{id}', [AboutController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('podcasts')->name('podcasts.')->group(function () {
+    Route::get('/', [PodcastController::class, 'index'])->name('index');
+    Route::get('/create', [PodcastController::class, 'create'])->name('create');
+    Route::post('/store', [PodcastController::class, 'store'])->name('store');
+    Route::get('/{id}', [PodcastController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [PodcastController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [PodcastController::class, 'update'])->name('update');
+    Route::delete('/{id}', [PodcastController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('report')->name('report.')->group(function () {
+    Route::get('/', [ReportController::class, 'index'])->name('index');
+    Route::get('/create', [ReportController::class, 'create'])->name('create');
+    Route::post('/store', [ReportController::class, 'store'])->name('store');
+    Route::get('/{id}', [ReportController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [ReportController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [ReportController::class, 'update'])->name('update');
+    Route::delete('/{id}', [ReportController::class, 'destroy'])->name('destroy');
 });

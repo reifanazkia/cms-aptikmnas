@@ -18,18 +18,16 @@ class GalleryController extends Controller
         $query = Gallery::with('category');
 
         // Filter by category if provided
-        if ($request->has('category') && $request->category) {
+        if ($request->filled('category')) {
             $query->where('category_gallery_id', $request->category);
         }
 
         // Search functionality
-        if ($request->has('search') && $request->search) {
-            $query->where(function ($q) use ($request) {
-                $q->where('title', 'like', '%' . $request->search . '%');
-            });
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        $galleries = $query->orderByPubDate()->paginate(12);
+        $galleries = $query->orderBy('pub_date', 'desc')->paginate(12);
         $categories = CategoryGallery::all();
 
         return view('gallery.index', compact('galleries', 'categories'));
@@ -50,26 +48,23 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:750',
-            'pub_date' => 'nullable|date',
-            'url' => 'nullable|url',
-            'category_gallery_id' => 'nullable|exists:gallery_categories,id',
-            'display_on_home' => 'boolean',
+            'title'               => 'required|string|max:255',
+            'description'         => 'nullable|string',
+            'image'               => 'nullable|image|mimes:jpg,jpeg,png,webp|max:750',
+            'pub_date'            => 'nullable|date',
+            'waktu_baca'          => 'required|string|max:255',
+            'category_gallery_id' => 'required|exists:gallery_categories,id',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['title','description','pub_date','waktu_baca','category_gallery_id']);
 
         // Handle image upload
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('gallery', $imageName, 'public');
+            $image      = $request->file('image');
+            $imageName  = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $imagePath  = $image->storeAs('gallery', $imageName, 'public');
             $data['image'] = $imagePath;
         }
-
-        $data['display_on_home'] = $request->has('display_on_home') ? true : false;
 
         Gallery::create($data);
 
@@ -100,16 +95,15 @@ class GalleryController extends Controller
     public function update(Request $request, Gallery $gallery)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'pub_date' => 'nullable|date',
-            'url' => 'nullable|url',
+            'title'               => 'required|string|max:255',
+            'description'         => 'nullable|string',
+            'image'               => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'pub_date'            => 'nullable|date',
+            'waktu_baca'          => 'required|string|max:255',
             'category_gallery_id' => 'required|exists:gallery_categories,id',
-            'display_on_home' => 'boolean',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['title','description','pub_date','waktu_baca','category_gallery_id']);
 
         // Handle image upload
         if ($request->hasFile('image')) {
@@ -118,13 +112,11 @@ class GalleryController extends Controller
                 Storage::disk('public')->delete($gallery->image);
             }
 
-            $image = $request->file('image');
-            $imageName = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('gallery', $imageName, 'public');
+            $image      = $request->file('image');
+            $imageName  = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $imagePath  = $image->storeAs('gallery', $imageName, 'public');
             $data['image'] = $imagePath;
         }
-
-        $data['display_on_home'] = $request->has('display_on_home') ? true : false;
 
         $gallery->update($data);
 
@@ -136,7 +128,6 @@ class GalleryController extends Controller
      */
     public function destroy(Gallery $gallery)
     {
-        // Delete image if exists
         if ($gallery->image && Storage::disk('public')->exists($gallery->image)) {
             Storage::disk('public')->delete($gallery->image);
         }
@@ -147,31 +138,16 @@ class GalleryController extends Controller
     }
 
     /**
-     * Display gallery items for home page.
-     */
-    public function home()
-    {
-        $galleries = Gallery::with('category')
-            ->displayOnHome()
-            ->orderByPubDate()
-            ->limit(100)
-            ->get();
-
-        return view('gallery.home', compact('galleries'));
-    }
-
-    /**
      * Display gallery items by category.
      */
     public function byCategory($id)
     {
-        // Validate that the category exists
         $category = CategoryGallery::findOrFail($id);
 
         $galleries = Gallery::with('category')
             ->where('category_gallery_id', $id)
-            ->orderByPubDate() // Use consistent ordering
-            ->paginate(12); // Add pagination like in index method
+            ->orderBy('pub_date', 'desc')
+            ->paginate(12);
 
         $categories = CategoryGallery::all();
 

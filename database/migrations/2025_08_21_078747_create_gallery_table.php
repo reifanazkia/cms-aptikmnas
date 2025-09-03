@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('gallery', function (Blueprint $table) {
             $table->id();
-            $table->boolean('display_on_home')->default(false);
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->date('pub_date')->nullable();
-            $table->string('url')->nullable();
+            $table->string('waktu_baca');
             $table->foreignId('category_gallery_id')->constrained('gallery_categories')->onDelete('cascade');
             $table->timestamps();
         });
