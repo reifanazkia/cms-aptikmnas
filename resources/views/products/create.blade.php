@@ -1,26 +1,27 @@
 @extends('layouts.app', ['title' => 'Tambah Produk'])
 
 @section('content')
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <!-- Card -->
-        <div class="bg-white rounded-2xl shadow-md p-8 space-y-6">
+        <div class="bg-white rounded-2xl shadow-lg border border-emerald-100 p-6 sm:p-10 space-y-8">
+
             <!-- Header -->
-            <div class="flex items-center justify-between border-b pb-4">
-                <h1 class="text-2xl font-bold text-emerald-700 flex items-center">
-                    <svg class="w-6 h-6 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b pb-4">
+                <h1 class="text-2xl sm:text-3xl font-bold text-emerald-700 flex items-center">
+                    <svg class="w-7 h-7 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                     Tambah Produk Baru
                 </h1>
                 <a href="{{ route('products.index') }}"
-                    class="px-4 py-2 text-sm font-medium bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl hover:bg-emerald-100 transition">
+                    class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl hover:bg-emerald-100 transition w-full sm:w-auto">
                     ← Kembali
                 </a>
             </div>
 
             <!-- Alert Error -->
             @if ($errors->any())
-                <div class="p-4 mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg">
+                <div class="p-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg">
                     <p class="font-semibold mb-2">Terdapat kesalahan:</p>
                     <ul class="list-disc pl-5 space-y-1">
                         @foreach ($errors->all() as $error)
@@ -31,101 +32,121 @@
             @endif
 
             <!-- Form -->
-            <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                 @csrf
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Judul -->
-                    <div class="md:col-span-2">
-                        <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Judul *</label>
-                        <input type="text" name="title" id="title" value="{{ old('title') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('title') border-red-500 @enderror"
-                            required>
-                        @error('title')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                <!-- Informasi Utama -->
+                <div class="space-y-6">
+                    <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6M5 8h14M5 16h14" />
+                        </svg>
+                        Informasi Produk
+                    </h2>
 
-                    <!-- Deskripsi -->
-                    <div class="md:col-span-2">
-                       <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
-                        <textarea name="description" id="description" rows="4"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
-                        @error('description')
-                            <p cla ss="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Judul -->
+                        <div class="md:col-span-2">
+                            <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Judul *</label>
+                            <input type="text" name="title" id="title" value="{{ old('title') }}"
+                                class="w-full rounded-xl px-4 py-2.5 text-sm border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition @error('title') border-red-500 @enderror"
+                                placeholder="Masukkan judul produk" required>
+                            @error('title')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <!-- Harga -->
-                    <div>
-                        <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Harga *</label>
-                        <input type="number" name="price" id="price" value="{{ old('price') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('price') border-red-500 @enderror"
-                            required>
-                        @error('price')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                        <!-- Deskripsi -->
+                        <div class="md:col-span-2">
+                            <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                            <textarea name="description" id="description" rows="4"
+                                class="w-full rounded-xl px-4 py-2.5 text-sm border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition @error('description') border-red-500 @enderror"
+                                placeholder="Tuliskan deskripsi produk">{{ old('description') }}</textarea>
+                            @error('description')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <!-- Diskon -->
-                    <div>
-                        <label for="discount" class="block text-sm font-medium text-gray-700 mb-1">Diskon (%)</label>
-                        <input type="number" name="discount" id="discount" min="0" max="100"
-                            value="{{ old('discount') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('discount') border-red-500 @enderror">
-                        @error('discount')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                        <!-- Harga -->
+                        <div>
+                            <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Harga *</label>
+                            <input type="number" name="price" id="price" value="{{ old('price') }}"
+                                class="w-full rounded-xl px-4 py-2.5 text-sm border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition @error('price') border-red-500 @enderror"
+                                required>
+                        </div>
 
-                    <!-- Disusun Oleh -->
-                    <div>
-                        <label for="disusun" class="block text-sm font-medium text-gray-700 mb-1">Disusun Oleh *</label>
-                        <input type="text" name="disusun" id="disusun" value="{{ old('disusun') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('disusun') border-red-500 @enderror"
-                            required>
-                        @error('disusun')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                        <!-- Diskon -->
+                        <div>
+                            <label for="discount" class="block text-sm font-medium text-gray-700 mb-1">Diskon (%)</label>
+                            <input type="number" name="discount" id="discount" min="0" max="100"
+                                value="{{ old('discount') }}"
+                                class="w-full rounded-xl px-4 py-2.5 text-sm border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Jumlah Modul -->
-                    <div>
-                        <label for="jumlah_modul" class="block text-sm font-medium text-gray-700 mb-1">Jumlah Modul</label>
-                        <input type="number" name="jumlah_modul" id="jumlah_modul" min="1"
-                            value="{{ old('jumlah_modul') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('jumlah_modul') border-red-500 @enderror">
-                        @error('jumlah_modul')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                <!-- Informasi Tambahan -->
+                <div class="space-y-6">
+                    <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Informasi Tambahan
+                    </h2>
 
-                    <!-- Bahasa -->
-                    <div>
-                        <label for="bahasa" class="block text-sm font-medium text-gray-700 mb-1">Bahasa</label>
-                        <input type="text" name="bahasa" id="bahasa" value="{{ old('bahasa') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('bahasa') border-red-500 @enderror">
-                        @error('bahasa')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Disusun Oleh -->
+                        <div>
+                            <label for="disusun" class="block text-sm font-medium text-gray-700 mb-1">Disusun Oleh
+                                *</label>
+                            <input type="text" name="disusun" id="disusun" value="{{ old('disusun') }}"
+                                class="w-full rounded-xl px-4 py-2.5 text-sm border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                                required>
+                        </div>
 
-                    <!-- No Telepon -->
-                    <div>
-                        <label for="notlp" class="block text-sm font-medium text-gray-700 mb-1">No. Telepon</label>
-                        <input type="text" name="notlp" id="notlp" value="{{ old('notlp') }}"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('notlp') border-red-500 @enderror">
-                        @error('notlp')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                        <!-- Jumlah Modul -->
+                        <div>
+                            <label for="jumlah_modul" class="block text-sm font-medium text-gray-700 mb-1">Jumlah
+                                Modul</label>
+                            <input type="number" name="jumlah_modul" id="jumlah_modul" min="1"
+                                value="{{ old('jumlah_modul') }}"
+                                class="w-full rounded-xl px-4 py-2.5 text-sm border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                        </div>
+
+                        <!-- Bahasa -->
+                        <div>
+                            <label for="bahasa" class="block text-sm font-medium text-gray-700 mb-1">Bahasa</label>
+                            <input type="text" name="bahasa" id="bahasa" value="{{ old('bahasa') }}"
+                                class="w-full rounded-xl px-4 py-2.5 text-sm border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                        </div>
+
+                        <!-- No Telepon -->
+                        <div>
+                            <label for="notlp" class="block text-sm font-medium text-gray-700 mb-1">No. Telepon</label>
+                            <input type="text" name="notlp" id="notlp" value="{{ old('notlp') }}"
+                                class="w-full rounded-xl px-4 py-2.5 text-sm border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                        </div>
                     </div>
+                </div>
+
+                <!-- Kategori & Gambar -->
+                <div class="space-y-6">
+                    <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-emerald-500" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 7h18M3 12h18M3 17h18" />
+                        </svg>
+                        Kategori & Gambar
+                    </h2>
 
                     <!-- Kategori -->
-                    <div class="relative md:col-span-2">
+                    <div>
                         <label for="category_store_id" class="block text-sm font-medium text-gray-700 mb-1">Kategori
                             *</label>
                         <select name="category_store_id" id="category_store_id"
-                            class="w-full appearance-none rounded-lg px-3 py-2 pr-10 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('category_store_id') border-red-500 @enderror"
+                            class="w-full rounded-xl px-4 py-2.5 text-sm border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition pr-10"
                             required>
                             <option value="">-- Pilih Kategori --</option>
                             @foreach ($categories as $category)
@@ -135,27 +156,14 @@
                                 </option>
                             @endforeach
                         </select>
-                        <div
-                            class="pointer-events-none absolute inset-y-0 right-3 top-10.5 transform -translate-y-1/2 flex items-center">
-                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                        @error('category_store_id')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <!-- Gambar -->
-                    <div class="md:col-span-2">
+                    <div>
                         <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Gambar *</label>
                         <input type="file" name="image" id="image" accept="image/jpeg,image/png"
-                            class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('image') border-red-500 @enderror">
+                            class="w-full rounded-xl px-4 py-2.5 text-sm border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
                         <p class="text-gray-500 text-sm mt-1">Format: JPG/PNG, Maks: 2MB</p>
-                        @error('image')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
 
                         <!-- Preview -->
                         <div id="imagePreview" class="hidden mt-3 rounded-lg border border-gray-200 bg-gray-50 p-3">
@@ -169,18 +177,18 @@
                 </div>
 
                 <!-- Footer Buttons -->
-                <div class="flex items-center justify-between border-t pt-4">
+                <div class="flex flex-col sm:flex-row sm:justify-between gap-3 border-t pt-6">
                     <a href="{{ route('products.index') }}"
-                        class="px-4 py-2 text-sm font-medium bg-gray-100 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-200 transition">
+                        class="px-4 py-2.5 text-sm font-medium bg-gray-100 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-200 transition text-center">
                         Batal
                     </a>
-                    <div class="flex gap-2">
+                    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                         <button type="reset"
-                            class="px-4 py-2 text-sm font-medium bg-white border border-gray-300 rounded-xl hover:bg-gray-50">
+                            class="px-4 py-2.5 text-sm font-medium bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition w-full sm:w-auto">
                             Reset
                         </button>
                         <button type="submit"
-                            class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 transition">
+                            class="px-4 py-2.5 text-sm font-medium text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 transition w-full sm:w-auto">
                             Simpan Produk
                         </button>
                     </div>

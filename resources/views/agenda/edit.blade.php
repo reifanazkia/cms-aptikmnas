@@ -8,8 +8,9 @@
             <p class="text-gray-500 text-sm mt-1">Perbarui detail agenda sesuai kebutuhan.</p>
         </div>
 
-        <form action="{{ route('aboutus.update', $aboutus->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('agenda.update', $agenda->id) }}" method="POST">
             @csrf
+            @method('PUT')
 
             <!-- Judul & Tipe -->
             <div class="grid md:grid-cols-2 gap-6">
@@ -30,14 +31,15 @@
             </div>
 
             <!-- Deskripsi -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi</label>
-                <textarea name="description" rows="5"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">{{ old('description', $agenda->description) }}</textarea>
+            <div class="md:col-span-2">
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                <textarea name="description" id="description" rows="4"
+                    class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('description') border-red-500 @enderror">{{ old('description', $agenda->description) }}</textarea>
                 @error('description')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
+
 
             <!-- Waktu -->
             <div class="grid md:grid-cols-2 gap-6">
@@ -102,4 +104,14 @@
             </div>
         </form>
     </div>
+
+
+    <script>
+        // CKEditor
+        ClassicEditor
+            .create(document.querySelector('#description'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 @endsection

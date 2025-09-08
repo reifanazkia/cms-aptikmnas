@@ -3,9 +3,17 @@
 @section('content')
     <div class="bg-white p-6 rounded-lg space-y-6">
         <!-- Judul -->
-        <div>
-            <h1 class="text-3xl font-bold text-emerald-700">Kategori Gallery</h1>
-            <p class="text-sm text-emerald-600">Kelola data kategori gallery</p>
+        <div class="md:flex md:items-center md:justify-between">
+            <div cllass="md:flex md:flex-col">
+                <h1 class="text-3xl font-bold text-emerald-700">Kategori Gallery</h1>
+                <p class="text-sm text-emerald-600">Kelola data kategori gallery</p>
+            </div>
+
+            <!-- Tombol Tambah -->
+            <button onclick="openAddModal()"
+                class="px-5 py-3 mt-4 rounded-xl bg-emerald-600 text-white font-semibold shadow-md hover:bg-emerald-700 transition">
+                + Tambah Kategori
+            </button>
         </div>
 
         <!-- Alert (akan digantikan oleh SweetAlert) -->
@@ -13,14 +21,49 @@
             <div class="hidden" id="success-message">{{ session('success') }}</div>
         @endif
 
-        <!-- Tombol Tambah -->
-        <button onclick="openAddModal()"
-            class="px-5 py-3 rounded-xl bg-emerald-600 text-white font-semibold shadow-md hover:bg-emerald-700 transition">
-            + Tambah Kategori
-        </button>
 
-        <!-- Tabel -->
-        <div class="overflow-x-auto bg-white shadow-md rounded-xl border border-emerald-100">
+
+        <!-- Versi Mobile (Card) -->
+        <div class="sm:hidden space-y-4">
+            @forelse ($gallery as $index => $item)
+                <div class="p-4 bg-white shadow rounded-xl border border-emerald-100">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-medium text-emerald-600">#{{ $index + 1 }}</span>
+                        <div class="flex space-x-2">
+                            <!-- Tombol Edit -->
+                            <button onclick="openEditModal({{ $item->id }}, '{{ $item->name }}')"
+                                class="p-2 bg-green-100 hover:bg-green-200 text-green-500 rounded-lg shadow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path
+                                        d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                    <path
+                                        d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                </svg>
+                            </button>
+
+                            <!-- Tombol Hapus -->
+                            <button onclick="confirmDelete({{ $item->id }}, '{{ $item->name }}')"
+                                class="p-2 bg-red-200 hover:bg-red-300 text-red-600 rounded-lg shadow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-3 -2 24 24"
+                                    fill="currentColor">
+                                    <path
+                                        d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-gray-800 font-semibold">{{ $item->name }}</p>
+                </div>
+            @empty
+                <div class="p-6 text-center text-emerald-600 bg-emerald-50 rounded-xl">
+                    Belum ada data
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Versi Desktop (Tabel) -->
+        <div class="hidden sm:block overflow-x-auto bg-white shadow-md rounded-xl border border-emerald-100">
             <table class="min-w-full text-sm text-left">
                 <thead class="bg-emerald-50 text-emerald-700 font-semibold">
                     <tr>

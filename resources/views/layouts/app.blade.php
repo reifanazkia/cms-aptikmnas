@@ -326,8 +326,8 @@
 
                                 <!-- Podcast -->
                                 <a href="{{ route('podcasts.index') }}" class="nav-item">
-                                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24">
+                                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24">
                                         <g fill="none" stroke="currentColor" stroke-linecap="round"
                                             stroke-linejoin="round" stroke-width="1.5">
                                             <path d="M4.516 17a9 9 0 1 1 14.969 0" />
@@ -497,6 +497,9 @@
                                 <a href="{{ route('category-aboutus.index') }}"
                                     class="block px-3 py-2 text-sm text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors">Category
                                     About</a>
+                                <a href="{{ route('category-podcasts.index') }}"
+                                    class="block px-3 py-2 text-sm text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors">Category
+                                    Podcasts</a>
                             </div>
                         </div>
 
@@ -598,9 +601,13 @@
                         <!-- Mobile Podcast -->
                         <a href="{{ route('podcasts.index') }}"
                             class="flex items-center px-3 py-2 text-sm font-medium text-emerald-700 hover:bg-emerald-100 rounded-lg transition-colors">
-                            <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
-                                <circle cx="12" cy="12" r="3" />
+                            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.5">
+                                    <path d="M4.516 17a9 9 0 1 1 14.969 0" />
+                                    <path d="M9 11a3 3 0 1 1 6 0v2a3 3 0 1 1-6 0zm3 5v4m-2 1l2-2l2 2z" />
+                                </g>
                             </svg>
                             Podcast
                         </a>

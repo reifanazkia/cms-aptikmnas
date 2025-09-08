@@ -43,8 +43,8 @@
                 </div>
             @endif
 
-            <!-- Table -->
-            <div class="overflow-x-auto rounded-lg border border-emerald-100">
+            <!-- Desktop Table -->
+            <div class="hidden sm:block overflow-x-auto rounded-lg border border-emerald-100">
                 <table class="min-w-full text-sm text-left border-collapse">
                     <thead class="bg-emerald-50 text-emerald-800 font-semibold">
                         <tr>
@@ -71,7 +71,10 @@
                                         <span class="text-gray-400">-</span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-2 text-center">{{ Str::limit($partner->description, 50) }}</td>
+                                <td class="px-4 py-2 text-center">
+                                    {{ Str::limit(strip_tags($partner->description), 50) }}
+                                </td>
+
                                 <td class="px-4 py-2 text-center">
                                     @if ($partner->image)
                                         <img src="{{ asset('storage/' . $partner->image) }}"
@@ -109,6 +112,55 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Mobile Cards -->
+            <div class="block sm:hidden space-y-4">
+                @forelse($partners as $partner)
+                    <div class="border border-emerald-100 rounded-xl p-4 shadow-sm bg-white">
+                        <div class="flex items-center gap-4">
+                            <div>
+                                @if ($partner->image)
+                                    <img src="{{ asset('storage/' . $partner->image) }}"
+                                        class="w-16 h-16 object-cover rounded-lg" alt="Gambar Partner">
+                                @else
+                                    <div
+                                        class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-xs">
+                                        No Img
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="flex-1">
+                                <h2 class="font-semibold text-emerald-700">{{ $partner->name }}</h2>
+                                <p class="text-gray-600 text-sm">
+                                    {{ Str::limit(strip_tags($partner->description), 60) }}
+                                </p>
+
+                                @if ($partner->web_address)
+                                    <a href="{{ $partner->web_address }}" target="_blank"
+                                        class="text-emerald-600 text-sm hover:underline">{{ $partner->web_address }}</a>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-3 gap-2">
+                            <a href="{{ route('partners.edit', $partner->id) }}"
+                                class="px-3 py-1.5 bg-green-100 text-green-500 rounded-md hover:bg-green-200 text-xs font-medium inline-flex items-center gap-1.5">
+                                Edit
+                            </a>
+                            <form action="{{ route('partners.destroy', $partner->id) }}" method="POST"
+                                class="delete-form">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button"
+                                    class="delete-button px-3 py-1.5 bg-red-100 text-red-700 rounded-md hover:bg-red-200 text-xs font-medium inline-flex items-center gap-1.5">
+                                    Hapus
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-center text-gray-500 py-4">Belum ada data partner.</p>
+                @endforelse
             </div>
         </div>
     </div>
