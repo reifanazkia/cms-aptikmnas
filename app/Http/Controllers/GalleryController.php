@@ -58,6 +58,8 @@ class GalleryController extends Controller
 
         $data = $request->only(['title','description','pub_date','waktu_baca','category_gallery_id']);
 
+        $validatedData['description'] = strip_tags($request->description);
+
         // Handle image upload
         if ($request->hasFile('image')) {
             $image      = $request->file('image');
@@ -104,6 +106,8 @@ class GalleryController extends Controller
         ]);
 
         $data = $request->only(['title','description','pub_date','waktu_baca','category_gallery_id']);
+
+        $validatedData['description'] = strip_tags($request->description);
 
         // Handle image upload
         if ($request->hasFile('image')) {

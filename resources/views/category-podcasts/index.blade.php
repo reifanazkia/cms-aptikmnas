@@ -1,12 +1,12 @@
-@extends('layouts.app', ['title' => 'Kategori Pengurus'])
+@extends('layouts.app', ['title' => 'Kategori Podcast'])
 
 @section('content')
     <div class="bg-white p-6 rounded-lg space-y-6">
         <!-- Header -->
         <div class="md:flex md:items-center md:justify-between">
             <div class="md:flex md:flex-col">
-                <h1 class="text-3xl font-bold text-emerald-700">Kategori Pengurus</h1>
-                <p class="text-sm text-emerald-600">Kelola data kategori Pengurus</p>
+                <h1 class="text-3xl font-bold text-emerald-700">Kategori Podcast</h1>
+                <p class="text-sm text-emerald-600">Kelola data kategori Podcast</p>
             </div>
 
             <!-- Tombol Tambah -->
@@ -23,7 +23,7 @@
 
         <!-- Mobile: Card -->
         <div class="sm:hidden space-y-4">
-            @forelse ($pengurus as $index => $item)
+            @forelse ($podcats as $index => $item)
                 <div class="p-4 bg-white shadow rounded-xl border border-emerald-100">
                     <div class="flex justify-between items-center mb-3">
                         <span class="text-sm font-medium text-emerald-600">#{{ $index + 1 }}</span>
@@ -70,7 +70,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-emerald-100">
-                    @forelse ($pengurus as $index => $item)
+                    @forelse ($podcats as $index => $item)
                         <tr class="hover:bg-gray-50 border-b border-emerald-50">
                             <td class="px-6 py-4 text-center">{{ $index + 1 }}</td>
                             <td class="px-6 py-4 text-center font-medium">{{ $item->name }}</td>

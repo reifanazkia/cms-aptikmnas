@@ -37,7 +37,7 @@ class PodcastController extends Controller
             'yt_id'                => 'required|string|max:255',
             'pub_date'             => 'required|date',
             'pembicara'            => 'required|array',
-            'category_podcasts_id' => 'required|exists:category_podcasts,id',
+            'category_podcasts_id' => 'required|exists:podcasts_categories,id',
         ]);
 
         Podcast::create([
@@ -84,7 +84,7 @@ class PodcastController extends Controller
             'yt_id'                => 'required|string|max:255',
             'pub_date'             => 'required|date',
             'pembicara'            => 'required|array',
-            'category_podcasts_id' => 'required|exists:category_podcasts,id',
+            'category_podcasts_id' => 'required|exists:podcasts_categories,id',
         ]);
 
         $podcast->update([

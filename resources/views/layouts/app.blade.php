@@ -197,17 +197,7 @@
                         <div class="flex items-center space-x-8">
                             <!-- Logo with improved styling -->
                             <div class="logo-glow flex-shrink-0">
-                                <div class="flex items-center space-x-3">
-                                    <div class="relative">
-                                        <div
-                                            class="w-10 h-10 bg-gradient-to-br from-emerald-500 via-green-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg">
-                                            <span class="text-white font-black text-lg">A</span>
-                                        </div>
-                                        <div
-                                            class="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-                                            <span class="text-white font-bold text-xs">!</span>
-                                        </div>
-                                    </div>
+                                <div class="flex items-center space-x-2">
                                     <div>
                                         <h1 class="text-xl font-black tracking-tight leading-none">
                                             <span class="text-emerald-600">AP</span><span
@@ -257,6 +247,8 @@
                                             Pengurus</a>
                                         <a href="{{ route('category-aboutus.index') }}" class="dropdown-item">Category
                                             About</a>
+                                        <a href="{{ route('category-podcasts.index') }}" class="dropdown-item">Category
+                                            Podcasts</a>
                                     </div>
                                 </div>
 
@@ -331,6 +323,19 @@
                                         <a href="{{ route('about.index') }}" class="dropdown-item">About</a>
                                     </div>
                                 </div>
+
+                                <!-- Podcast -->
+                                <a href="{{ route('podcasts.index') }}" class="nav-item">
+                                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24">
+                                        <g fill="none" stroke="currentColor" stroke-linecap="round"
+                                            stroke-linejoin="round" stroke-width="1.5">
+                                            <path d="M4.516 17a9 9 0 1 1 14.969 0" />
+                                            <path d="M9 11a3 3 0 1 1 6 0v2a3 3 0 1 1-6 0zm3 5v4m-2 1l2-2l2 2z" />
+                                        </g>
+                                    </svg>
+                                    Podcast
+                                </a>
                             </nav>
                         </div>
 
@@ -492,6 +497,9 @@
                                 <a href="{{ route('category-aboutus.index') }}"
                                     class="block px-3 py-2 text-sm text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors">Category
                                     About</a>
+                                <a href="{{ route('category-podcasts.index') }}"
+                                    class="block px-3 py-2 text-sm text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors">Category
+                                    Podcasts</a>
                             </div>
                         </div>
 
@@ -589,12 +597,27 @@
                                     class="block px-3 py-2 text-sm text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors">About</a>
                             </div>
                         </div>
+
+                        <!-- Mobile Podcast -->
+                        <a href="{{ route('podcasts.index') }}"
+                            class="flex items-center px-3 py-2 text-sm font-medium text-emerald-700 hover:bg-emerald-100 rounded-lg transition-colors">
+                            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.5">
+                                    <path d="M4.516 17a9 9 0 1 1 14.969 0" />
+                                    <path d="M9 11a3 3 0 1 1 6 0v2a3 3 0 1 1-6 0zm3 5v4m-2 1l2-2l2 2z" />
+                                </g>
+                            </svg>
+                            Podcast
+                        </a>
+
                     </div>
                 </div>
             </header>
 
             <!-- Main Content Area -->
-            <main class="flex-1 px-4 sm:px-6 lg:px-8 py-6 max-w-7xl mx-auto">
+            <main class="flex-1 px-8 py-8 max-w-full mx-auto">
                 @yield('content')
             </main>
         </div>

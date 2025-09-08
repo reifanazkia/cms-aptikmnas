@@ -15,7 +15,7 @@
         @endif
 
         <!-- Header -->
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between flex-wrap gap-3">
             <div>
                 <h1 class="text-3xl font-bold text-emerald-700">Daftar Slider</h1>
                 <p class="text-sm text-emerald-600">Kelola data slider yang tampil di halaman depan</p>
@@ -26,8 +26,8 @@
             </a>
         </div>
 
-        <!-- Tabel -->
-        <div class="overflow-x-auto bg-white shadow rounded-lg">
+        <!-- Versi Desktop (Tabel) -->
+        <div class="hidden sm:block overflow-x-auto bg-white shadow rounded-lg">
             <table class="w-full text-sm text-left border border-gray-200">
                 <thead class="bg-emerald-600 text-white">
                     <tr>
@@ -80,17 +80,14 @@
                                     <!-- Tombol Edit -->
                                     <a href="{{ route('slider.edit', $slider->id) }}"
                                         class="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-600 rounded-lg hover:bg-green-200">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                            fill="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
-                                            <path
-                                                d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15.232 5.232l3.536 3.536M9 13l6-6 3 3-6 6H9v-3z" />
                                         </svg>
                                         Edit
                                     </a>
 
-                                    <!-- Tombol Hapus -->
                                     <!-- Tombol Hapus -->
                                     <form action="{{ route('slider.destroy', $slider->id) }}" method="POST"
                                         class="delete-form">
@@ -98,17 +95,16 @@
                                         @method('DELETE')
                                         <button type="submit"
                                             class="delete-btn flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                                fill="currentColor" viewBox="-3 -2 24 24">
-                                                <path
-                                                    d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m-7 0h8" />
                                             </svg>
                                             Hapus
                                         </button>
                                     </form>
                                 </div>
                             </td>
-
                         </tr>
                     @empty
                         <tr>
@@ -118,11 +114,90 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Versi Mobile (Card) -->
+        <div class="sm:hidden space-y-4">
+            @forelse($sliders as $slider)
+                <div class="p-4 bg-white shadow rounded-lg border border-emerald-100">
+                    <div class="flex items-center gap-3 mb-3">
+                        @if ($slider->image)
+                            <img src="{{ asset('storage/' . $slider->image) }}" alt="slider"
+                                class="h-16 w-24 object-cover rounded">
+                        @else
+                            <div class="h-16 w-24 flex items-center justify-center bg-gray-100 text-gray-400 rounded">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2
+                                           l1.586-1.586a2 2 0 012.828 0L20 14M6 20h12a2 2 0
+                                           002-2V6a2 2 0 00-2-2H6a2 2 0
+                                           00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                        @endif
+                        <div>
+                            <h2 class="font-semibold text-gray-800">{{ $slider->title ?? '-' }}</h2>
+                            <p class="text-sm text-gray-500">{{ $slider->subtitle ?? '-' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="text-sm text-gray-600 space-y-1 mb-3">
+                        <p><span class="font-medium">Youtube:</span>
+                            @if ($slider->youtube_id)
+                                <a href="https://www.youtube.com/watch?v={{ $slider->youtube_id }}" target="_blank"
+                                    class="text-blue-600 underline">{{ $slider->youtube_id }}</a>
+                            @else
+                                -
+                            @endif
+                        </p>
+                        <p><span class="font-medium">Ditampilkan:</span>
+                            @if ($slider->display_on_home)
+                                <span class="px-2 py-0.5 text-xs bg-emerald-100 text-emerald-700 rounded">Ya</span>
+                            @else
+                                <span class="px-2 py-0.5 text-xs bg-red-100 text-red-700 rounded">Tidak</span>
+                            @endif
+                        </p>
+                        <p><span class="font-medium">Dibuat:</span>
+                            {{ $slider->created_at ? $slider->created_at->format('d M Y') : '-' }}
+                        </p>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <a href="{{ route('slider.edit', $slider->id) }}"
+                            class="flex-1 px-3 py-1 bg-green-100 text-green-600 rounded-lg text-center text-sm flex items-center justify-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15.232 5.232l3.536 3.536M9 13l6-6 3 3-6 6H9v-3z" />
+                            </svg>
+                            Edit
+                        </a>
+                        <form action="{{ route('slider.destroy', $slider->id) }}" method="POST" class="flex-1 delete-form">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="w-full px-3 py-1 bg-red-100 text-red-600 rounded-lg text-sm flex items-center justify-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0
+                                           01-1.995-1.858L5 7m5 4v6m4-6v6M9
+                                           7V4a1 1 0 011-1h4a1 1 0
+                                           011 1v3m-7 0h8" />
+                                </svg>
+                                Hapus
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @empty
+                <p class="text-center text-gray-500">Belum ada slider</p>
+            @endforelse
+        </div>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Konfirmasi hapus
             document.querySelectorAll('.delete-form').forEach(form => {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -142,26 +217,6 @@
                     });
                 });
             });
-
-            // Flash message success
-            @if (session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: '{{ session('success') }}',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-            @endif
-
-            // Flash message error
-            @if (session('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal',
-                    text: '{{ session('error') }}',
-                });
-            @endif
         });
     </script>
 @endsection

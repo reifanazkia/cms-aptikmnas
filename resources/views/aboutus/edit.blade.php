@@ -1,12 +1,12 @@
 @extends('layouts.app', ['title' => 'Edit Tentang Kami'])
 
 @section('content')
-    <div class="p-6 bg-white rounded-lg shadow space-y-6">
+    <div class="p-4 sm:p-6 bg-white rounded-lg shadow space-y-6 max-w-md mx-auto">
 
         <!-- Judul Halaman -->
-        <div>
+        <div class="text-center">
             <h1 class="text-2xl font-bold text-emerald-700">Edit Tentang Kami</h1>
-            <p class="text-sm text-gray-600">Perbarui data berikut untuk mengubah informasi.</p>
+            <p class="text-sm text-gray-600 mt-1">Perbarui data berikut untuk mengubah informasi.</p>
         </div>
 
         <!-- Error Message -->
@@ -28,11 +28,11 @@
 
         <!-- Form -->
         <form action="{{ route('aboutus.update', $aboutus->id) }}" method="POST" enctype="multipart/form-data"
-            class="space-y-6">
+            class="space-y-4">
             @csrf
             @method('PUT')
 
-            <div class="grid grid-cols-2 gap-6 ">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <!-- Judul -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Judul</label>
@@ -46,7 +46,6 @@
                 <!-- Kategori -->
                 <div class="relative">
                     <label class="block text-sm font-medium text-gray-700">Kategori</label>
-
                     <select name="category_aboutus_id"
                         class="appearance-none w-full mt-1 px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500">
                         <option value="">-- Pilih Kategori --</option>
@@ -58,8 +57,8 @@
                         @endforeach
                     </select>
 
-                    {{-- SVG arrow --}}
-                    <svg class="pointer-events-none absolute right-3 top-[2.75rem] -translate-y-1/2 h-5 w-5 text-gray-500"
+                    <!-- SVG arrow -->
+                    <svg class="pointer-events-none absolute right-3 top-11 -translate-y-1/2 h-5 w-5 text-gray-500"
                         viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd"
                             d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.17l3.71-2.94a.75.75 0 1 1 .94 1.17l-4.24 3.36a.75.75 0 0 1-.94 0L5.21 8.4a.75.75 0 0 1 .02-1.19z"
@@ -70,11 +69,10 @@
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
             </div>
 
             <!-- Deskripsi -->
-            <div class="md:col-span-2">
+            <div>
                 <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
                 <textarea name="description" id="description" rows="4"
                     class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('description') border-red-500 @enderror">{{ old('description', $aboutus->description) }}</textarea>
@@ -87,7 +85,6 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700">Gambar</label>
 
-                <!-- Tampilkan gambar saat ini jika ada -->
                 @if ($aboutus->image)
                     <div class="mb-3">
                         <img src="{{ asset($aboutus->image) }}" alt="Current Image" class="h-32 rounded-lg border">
@@ -112,17 +109,16 @@
             </div>
 
             <!-- Tombol -->
-            <div class="flex justify-end space-x-2">
+            <div class="flex flex-col sm:flex-row justify-end gap-2">
                 <a href="{{ route('aboutus.index') }}"
-                    class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</a>
+                    class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-center hover:bg-gray-300">Batal</a>
                 <button type="submit"
-                    class="px-4 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700">Perbarui</button>
+                    class="px-4 py-2 rounded-lg bg-emerald-600 text-white text-center hover:bg-emerald-700">Perbarui</button>
             </div>
         </form>
     </div>
 
     <script>
-        // CKEditor
         ClassicEditor
             .create(document.querySelector('#description'))
             .catch(error => {

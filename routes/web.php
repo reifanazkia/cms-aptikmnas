@@ -174,7 +174,7 @@ Route::prefix('agenda')->name('agenda.')->group(function () {
     Route::get('/create', [AgendaController::class, 'create'])->name('create');
     Route::post('/store', [AgendaController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [AgendaController::class, 'edit'])->name('edit');
-    Route::put('/update/{id}', [AgendaController::class, 'update'])->name('update');
+    Route::put('/update/{agenda}', [AgendaController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [AgendaController::class, 'destroy'])->name('destroy');
 });
 
@@ -214,7 +214,7 @@ Route::prefix('about')->name('about.')->group(function () {
     Route::get('/create', [AboutController::class, 'create'])->name('create');
     Route::post('/store', [AboutController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [AboutController::class, 'edit'])->name('edit');
-    Route::put('/update/{id}', [AboutController::class, 'update'])->name('about.update');
+    Route::put('/update/{id}', [AboutController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [AboutController::class, 'destroy'])->name('destroy');
 });
 
