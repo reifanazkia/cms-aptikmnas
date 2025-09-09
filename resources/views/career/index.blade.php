@@ -32,18 +32,25 @@
         <div class="sm:hidden space-y-4 mt-4">
             @forelse ($careers as $index => $career)
                 <div class="p-4 bg-white border border-emerald-100 shadow rounded-lg">
+                    <!-- Header Card -->
                     <div class="flex justify-between items-center mb-3">
-                        <span class="text-sm font-medium text-emerald-600">#{{ $careers->firstItem() + $index }}</span>
-                        <span
-                            class="text-xs px-2 py-1 bg-emerald-100 text-emerald-600 rounded">{{ $career->job_type }}</span>
+                        <span class="text-sm font-medium text-emerald-600">
+                            #{{ $careers->firstItem() + $index }}
+                        </span>
+                        <span class="text-xs px-2 py-1 bg-emerald-100 text-emerald-600 rounded">
+                            {{ $career->job_type }}
+                        </span>
                     </div>
+
+                    <!-- Position & Location -->
                     <h2 class="text-lg font-semibold text-gray-800">{{ $career->position_title }}</h2>
                     <p class="text-sm text-gray-500 mb-4">{{ $career->lokasi }}</p>
 
-                    <div class="flex items-center gap-2">
+                    <!-- Action Buttons -->
+                    <div class="flex w-full items-center gap-2">
                         <!-- Detail -->
                         <a href="{{ route('career.show', $career->id) }}"
-                            class="flex items-center gap-1 px-3 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200">
+                            class="flex items-center gap-1 px-2 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path
                                     d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
@@ -53,7 +60,7 @@
 
                         <!-- Edit -->
                         <a href="{{ route('career.edit', $career->id) }}"
-                            class="flex items-center gap-1 px-3 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200">
+                            class="flex items-center gap-1 px-2 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                                 viewBox="0 0 24 24">
                                 <path
@@ -69,7 +76,7 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit"
-                                class="delete-btn flex items-center gap-1 px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200">
+                                class="delete-btn flex items-center gap-1 px-2 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                                     viewBox="-3 -2 24 24">
                                     <path
@@ -84,6 +91,7 @@
                 <p class="text-center text-gray-500">Belum ada data career</p>
             @endforelse
         </div>
+
 
         <!-- Versi Desktop (Tabel) -->
         <div class="hidden sm:block overflow-x-auto bg-white shadow rounded-lg mt-4">
@@ -113,7 +121,7 @@
                                 {{ $career->job_type }}
                             </td>
                             <td class="px-4 py-2 text-center">
-                                <div class="flex items-center justify-center gap-2">
+                                <div class="flex w-full items-center justify-center gap-2">
                                     <!-- Detail -->
                                     <a href="{{ route('career.show', $career->id) }}"
                                         class="flex items-center gap-1 px-3 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200">
@@ -148,14 +156,14 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                 fill="currentColor" viewBox="-3 -2 24 24">
                                                 <path d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1
-                                                                 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993
-                                                                 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2
-                                                                 a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10
-                                                                 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0
-                                                                 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7
-                                                                 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2
-                                                                 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1
-                                                                 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
+                                                                     2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993
+                                                                     2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2
+                                                                     a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10
+                                                                     2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0
+                                                                     .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7
+                                                                     8a1 1 0 0 1 1 1v7a1 1 0 0 1-2
+                                                                     0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1
+                                                                     1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
                                             </svg>
                                             Hapus
                                         </button>

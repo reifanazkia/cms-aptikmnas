@@ -43,14 +43,13 @@
             </div>
 
             <!-- Tombol Tambah Agenda -->
-            <div class="text-left md:text-right">
+            <div class="text-left md:text-right mt-2">
                 <a href="{{ route('agenda.create') }}"
                     class="px-4 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">
                     + Tambah Agenda
                 </a>
             </div>
         </div>
-
 
         <!-- Tabel Desktop -->
         <div class="hidden sm:block overflow-x-auto bg-white shadow rounded-lg">

@@ -29,7 +29,8 @@
                         <span class="text-sm font-medium text-emerald-600">#{{ $index + 1 }}</span>
                         <div class="flex space-x-2">
                             <!-- Edit -->
-                            <button onclick="openEditModal({{ $item->id }}, '{{ $item->name }}')"
+                            <button
+                                onclick="openEditModal({{ $item->id }}, '{{ $item->name }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}', '{{ $item->notlp }}', '{{ $item->email }}', '{{ $item->yt }}', '{{ $item->fb }}', '{{ $item->ig }}', '{{ $item->tiktok }}')"
                                 class="p-2 bg-green-100 hover:bg-green-200 text-green-600 rounded-lg shadow">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor"
                                     viewBox="0 0 24 24">
@@ -50,7 +51,21 @@
                             </button>
                         </div>
                     </div>
-                    <p class="text-gray-800 font-semibold">{{ $item->name }}</p>
+                    <div class="flex items-center space-x-3">
+                        @if ($item->image)
+                            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}"
+                                class="w-12 h-12 rounded-lg object-cover">
+                        @endif
+                        <div>
+                            <p class="text-gray-800 font-semibold">{{ $item->name }}</p>
+                            @if ($item->notlp)
+                                <p class="text-gray-500 text-sm">No.Telp: {{ $item->notlp }}</p>
+                            @endif
+                            @if ($item->email)
+                                <p class="text-gray-500 text-sm">Email: {{ $item->email }}</p>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             @empty
                 <div class="p-6 text-center text-emerald-600 bg-emerald-50 rounded-xl">
@@ -64,21 +79,32 @@
             <table class="min-w-full text-sm text-left">
                 <thead class="bg-emerald-50 text-emerald-700 font-semibold">
                     <tr>
-                        <th class="px-6 py-4 w-16 text-center">No</th>
-                        <th class="px-6 py-4 text-center">Nama Kategori</th>
-                        <th class="px-6 py-4 text-center w-48">Aksi</th>
+                        <th class="px-6 py-3 w-16 text-center">No</th>
+                        <th class="px-6 py-3 text-left">Nama Kategori</th>
+                        <th class="px-6 py-3 text-left">Gambar</th>
+                        <th class="px-6 py-3 text-left">No.Telp</th>
+                        <th class="px-6 py-3 text-left">Email</th>
+                        <th class="px-6 py-3 text-center w-48">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-emerald-100">
                     @forelse ($categories as $index => $item)
-                        <tr class="hover:bg-gray-50 border-b border-emerald-50">
+                        <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 text-center">{{ $index + 1 }}</td>
-                            <td class="px-6 py-4 text-center font-medium">{{ $item->name }}</td>
-                            <td class="px-6 py-4 flex space-x-3 justify-center">
-                                <!-- Edit -->
-                                <button onclick="openEditModal({{ $item->id }}, '{{ $item->name }}')"
-                                    class="flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-green-200 text-green-600 text-sm rounded-lg shadow">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor"
+                            <td class="px-6 py-4 font-medium text-gray-800">{{ $item->name }}</td>
+                            <td class="px-6 py-4">
+                                @if ($item->image)
+                                    <img src="{{ asset('storage/' . $item->image) }}"
+                                        class="w-16 h-16 rounded-lg object-cover">
+                                @endif
+                            </td>
+                            <td class="px-6 py-4">{{ $item->notlp ?? '-' }}</td>
+                            <td class="px-6 py-4">{{ $item->email ?? '-' }}</td>
+                            <td class="px-6 py-4 flex justify-center space-x-2">
+                                <button
+                                    onclick="openEditModal({{ $item->id }}, '{{ $item->name }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}', '{{ $item->notlp }}', '{{ $item->email }}')"
+                                    class="flex items-center gap-1 px-3 py-2 bg-green-100 hover:bg-green-200 text-green-600 text-sm rounded-lg shadow">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor"
                                         viewBox="0 0 24 24">
                                         <path
                                             d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583z" />
@@ -87,10 +113,9 @@
                                     </svg>
                                     <span>Edit</span>
                                 </button>
-                                <!-- Hapus -->
                                 <button onclick="confirmDelete({{ $item->id }}, '{{ $item->name }}')"
-                                    class="flex items-center gap-2 px-4 py-2 bg-red-200 hover:bg-red-300 text-red-600 text-sm rounded-lg shadow">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor"
+                                    class="flex items-center gap-1 px-3 py-2 bg-red-200 hover:bg-red-300 text-red-600 text-sm rounded-lg shadow">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor"
                                         viewBox="0 0 24 24">
                                         <path
                                             d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2A3 3 0 0 1 14.994 21H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h4zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7H4.141z" />
@@ -101,7 +126,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="px-6 py-10 text-center text-emerald-600 font-medium">
+                            <td colspan="6" class="px-6 py-10 text-center text-emerald-600 font-medium">
                                 Belum ada data
                             </td>
                         </tr>
@@ -115,12 +140,29 @@
     <div id="addModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
             <h2 class="text-xl font-bold text-emerald-700 mb-4">Tambah Kategori</h2>
-            <form id="addForm" action="{{ route('category-daftar.store') }}" method="POST" class="space-y-4">
+            <form id="addForm" action="{{ route('category-daftar.store') }}" method="POST" enctype="multipart/form-data"
+                class="space-y-4">
                 @csrf
                 <div>
                     <label class="block text-sm font-semibold mb-1">Nama Kategori</label>
-                    <input type="text" name="name" id="addName"
-                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
+                    <input type="text" name="name"
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                        required>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Gambar</label>
+                    <input type="file" name="image" accept="image/*"
+                        class="w-full border border-gray-300 rounded-lg p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">No.Telp</label>
+                    <input type="text" name="notlp"
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Email</label>
+                    <input type="email" name="email"
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeAddModal()"
@@ -136,13 +178,29 @@
     <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
             <h2 class="text-xl font-bold text-emerald-700 mb-4">Edit Kategori</h2>
-            <form id="editForm" method="POST" class="space-y-4">
+            <form id="editForm" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
                 @method('PUT')
                 <div>
                     <label class="block text-sm font-semibold">Nama Kategori</label>
                     <input type="text" name="name" id="editName"
                         class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold">Gambar</label>
+                    <input type="file" name="image" id="editImage" accept="image/*"
+                        class="w-full border border-gray-300 rounded-lg p-2">
+                    <img id="editPreview" src="" class="w-24 h-24 rounded-lg mt-2 object-cover hidden">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold">No.Telp</label>
+                    <input type="text" name="notlp" id="editNotlp"
+                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold">Email</label>
+                    <input type="email" name="email" id="editEmail"
+                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeEditModal()"
@@ -173,10 +231,22 @@
         }
 
         // Modal Edit
-        function openEditModal(id, name) {
-            let url = '{{ route('category-gallery.update', ':id') }}'.replace(':id', id);
+        function openEditModal(id, name, image, notlp, email) {
+            let url = '{{ route('category-daftar.update', ':id') }}'.replace(':id', id);
             document.getElementById('editForm').action = url;
             document.getElementById('editName').value = name;
+            document.getElementById('editNotlp').value = notlp;
+            document.getElementById('editEmail').value = email;
+
+            const preview = document.getElementById('editPreview');
+            if (image) {
+                preview.src = image;
+                preview.classList.remove('hidden');
+            } else {
+                preview.src = '';
+                preview.classList.add('hidden');
+            }
+
             document.getElementById('editModal').classList.remove('hidden');
         }
 
@@ -203,7 +273,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let url = '{{ route('category-gallery.destroy', ':id') }}'.replace(':id', id);
+                    let url = '{{ route('category-daftar.destroy', ':id') }}'.replace(':id', id);
                     const form = document.getElementById('deleteForm');
                     form.action = url;
                     form.submit();
