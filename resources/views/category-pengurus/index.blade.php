@@ -115,12 +115,12 @@
     <div id="addModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
             <h2 class="text-xl font-bold text-emerald-700 mb-4">Tambah Kategori</h2>
-            <form id="addForm" action="{{ route('category-gallery.store') }}" method="POST" class="space-y-4">
+            <form id="addForm" action="{{ route('category-pengurus.store') }}" method="POST" class="space-y-4">
                 @csrf
                 <div>
-                    <label class="block text-sm font-semibold">Nama Kategori</label>
+                    <label class="block text-sm font-semibold mb-1">Nama Kategori</label>
                     <input type="text" name="name" id="addName"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
                 </div>
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeAddModal()"

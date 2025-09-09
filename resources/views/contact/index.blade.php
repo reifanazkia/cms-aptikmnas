@@ -55,9 +55,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($contacts as $contact)
+                        @forelse($contacts as  $index => $contact)
                             <tr class="hover:bg-gray-50 border-b border-emerald-50">
-                                <td class="px-4 py-3">{{ $contact->id }}</td>
+                                <td class="px-4 py-3">{{ $index + 1 }}</td>
                                 <td class="px-4 py-3">{{ $contact->email_dpp }}</td>
                                 <td class="px-4 py-3">{{ $contact->email_dpd }}</td>
                                 <td class="px-4 py-3">{{ Str::limit($contact->alamat, 50) }}</td>
