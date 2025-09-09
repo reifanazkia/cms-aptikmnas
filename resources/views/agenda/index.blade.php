@@ -25,7 +25,7 @@
         <!-- Filter -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:items-center">
             <!-- Filter Lokasi -->
-            <div class="row-start-2 md:row-start-1 flex w-[160px] md:w-full sm:w-auto relative">
+            <div class="w-[160px] md:w-full sm:w-auto relative">
                 <select id="agendaFilter"
                     class="appearance-none w-full sm:w-auto rounded-lg px-4 py-3 pr-10 text-sm text-center border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                     <option value="">Semua Lokasi</option>
@@ -43,7 +43,7 @@
             </div>
 
             <!-- Tombol Tambah Agenda -->
-            <div class="text-left row-start-1 md:row-start-2 md:text-right">
+            <div class="text-left md:text-right">
                 <a href="{{ route('agenda.create') }}"
                     class="px-4 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition">
                     + Tambah Agenda

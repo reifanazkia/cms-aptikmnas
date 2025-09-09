@@ -67,11 +67,11 @@
                 <table class="min-w-full text-sm text-left">
                     <thead>
                         <tr class="bg-emerald-100 text-emerald-900 font-semibold">
-                            <th class="px-4 py-3 text-center">#</th>
+                            <th class="px-4 py-3 text-center">No</th>
                             <th class="px-4 py-3 text-center">Judul</th>
                             <th class="px-4 py-3 text-center">Kategori</th>
                             <th class="px-4 py-3 text-center">Tanggal Publikasi</th>
-                            <th class="px-4 py-3 text-center">Aksi</th>
+                            <th class="px-4 py-3 text-center w-100">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -99,10 +99,12 @@
                                         <a href="{{ route('podcasts.edit', $podcast->id) }}"
                                             class="p-2 rounded-lg flex items-center gap-1 bg-green-100 text-green-600 hover:bg-green-200 transition"
                                             title="Edit">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor"
-                                                viewBox="0 0 24 24">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24" fill="currentColor">
                                                 <path
-                                                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41L18.37 3.29a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                                                    d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                                <path
+                                                    d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
                                             </svg>
                                             Edit
                                         </a>
@@ -113,10 +115,10 @@
                                             <button type="button"
                                                 class="p-2 rounded-lg flex items-center gap-1 bg-red-100 text-red-600 hover:bg-red-200 transition btn-delete"
                                                 data-action="{{ route('podcasts.destroy', $podcast->id) }}" title="Hapus">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor"
-                                                    viewBox="0 0 24 24">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                    fill="currentColor" viewBox="-3 -2 24 24">
                                                     <path
-                                                        d="M9 3v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5V3H9zm2 5h2v9h-2V8zm-4 0h2v9H7V8zm8 0h2v9h-2V8z" />
+                                                        d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
                                                 </svg>
                                                 Delete
                                             </button>
@@ -172,12 +174,12 @@
                             <!-- Edit -->
                             <a href="{{ route('podcasts.edit', $podcast->id) }}"
                                 class="inline-flex items-center gap-1 px-3 py-1 text-sm rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M11 5h2m-1-1v2m-7 6h2m-1-1v2m9 2h2m-1-1v2m-7 2h2m-1-1v2" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12.003 2.25a9.753 9.753 0 019.745 9.746 9.753 9.753 0 01-9.745 9.745 9.753 9.753 0 01-9.745-9.745 9.753 9.753 0 019.745-9.746z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                    viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                    <path
+                                        d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
                                 </svg>
                                 <span>Edit</span>
                             </a>
@@ -190,10 +192,10 @@
                                 <button type="button"
                                     class="inline-flex items-center gap-1 px-3 py-1 text-sm rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition btn-delete"
                                     data-action="{{ route('podcasts.destroy', $podcast->id) }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        fill="currentColor" viewBox="-3 -2 24 24">
+                                        <path
+                                            d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
                                     </svg>
                                     <span>Delete</span>
                                 </button>
