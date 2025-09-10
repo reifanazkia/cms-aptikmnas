@@ -107,11 +107,14 @@
 
                 <!-- Kategori -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label for="category_daftar_id" class="block text-sm font-medium text-gray-700">Kategori
-                            Daftar</label>
+                    <div class="relative">
+                        <label for="category_daftar_id" class="block text-sm font-medium text-gray-700">
+                            Kategori Daftar
+                        </label>
                         <select id="category_daftar_id" name="category_daftar_id"
-                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-emerald-400 focus:border-emerald-500 @error('category_daftar_id') border-red-500 @enderror">
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm pr-10
+               appearance-none focus:ring-emerald-400 focus:border-emerald-500
+               @error('category_daftar_id') border-red-500 @enderror">
                             <option value="">Pilih Kategori Daftar</option>
                             @foreach ($categoryDaftar as $category)
                                 <option value="{{ $category->id }}"
@@ -120,16 +123,29 @@
                                 </option>
                             @endforeach
                         </select>
+
+                        <!-- SVG icon -->
+                        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center mt-6">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+
                         @error('category_daftar_id')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div>
-                        <label for="category_pengurus_id" class="block text-sm font-medium text-gray-700">Kategori
-                            Pengurus</label>
+
+                    <div class="relative">
+                        <label for="category_pengurus_id" class="block text-sm font-medium text-gray-700">
+                            Kategori Pengurus
+                        </label>
                         <select id="category_pengurus_id" name="category_pengurus_id"
-                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-emerald-400 focus:border-emerald-500 @error('category_pengurus_id') border-red-500 @enderror">
+                            class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm pr-10
+               appearance-none focus:ring-emerald-400 focus:border-emerald-500
+               @error('category_pengurus_id') border-red-500 @enderror">
                             <option value="">Pilih Kategori Pengurus</option>
                             @foreach ($categoryPengurus as $category)
                                 <option value="{{ $category->id }}"
@@ -138,10 +154,20 @@
                                 </option>
                             @endforeach
                         </select>
+
+                        <!-- Custom SVG dropdown icon -->
+                        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center mt-6">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+
                         @error('category_pengurus_id')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+
                 </div>
 
                 <!-- Foto Profil -->

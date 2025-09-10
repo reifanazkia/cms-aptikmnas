@@ -115,16 +115,16 @@
     <div id="addModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
             <h2 class="text-xl font-bold text-emerald-700 mb-4">Tambah Kategori</h2>
-            <form id="addForm" action="{{ route('category-gallery.store') }}" method="POST" class="space-y-4">
+            <form id="addForm" action="{{ route('category-aboutus.store') }}" method="POST" class="space-y-4">
                 @csrf
                 <div>
-                    <label class="block text-sm font-semibold">Nama Kategori</label>
+                    <label class="block text-sm font-semibold mb-1">Nama Kategori</label>
                     <input type="text" name="name" id="addName"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
                 </div>
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeAddModal()"
-                        class="px-5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Batal</button>
+                        class="px-5 py-2 rounded-lg  bg-gray-100 hover:bg-gray-200">Batal</button>
                     <button type="submit"
                         class="px-5 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Simpan</button>
                 </div>
@@ -140,15 +140,15 @@
                 @csrf
                 @method('PUT')
                 <div>
-                    <label class="block text-sm font-semibold">Nama Kategori</label>
+                    <label class="block text-sm font-semibold mb-1">Nama Kategori</label>
                     <input type="text" name="name" id="editName"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
                 </div>
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeEditModal()"
                         class="px-5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Batal</button>
                     <button type="submit"
-                        class="px-5 py-2 rounded-lg bg-amber-500 text-white font-semibold hover:bg-amber-600">Update</button>
+                        class="px-5 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Update</button>
                 </div>
             </form>
         </div>
@@ -174,7 +174,7 @@
 
         // Modal Edit
         function openEditModal(id, name) {
-            let url = '{{ route('category-gallery.update', ':id') }}'.replace(':id', id);
+            let url = '{{ route('category-aboutus.update', ':id') }}'.replace(':id', id);
             document.getElementById('editForm').action = url;
             document.getElementById('editName').value = name;
             document.getElementById('editModal').classList.remove('hidden');
@@ -203,7 +203,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let url = '{{ route('category-gallery.destroy', ':id') }}'.replace(':id', id);
+                    let url = '{{ route('category-aboutus.destroy', ':id') }}'.replace(':id', id);
                     const form = document.getElementById('deleteForm');
                     form.action = url;
                     form.submit();

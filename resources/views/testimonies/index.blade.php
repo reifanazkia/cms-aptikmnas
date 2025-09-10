@@ -97,9 +97,7 @@
                         <th class="px-4 py-2 text-center">Gambar</th>
                         <th class="px-4 py-2 text-center">Nama</th>
                         <th class="px-4 py-2 text-center">Judul</th>
-                        <th class="px-4 py-2 text-center">Kategori</th>
-                        <th class="px-4 py-2 text-center">Homepage</th>
-                        <th class="px-4 py-2 text-center">Aksi</th>
+                        <th class="px-4 py-2 text-center w-70">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -112,16 +110,6 @@
                             </td>
                             <td class="px-4 py-2 text-center">{{ $testimony->name }}</td>
                             <td class="px-4 py-2 text-center">{{ $testimony->title }}</td>
-                            <td class="px-4 py-2 text-center">
-                                {{ $testimony->category?->name ?? '-' }}
-                            </td>
-                            <td class="px-4 py-2 text-center">
-                                @if ($testimony->display_homepage)
-                                    <span class="px-2 py-1 text-xs bg-emerald-100 text-emerald-700 rounded">Ya</span>
-                                @else
-                                    <span class="px-2 py-1 text-xs bg-red-100 text-red-700 rounded">Tidak</span>
-                                @endif
-                            </td>
                             <td class="px-4 py-2 text-center">
                                 <div class="flex items-center justify-center gap-2">
                                     <!-- Tombol Edit -->
@@ -156,12 +144,13 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-4 py-4 text-center text-gray-500">Belum ada data testimony</td>
+                            <td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada data testimony</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+
 
         <!-- Pagination -->
         <div>

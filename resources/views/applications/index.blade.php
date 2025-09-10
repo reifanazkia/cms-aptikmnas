@@ -39,6 +39,26 @@
             </div>
         </div>
 
+        <!-- Tombol Bulk Delete (default hidden) -->
+        <form id="bulkDeleteForm" action="{{ route('applications.bulk-delete') }}" method="POST" class="hidden">
+            @csrf
+            @method('DELETE')
+
+            <button type="submit"
+                class="inline-flex items-center gap-2 px-4 py-2
+               bg-red-600 hover:bg-red-700 active:bg-red-800
+               text-white text-sm font-medium rounded-lg shadow-md
+               transition duration-200 ease-in-out transform hover:scale-[1.02]">
+                <!-- SVG Trash Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M10 3h4a1 1 0 011 1v2H9V4a1 1 0 011-1z" />
+                </svg>
+                Hapus Terpilih
+            </button>
+        </form>
+
 
         <!-- Tabel untuk Desktop -->
         <form id="bulkDeleteForm" method="POST" action="{{ route('applications.bulk-delete') }}">
@@ -46,7 +66,7 @@
             @method('DELETE')
 
             <!-- Table View -->
-            <div class="overflow-x-auto bg-white rounded-2xl shadow-lg border border-emerald-100 hidden md:block">
+            <div class="overflow-x-auto bg-white rounded-lg shadow-sm border border-emerald-100 hidden md:block">
                 <table class="min-w-full text-sm divide-y divide-emerald-100">
                     <thead class="bg-emerald-100 text-emerald-800 uppercase text-xs font-semibold">
                         <tr>
@@ -56,8 +76,8 @@
                             <th class="px-4 py-3 text-center">Posisi</th>
                             <th class="px-4 py-3 text-center">Nama</th>
                             <th class="px-4 py-3 text-center">Email</th>
-                            <th class="px-4 py-3 text-center">Telepon</th>
-                            <th class="px-4 py-3 text-center">File</th>
+                            {{-- <th class="px-4 py-3 text-center">Telepon</th>
+                            <th class="px-4 py-3 text-center">File</th> --}}
                             <th class="px-4 py-3 text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -70,7 +90,7 @@
                                 <td class="px-4 py-2 text-center">{{ $application->career->position_title ?? '-' }}</td>
                                 <td class="px-4 py-2 text-center">{{ $application->nama }}</td>
                                 <td class="px-4 py-2 text-center">{{ $application->email }}</td>
-                                <td class="px-4 py-2 text-center">{{ $application->no_telepon }}</td>
+                                {{-- <td class="px-4 py-2 text-center">{{ $application->no_telepon }}</td>
                                 <td class="px-4 py-2 text-center">
                                     @if ($application->file)
                                         <a href="{{ route('applications.downloadFile', $application->id) }}"
@@ -80,7 +100,7 @@
                                     @else
                                         <span class="text-gray-400">-</span>
                                     @endif
-                                </td>
+                                </td> --}}
                                 <td class="px-4 py-2 text-center flex justify-center gap-2">
                                     <a href="{{ route('applications.edit', $application->id) }}"
                                         class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-xs font-medium transition">
@@ -191,29 +211,20 @@
                 @endforelse
             </div>
 
-
             <!-- Bulk Delete & Pagination -->
-            <div class="flex flex-col sm:flex-row justify-between items-center mt-4 gap-2">
-                <button id="bulkDeleteBtn" type="button"
-                    class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 hidden transition flex items-center gap-1">
-                    Hapus Terpilih
-                </button>
-
-                <div class="mt-2 sm:mt-0">
+            <div class="flex justify-end mt-4">
+                <div>
                     {{ $applications->links() }}
                 </div>
             </div>
         </form>
     </div>
 
-    <!-- SweetAlert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Script -->
     <script>
         const selectAll = document.getElementById('selectAll');
         const checkboxes = document.querySelectorAll('input[name="ids[]"]');
-        const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
         const bulkDeleteForm = document.getElementById('bulkDeleteForm');
-        const deleteBtns = document.querySelectorAll('.delete-btn');
 
         if (selectAll) {
             selectAll.addEventListener('change', function(e) {
@@ -225,50 +236,12 @@
         checkboxes.forEach(cb => cb.addEventListener('change', toggleBulkDelete));
 
         function toggleBulkDelete() {
-            const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
-            bulkDeleteBtn.classList.toggle('hidden', !anyChecked);
-        }
-
-        // Confirm delete single
-        deleteBtns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const form = this.closest('form');
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: "Data lamaran ini akan dihapus!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#dc2626',
-                    cancelButtonColor: '#6b7280',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-        });
-
-        // Confirm bulk delete
-        if (bulkDeleteBtn) {
-            bulkDeleteBtn.addEventListener('click', function() {
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: "Semua data lamaran terpilih akan dihapus!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#dc2626',
-                    cancelButtonColor: '#6b7280',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        bulkDeleteForm.submit();
-                    }
-                });
-            });
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            if (checkedCount > 0) {
+                bulkDeleteForm.classList.remove('hidden');
+            } else {
+                bulkDeleteForm.classList.add('hidden');
+            }
         }
     </script>
 @endsection

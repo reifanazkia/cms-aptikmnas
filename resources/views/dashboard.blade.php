@@ -1,9 +1,9 @@
 @extends('layouts.app', ['title' => 'Dashboard'])
 
 @section('content')
-    <div class="min-h-screen bg-gradient-to-r from-emerald-50 to-emerald-100 p-2 sm:p-4 lg:p-6">
+    <div class="min-h-screen  p-2 sm:p-4 lg:p-6">
         <!-- Hero Section -->
-        <div class="bg-white/70 backdrop-blur-md rounded-2xl shadow-md p-6 sm:p-10 text-center space-y-4 sm:space-y-6">
+        <div class="bg-gradient-to-r from-emerald-50 to-emerald-100 backdrop-blur-md rounded-2xl shadow-md p-6 sm:p-10 text-center space-y-4 sm:space-y-6">
 
             <!-- Badge -->
             <span

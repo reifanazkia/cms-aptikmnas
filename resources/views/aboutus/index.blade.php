@@ -23,21 +23,21 @@
         @endif
 
 
-        <!-- Filter + Button -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 justify-between sm:items-center">
+        <!-- Header Filter + Button -->
+        <div class="grid grid-cols-1 md:grid-cols-2 md:items-center md:justify-between gap-4 mb-6">
 
-            <!-- Select Kategori -->
-            <div class="row-cols-2 md:col-start-1 md:row-start-1 flex w-[160px] md:w-full sm:w-auto text-left relative">
-                <select id="categoryFilter"
-                    class="appearance-none rounded-lg px-4 py-2 pr-10 text-sm text-center border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 w-full sm:w-auto">
-                    <option value="">Semua Kategori</option>
-                    @foreach ($categories as $cat)
-                        <option value="{{ $cat->id }}">{{ $cat->nama }}</option>
+            <!-- Select Lokasi -->
+            <div class="relative w-1/2 md:w-39">
+                <select id="locationFilter"
+                    class="appearance-none w-full rounded-lg px-4 py-2 pr-10 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    <option value="">Semua Lokasi</option>
+                    @foreach ($categories as $loc)
+                        <option value="{{ $loc->id }}">{{ $loc->nama }}</option>
                     @endforeach
                 </select>
 
-                <!-- Custom Arrow SVG -->
-                <div class="absolute left-34 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <!-- Custom Arrow -->
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -45,23 +45,18 @@
                 </div>
             </div>
 
-            <!-- Tombol Tambah Data -->
-            <div class="text-left md:text-right row-start-1 md:col-start-2 md:row-start-1">
-                <a href="{{ route('aboutus.create') }}"
-                    class="inline-flex w-[160px] items-center px-4 py-2 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
-                    <!-- SVG Plus Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
+            <!-- Tombol Tambah -->
+            <div class="md:text-right">
+                <a href="{{ route('agenda.create') }}"
+                    class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                     </svg>
-                    Tambah Data
+                    Tambah Agenda
                 </a>
             </div>
-
-
         </div>
-
-
 
         <!-- Versi Mobile (Card) -->
         <div class="sm:hidden space-y-4">
@@ -80,10 +75,10 @@
                                 class="h-20 w-28 flex items-center justify-center bg-gray-100 text-gray-400 rounded overflow-hidden flex-shrink-0">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2
-                                                                   l1.586-1.586a2 2 0 012.828 0L20 14
-                                                                   m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2
-                                                                   0 00-2-2H6a2 2 0 00-2 2v12a2 2
-                                                                   0 002 2z" />
+                                                                                               l1.586-1.586a2 2 0 012.828 0L20 14
+                                                                                               m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2
+                                                                                               0 00-2-2H6a2 2 0 00-2 2v12a2 2
+                                                                                               0 002 2z" />
                                 </svg>
                             </div>
                         @endif
@@ -109,12 +104,13 @@
                     <div class="border-t border-gray-100 mt-3 pt-3 flex justify-end gap-2">
                         <!-- Tombol Edit -->
                         <a href="{{ route('aboutus.edit', $item) }}"
-                            class="px-3 py-1.5 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 text-xs inline-flex items-center gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="currentColor"
+                            class="px-3 py-1.5 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 text-xs inline-flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                                 viewBox="0 0 24 24">
-                                <path d="M4 21h4l10.586-10.586a1 1 0
-                                                           000-1.414L15 4a1 1 0 00-1.414
-                                                           0L3 14.586V19a2 2 0 002 2z" />
+                                <path
+                                    d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                <path
+                                    d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
                             </svg>
                             Edit
                         </a>
@@ -129,14 +125,15 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24"
                                     fill="currentColor">
                                     <path fill-rule="evenodd" d="M9 3a1 1 0 00-.894.553L7.382
-                                                               5H4a1 1 0 100 2h1v12a2 2
-                                                               0 002 2h10a2 2 0 002-2V7h1a1
-                                                               1 0 100-2h-3.382l-.724-1.447A1
-                                                               1 0 0015 3H9zm2 6a1 1 0 112
-                                                               0v8a1 1 0 11-2 0V9zm-4 0a1
-                                                               1 0 112 0v8a1 1 0 11-2
-                                                               0V9zm8 0a1 1 0 112
-                                                               0v8a1 1 0 11-2 0V9z" clip-rule="evenodd" />
+                                                                                           5H4a1 1 0 100 2h1v12a2 2
+                                                                                           0 002 2h10a2 2 0 002-2V7h1a1
+                                                                                           1 0 100-2h-3.382l-.724-1.447A1
+                                                                                           1 0 0015 3H9zm2 6a1 1 0 112
+                                                                                           0v8a1 1 0 11-2 0V9zm-4 0a1
+                                                                                           1 0 112 0v8a1 1 0 11-2
+                                                                                           0V9zm8 0a1 1 0 112
+                                                                                           0v8a1 1 0 11-2 0V9z"
+                                        clip-rule="evenodd" />
                                 </svg>
                                 Hapus
                             </button>
@@ -151,60 +148,85 @@
         </div>
 
         <!-- Versi Desktop (Tabel) -->
-        <div class="hidden sm:block overflow-x-auto">
-            <table class="w-full border border-gray-200 rounded-lg overflow-hidden">
-                <thead class="bg-gray-100 text-gray-700 text-sm">
+        <!-- Table View About Us -->
+        <div class="overflow-x-auto bg-white rounded-lg shadow-sm border border-emerald-100 hidden md:block">
+            <table class="min-w-full text-sm divide-y divide-emerald-100">
+                <thead class="bg-emerald-100 text-emerald-800 uppercase text-xs font-semibold">
                     <tr>
                         <th class="px-4 py-3 text-center">Gambar</th>
                         <th class="px-4 py-3 text-center">Judul</th>
                         <th class="px-4 py-3 text-center">Deskripsi</th>
                         <th class="px-4 py-3 text-center">Kategori</th>
-                        <th class="px-4 py-3 text-center">Home</th>
-                        <th class="px-4 py-3 text-center">Aksi</th>
+                        {{-- <th class="px-4 py-3 text-center">Home</th> --}}
+                        <th class="px-4 py-3 text-center w-90">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="aboutusTable" class="divide-y divide-gray-200 text-sm">
+                <tbody class="bg-white divide-y divide-emerald-100">
                     @forelse($aboutus as $item)
-                        <tr class="aboutus-row" data-category="{{ $item->category_aboutus_id }}">
-                            <td class="px-4 py-3">
+                        <tr class="hover:bg-emerald-50 transition">
+                            <td class="px-4 py-3 text-center">
                                 @if ($item->image)
                                     <img src="{{ asset($item->image) }}" alt="{{ $item->title }}"
-                                        class="w-20 h-14 object-cover rounded-md">
+                                        class="w-20 h-14 object-cover rounded-md mx-auto">
                                 @else
                                     <div
-                                        class="w-20 h-14 bg-gray-100 flex items-center justify-center text-gray-400 text-xs rounded-md">
+                                        class="w-20 h-14 bg-gray-100 flex items-center justify-center text-gray-400 text-xs rounded-md mx-auto">
                                         No Image
                                     </div>
                                 @endif
                             </td>
-                            <td class="px-4 py-3 text-center font-medium text-emerald-700">{{ $item->title }}</td>
-                            <td class="px-4 py-3 text-center text-gray-500 max-w-xs truncate">{{ strip_tags($item->description) }}</td>
-
-                            <td class="px-4 py-3 text-center">{{ $item->category->nama ?? '-' }}</td>
-                            <td class="px-4 py-3 text-center">
-                                @if ($item->display_on_home)
-                                    <span class="px-2 py-1 bg-emerald-100 text-emerald-600 rounded-full text-xs">Ya</span>
-                                @else
-                                    <span class="px-2 py-1 bg-gray-100 text-gray-500 rounded-full text-xs">Tidak</span>
-                                @endif
+                            <td class="px-4 py-3 text-center font-medium text-emerald-700">
+                                {{ $item->title }}
                             </td>
-                            <td class="px-4 py-3 text-center space-x-2">
-                                <a href="{{ route('aboutus.edit', $item) }}"
-                                    class="px-3 py-1 bg-blue-500 text-white text-xs rounded-lg hover:bg-blue-600">Edit</a>
-                                <form action="{{ route('aboutus.destroy', $item) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="px-3 py-1 bg-red-500 text-white text-xs rounded-lg hover:bg-red-600">
-                                        Hapus
-                                    </button>
-                                </form>
+                            <td class="px-4 py-3 text-center text-gray-500 max-w-xs truncate">
+                                {{ strip_tags($item->description) }}
+                            </td>
+                            <td class="px-4 py-3 text-center">{{ $item->category->name ?? '-' }}</td>
+                            {{-- <td class="px-4 py-3 text-center">
+                                @if ($item->display_on_home)
+                                    <span
+                                        class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium">
+                                        Ya
+                                    </span>
+                                @else
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-500 rounded-full text-xs font-medium">
+                                        Tidak
+                                    </span>
+                                @endif
+                            </td> --}}
+                            <td class="px-4 py-3 text-center align-middle">
+                                <div class="flex justify-center gap-2 mt-2">
+                                    <a href="{{ route('aboutus.edit', $item) }}"
+                                        class="px-3 py-2 flex items-center gap-1 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 text-xs font-medium transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                            fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                            <path
+                                                d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                        </svg>
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('aboutus.destroy', $item) }}" method="POST"
+                                        class="inline delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button"
+                                            class="px-3 py-2 flex items-center gap-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-xs font-medium transition delete-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                fill="currentColor" viewBox="-3 -2 24 24">
+                                                <path
+                                                    d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
+                                            </svg>
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-4 py-6 text-center text-gray-500 bg-gray-50">
+                            <td colspan="6" class="px-4 py-6 text-center text-gray-400">
                                 Belum ada data "Tentang Kami".
                             </td>
                         </tr>

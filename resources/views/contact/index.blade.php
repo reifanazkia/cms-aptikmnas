@@ -19,8 +19,7 @@
             <!-- Search & Add -->
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
                 <div class="text-left">
-                    <form method="GET" action="{{ route('contact.index') }}"
-                        class="flex items-center gap-2">
+                    <form method="GET" action="{{ route('contact.index') }}" class="flex items-center gap-2">
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari kontak..."
                             class="text-left w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                         <button type="submit"
@@ -56,9 +55,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($contacts as $contact)
+                        @forelse($contacts as  $index => $contact)
                             <tr class="hover:bg-gray-50 border-b border-emerald-50">
-                                <td class="px-4 py-3">{{ $contact->id }}</td>
+                                <td class="px-4 py-3">{{ $index + 1 }}</td>
                                 <td class="px-4 py-3">{{ $contact->email_dpp }}</td>
                                 <td class="px-4 py-3">{{ $contact->email_dpd }}</td>
                                 <td class="px-4 py-3">{{ Str::limit($contact->alamat, 50) }}</td>
@@ -66,14 +65,28 @@
                                 <td class="px-4 py-2 text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         <a href="{{ route('contact.edit', $contact->id) }}"
-                                            class="px-3 py-1 rounded-lg bg-green-100 text-green-600 hover:bg-green-200 text-sm">Edit</a>
+                                            class="px-3 py-1 flex items-center gap-1 rounded-lg bg-green-100 text-green-600 hover:bg-green-200 text-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                fill="currentColor" viewBox="0 0 24 24">
+                                                <path
+                                                    d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                                <path
+                                                    d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                            </svg>
+                                            Edit
+                                        </a>
                                         <form action="{{ route('contact.destroy', $contact->id) }}" method="POST"
                                             class="inline-block form-delete">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button"
-                                                class="btn-delete px-3 py-1 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 text-sm"
+                                                class="btn-delete px-3 py-1 flex items-center gap-1 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 text-sm"
                                                 data-action="{{ route('contact.destroy', $contact->id) }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                    fill="currentColor" viewBox="-3 -2 24 24">
+                                                    <path
+                                                        d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
+                                                </svg>
                                                 Delete
                                             </button>
                                         </form>
@@ -89,31 +102,68 @@
                 </table>
             </div>
 
-            <!-- Mobile Card -->
             <div class="grid gap-4 md:hidden">
                 @forelse($contacts as $contact)
-                    <div class="border border-emerald-100 rounded-xl p-4 shadow-sm bg-white space-y-2">
-                        <div class="flex justify-between items-center">
-                            <h2 class="font-semibold text-emerald-700">#{{ $contact->id }}</h2>
-                            <div class="flex gap-2">
-                                <a href="{{ route('contact.edit', $contact->id) }}"
-                                    class="px-3 py-1 rounded-lg bg-green-100 text-green-600 hover:bg-green-200 text-sm">Edit</a>
-                                <form action="{{ route('contact.destroy', $contact->id) }}" method="POST"
-                                    class="inline-block form-delete">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button"
-                                        class="btn-delete px-3 py-1 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 text-sm"
-                                        data-action="{{ route('contact.destroy', $contact->id) }}">
-                                        Delete
-                                    </button>
-                                </form>
+                    <div class="bg-white border border-emerald-100 rounded-2xl shadow p-5 space-y-4">
+
+                        <!-- Header -->
+                        <h2 class="text-lg font-semibold text-emerald-700">
+                            Kontak #{{ $contact->id }}
+                        </h2>
+
+                        <!-- Body -->
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p class="text-gray-500 font-medium">Email DPP</p>
+                                <p class="text-gray-800">{{ $contact->email_dpp }}</p>
+                            </div>
+
+                            <div>
+                                <p class="text-gray-500 font-medium">Phone</p>
+                                <p class="text-gray-800">{{ $contact->notlp }}</p>
+                            </div>
+
+                            <div class="col-span-2">
+                                <p class="text-gray-500 font-medium">Alamat</p>
+                                <p class="text-gray-800">{{ Str::limit($contact->alamat, 60) }}</p>
+                            </div>
+
+                            <div class="col-span-2">
+                                <p class="text-gray-500 font-medium">Email DPD</p>
+                                <p class="text-gray-800">{{ $contact->email_dpd }}</p>
                             </div>
                         </div>
-                        <p><span class="font-medium">Email DPP:</span> {{ $contact->email_dpp }}</p>
-                        <p><span class="font-medium">Email DPD:</span> {{ $contact->email_dpd }}</p>
-                        <p><span class="font-medium">Alamat:</span> {{ Str::limit($contact->alamat, 50) }}</p>
-                        <p><span class="font-medium">No Telepon:</span> {{ $contact->notlp }}</p>
+
+                        <!-- Actions -->
+                        <div class="flex items-center justify-end gap-3 pt-3 border-t border-gray-100">
+                            <a href="{{ route('contact.edit', $contact->id) }}"
+                                class="inline-flex items-center gap-2 px-3 py-2 flex items-center gap-1 rounded-lg text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path
+                                        d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                    <path
+                                        d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                </svg>
+                                Edit
+                            </a>
+
+                            <form action="{{ route('contact.destroy', $contact->id) }}" method="POST"
+                                class="inline-block form-delete">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button"
+                                    class="inline-flex items-center gap-2 px-3 py-2 flex items-center gap-1 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition btn-delete"
+                                    data-action="{{ route('contact.destroy', $contact->id) }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        fill="currentColor" viewBox="-3 -2 24 24">
+                                        <path
+                                            d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
+                                    </svg>
+                                    Hapus
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 @empty
                     <div class="text-center text-gray-500 py-6">Belum ada data kontak.</div>
