@@ -29,7 +29,8 @@
                         <span class="text-sm font-medium text-emerald-600">#{{ $index + 1 }}</span>
                         <div class="flex space-x-2">
                             <!-- Edit -->
-                            <button onclick="openEditModal({{ $item->id }}, '{{ $item->name }}')"
+                            <button
+                                onclick="openEditModal({{ $item->id }}, '{{ $item->name }}', '{{ $item->notlp }}', '{{ $item->email }}', '{{ $item->yt }}', '{{ $item->fb }}', '{{ $item->ig }}', '{{ $item->tiktok }}')"
                                 class="p-2 bg-green-100 hover:bg-green-200 text-green-600 rounded-lg shadow">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor"
                                     viewBox="0 0 24 24">
@@ -51,6 +52,7 @@
                         </div>
                     </div>
                     <p class="text-gray-800 font-semibold">{{ $item->name }}</p>
+                    <p class="text-gray-600 text-sm">Telp: {{ $item->notlp }} | Email: {{ $item->email }}</p>
                 </div>
             @empty
                 <div class="p-6 text-center text-emerald-600 bg-emerald-50 rounded-xl">
@@ -66,6 +68,7 @@
                     <tr>
                         <th class="px-6 py-4 w-16 text-center">No</th>
                         <th class="px-6 py-4 text-center">Nama Kategori</th>
+                        <th class="px-6 py-4 text-center">Telp / Email</th>
                         <th class="px-6 py-4 text-center w-48">Aksi</th>
                     </tr>
                 </thead>
@@ -74,9 +77,11 @@
                         <tr class="hover:bg-gray-50 border-b border-emerald-50">
                             <td class="px-6 py-4 text-center">{{ $index + 1 }}</td>
                             <td class="px-6 py-4 text-center font-medium">{{ $item->name }}</td>
+                            <td class="px-6 py-4 text-center text-sm">{{ $item->notlp }} / {{ $item->email }}</td>
                             <td class="px-6 py-4 flex space-x-3 justify-center">
                                 <!-- Edit -->
-                                <button onclick="openEditModal({{ $item->id }}, '{{ $item->name }}')"
+                                <button
+                                    onclick="openEditModal({{ $item->id }}, '{{ $item->name }}', '{{ $item->notlp }}', '{{ $item->email }}', '{{ $item->yt }}', '{{ $item->fb }}', '{{ $item->ig }}', '{{ $item->tiktok }}')"
                                     class="flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-green-200 text-green-600 text-sm rounded-lg shadow">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor"
                                         viewBox="0 0 24 24">
@@ -101,7 +106,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="px-6 py-10 text-center text-emerald-600 font-medium">
+                            <td colspan="4" class="px-6 py-10 text-center text-emerald-600 font-medium">
                                 Belum ada data
                             </td>
                         </tr>
@@ -115,12 +120,52 @@
     <div id="addModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
             <h2 class="text-xl font-bold text-emerald-700 mb-4">Tambah Kategori</h2>
-            <form id="addForm" action="{{ route('category-gallery.store') }}" method="POST" class="space-y-4">
+            <form id="addForm" action="{{ route('category-pengurus.store') }}" method="POST"
+                enctype="multipart/form-data" class="space-y-4">
                 @csrf
-                <div>
-                    <label class="block text-sm font-semibold">Nama Kategori</label>
-                    <input type="text" name="name" id="addName"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold">Nama Kategori</label>
+                        <input type="text" name="name"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">No. Telp</label>
+                        <input type="text" name="notlp"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Email</label>
+                        <input type="email" name="email"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Image</label>
+                        <input type="file" name="image" accept="image/*" class="rounded-lg w-full px-2 py-2 border border-gray-300" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Youtube</label>
+                        <input type="text" name="yt"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Facebook</label>
+                        <input type="text" name="fb"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Instagram</label>
+                        <input type="text" name="ig"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">TikTok</label>
+                        <input type="text" name="tiktok"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
                 </div>
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeAddModal()"
@@ -136,13 +181,53 @@
     <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
             <h2 class="text-xl font-bold text-emerald-700 mb-4">Edit Kategori</h2>
-            <form id="editForm" method="POST" class="space-y-4">
+            <form id="editForm" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
                 @method('PUT')
-                <div>
-                    <label class="block text-sm font-semibold">Nama Kategori</label>
-                    <input type="text" name="name" id="editName"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold">Nama Kategori</label>
+                        <input type="text" name="name" id="editName"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">No. Telp</label>
+                        <input type="text" name="notlp" id="editNotlp"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Email</label>
+                        <input type="email" name="email" id="editEmail"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Image</label>
+                        <input type="file" name="image" accept="image/*"
+                            class="rounded-lg w-full px-2 py-2 border border-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Youtube</label>
+                        <input type="text" name="yt" id="editYt"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Facebook</label>
+                        <input type="text" name="fb" id="editFb"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Instagram</label>
+                        <input type="text" name="ig" id="editIg"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">TikTok</label>
+                        <input type="text" name="tiktok" id="editTiktok"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
                 </div>
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeEditModal()"
@@ -173,10 +258,16 @@
         }
 
         // Modal Edit
-        function openEditModal(id, name) {
-            let url = '{{ route('category-gallery.update', ':id') }}'.replace(':id', id);
+        function openEditModal(id, name, notlp, email, yt, fb, ig, tiktok) {
+            let url = '{{ route('category-pengurus.update', ':id') }}'.replace(':id', id);
             document.getElementById('editForm').action = url;
             document.getElementById('editName').value = name;
+            document.getElementById('editNotlp').value = notlp;
+            document.getElementById('editEmail').value = email;
+            document.getElementById('editYt').value = yt;
+            document.getElementById('editFb').value = fb;
+            document.getElementById('editIg').value = ig;
+            document.getElementById('editTiktok').value = tiktok;
             document.getElementById('editModal').classList.remove('hidden');
         }
 
@@ -184,13 +275,11 @@
             document.getElementById('editModal').classList.add('hidden');
         }
 
-        // Tutup modal klik luar
         document.addEventListener('click', (e) => {
             if (e.target.id === 'addModal') closeAddModal();
             if (e.target.id === 'editModal') closeEditModal();
         });
 
-        // Konfirmasi hapus
         function confirmDelete(id, name) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
@@ -203,7 +292,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let url = '{{ route('category-gallery.destroy', ':id') }}'.replace(':id', id);
+                    let url = '{{ route('category-pengurus.destroy', ':id') }}'.replace(':id', id);
                     const form = document.getElementById('deleteForm');
                     form.action = url;
                     form.submit();
@@ -211,7 +300,6 @@
             });
         }
 
-        // Notifikasi sukses
         document.addEventListener('DOMContentLoaded', () => {
             const successMessage = document.getElementById('success-message');
             if (successMessage && successMessage.textContent.trim() !== '') {

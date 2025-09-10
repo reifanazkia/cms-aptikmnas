@@ -10,7 +10,7 @@
 
 <body class="min-h-screen bg-gray-100 flex items-center justify-center">
 
-    <div class="w-full px-6">
+    <div class="w-full">
         {{-- Tempat konten halaman auth --}}
         @yield('content')
     </div>

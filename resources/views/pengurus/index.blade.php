@@ -8,7 +8,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 items-center justify-between border-b border-emerald-100 pb-4">
                 <div class=>
                     <h1 class="text-2xl font-bold text-emerald-700 flex items-center gap-2">
-                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 20 20">
                             <path fill="currentColor" fill-rule="evenodd"
                                 d="M2 4.75A.75.75 0 0 1 2.75 4h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 4.75M2 10a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 10m0 5.25a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75"
                                 clip-rule="evenodd" />
@@ -34,24 +35,24 @@
                     <table class="w-full text-sm text-left">
                         <thead class="bg-emerald-100 text-emerald-700">
                             <tr>
-                                <th class="px-4 py-2">No</th>
-                                <th class="px-4 py-2">Foto</th>
-                                <th class="px-4 py-2">Nama</th>
-                                <th class="px-4 py-2">Email</th>
-                                <th class="px-4 py-2">Telepon</th>
-                                <th class="px-4 py-2">Daftar Pengurus DPD</th>
-                                <th class="px-4 py-2">Kategori Pengurus</th>
+                                <th class="px-4 py-2 text-center">No</th>
+                                <th class="px-4 py-2 text-center">Foto</th>
+                                <th class="px-4 py-2 text-center">Nama</th>
+                                <th class="px-4 py-2 text-center">Email</th>
+                                <th class="px-4 py-2 text-center">Telepon</th>
+                                {{-- <th class="px-4 py-2 text-center">Daftar Pengurus DPD</th>
+                                <th class="px-4 py-2 text-center">Kategori Pengurus</th> --}}
                                 <th class="px-4 py-2 text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-emerald-100">
                             @foreach ($pengurus as $index => $item)
                                 <tr class="hover:bg-gray-50 border-b border-emerald-50">
-                                    <td class="px-4 py-2">{{ $pengurus->firstItem() + $index }}</td>
-                                    <td class="px-4 py-2">
+                                    <td class="px-4 py-2 text-center">{{ $pengurus->firstItem() + $index }}</td>
+                                    <td class="px-4 py-2 text-center">
                                         @if ($item->image)
                                             <img src="{{ asset('storage/' . $item->image) }}" alt="Foto"
-                                                class="w-12 h-12 rounded-full object-cover">
+                                                class="w-12 h-12 mx-auto rounded-full object-cover">
                                         @else
                                             <div
                                                 class="w-12 h-12 rounded-full bg-emerald-200 flex items-center justify-center text-white">
@@ -63,10 +64,10 @@
                                             </div>
                                         @endif
                                     </td>
-                                    <td class="px-4 py-2">{{ $item->title }}</td>
-                                    <td class="px-4 py-2">{{ $item->email }}</td>
-                                    <td class="px-4 py-2">{{ $item->phone }}</td>
-                                    <td class="px-4 py-2">
+                                    <td class="px-4 py-2 text-center">{{ $item->title }}</td>
+                                    <td class="px-4 py-2 text-center">{{ $item->email }}</td>
+                                    <td class="px-4 py-2 text-center">{{ $item->phone }}</td>
+                                    {{-- <td class="px-4 py-2 text-center">
                                         @if ($item->categoryDaftar)
                                             <span
                                                 class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-md text-xs font-semibold">
@@ -76,7 +77,7 @@
                                             <span class="text-gray-400">-</span>
                                         @endif
                                     </td>
-                                    <td class="px-4 py-2">
+                                    <td class="px-4 py-2 text-center">
                                         @if ($item->categoryPengurus)
                                             <span
                                                 class="px-2 py-1 bg-green-100 text-green-700 rounded-md text-xs font-semibold">
@@ -85,11 +86,18 @@
                                         @else
                                             <span class="text-gray-400">-</span>
                                         @endif
-                                    </td>
+                                    </td> --}}
                                     <td class="px-4 py-2 text-center">
                                         <div class="flex justify-center gap-2">
                                             <a href="{{ route('pengurus.edit', $item->id) }}"
-                                                class="px-4 py-2 bg-green-100 text-green-500 rounded-md hover:bg-yellow-200 text-xs font-medium transition inline-flex items-center gap-1.5">
+                                                class="px-4 py-2 bg-green-100 text-green-500 rounded-md hover:bg-green-200 text-xs font-medium transition inline-flex items-center gap-1.5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                    fill="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                                    <path
+                                                        d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                                </svg>
                                                 Edit
                                             </a>
 
@@ -99,6 +107,11 @@
                                                 @method('DELETE')
                                                 <button type="submit"
                                                     class="px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 text-xs font-medium transition inline-flex items-center gap-1.5">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                        fill="currentColor" viewBox="-3 -2 24 24">
+                                                        <path
+                                                            d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
+                                                    </svg>
                                                     Delete
                                                 </button>
                                             </form>
@@ -148,16 +161,26 @@
 
                             <div class="mt-3 flex justify-end gap-2">
                                 <a href="{{ route('pengurus.edit', $item->id) }}"
-                                    class="px-3 py-1 bg-green-100 text-green-500 rounded-md hover:bg-yellow-200 text-xs font-medium transition">
-                                    Edit
+                                    class="px-3 py-1 flex items-center gap-1 bg-green-100 text-green-500 rounded-md hover:bg-green-200 text-xs font-medium transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                        <path
+                                            d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                    </svg>Edit
                                 </a>
                                 <form action="{{ route('pengurus.destroy', $item->id) }}" method="POST"
                                     class="delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="px-3 py-1 bg-red-100 text-red-700 rounded-md hover:bg-red-200 text-xs font-medium transition">
-                                        Delete
+                                        class="px-3 py-1 flex items-center gap-1 bg-red-100 text-red-700 rounded-md hover:bg-red-200 text-xs font-medium transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2A3 3 0 0 1 14.994 21H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h4zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7H4.141z" />
+                                        </svg>Delete
                                     </button>
                                 </form>
                             </div>

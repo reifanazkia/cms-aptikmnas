@@ -122,9 +122,9 @@
             <form id="addForm" action="{{ route('category-gallery.store') }}" method="POST" class="space-y-4">
                 @csrf
                 <div>
-                    <label class="block text-sm font-semibold">Nama Kategori</label>
+                    <label class="block text-sm font-semibold mb-1">Nama Kategori</label>
                     <input type="text" name="name" id="addName"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
                 </div>
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeAddModal()"

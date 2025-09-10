@@ -67,6 +67,13 @@
                                 <div class="flex items-center justify-center gap-2">
                                     <a href="{{ route('about.edit', $about->id) }}"
                                         class="flex items-center gap-1 px-3 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                            fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                            <path
+                                                d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                        </svg>
                                         Edit
                                     </a>
                                     <form action="{{ route('about.destroy', $about->id) }}" method="POST"
@@ -75,6 +82,11 @@
                                         @method('DELETE')
                                         <button type="submit"
                                             class="delete-btn flex items-center gap-1 px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                fill="currentColor" viewBox="-3 -2 24 24">
+                                                <path
+                                                    d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
+                                            </svg>
                                             Hapus
                                         </button>
                                     </form>
@@ -130,9 +142,12 @@
                     <div class="flex gap-2 pt-2 border-t border-gray-100">
                         <a href="{{ route('about.edit', $about->id) }}"
                             class="flex items-center justify-center gap-1 flex-1 px-3 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                viewBox="0 0 24 24">
                                 <path
-                                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM21.71 6.04a1.004 1.004 0 00-1.42 0l-2.34 2.34 3.75 3.75 2.34-2.34c.39-.39.39-1.03 0-1.42l-2.33-2.33z" />
+                                    d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006z" />
+                                <path
+                                    d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
                             </svg>
                             Edit
                         </a>
@@ -141,10 +156,10 @@
                             @method('DELETE')
                             <button type="submit"
                                 class="flex items-center justify-center gap-1 w-full px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor"
-                                    viewBox="0 0 24 24">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                    viewBox="-3 -2 24 24">
                                     <path
-                                        d="M6 7h12v13a2 2 0 01-2 2H8a2 2 0 01-2-2V7zm3-3a1 1 0 011-1h4a1 1 0 011 1v1h5a1 1 0 010 2H4a1 1 0 010-2h5V4z" />
+                                        d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm10 2H2v1h14zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1" />
                                 </svg>
                                 Hapus
                             </button>
