@@ -34,11 +34,11 @@
                    appearance-none bg-white">
                             <option value="">-- Pilih Job Type --</option>
                             <option value="Full Time"
-                                {{ old('job_type', $career->job_type) == 'Full Time' ? 'selected' : '' }}>Full Time</option>
+                                {{ old('job_type') == 'Full Time' ? 'selected' : '' }}>Full Time</option>
                             <option value="Part Time"
-                                {{ old('job_type', $career->job_type) == 'Part Time' ? 'selected' : '' }}>Part Time</option>
+                                {{ old('job_type') == 'Part Time' ? 'selected' : '' }}>Part Time</option>
                             <option value="Contract"
-                                {{ old('job_type', $career->job_type) == 'Contract' ? 'selected' : '' }}>Contract</option>
+                                {{ old('job_type') == 'Contract' ? 'selected' : '' }}>Contract</option>
                         </select>
 
                         <!-- Custom arrow -->
@@ -54,8 +54,6 @@
                         <p class="text-red-600 text-sm">{{ $message }}</p>
                     @enderror
                 </div>
-
-
 
                 <div class="space-y-1">
                     <label class="block text-sm font-medium text-gray-700">Lokasi</label>

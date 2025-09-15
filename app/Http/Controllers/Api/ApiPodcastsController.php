@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Podcast;
 use Illuminate\Http\Request;
 
-class PodcastApiController extends Controller
+class ApiPodcastsController extends Controller
 {
     /**
      * Ambil semua podcast
