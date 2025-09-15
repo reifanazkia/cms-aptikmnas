@@ -1,48 +1,26 @@
 @extends('layouts.app', ['title' => 'Edit Pengurus - Step 2'])
 
 @section('content')
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <div class="bg-white rounded-2xl shadow-lg floating-card p-4 sm:p-6 space-y-6">
-
-            <!-- Header & Progress -->
-            <div
-                class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-emerald-100 pb-4 mb-4 gap-3">
-                <h1 class="text-xl sm:text-2xl font-bold text-emerald-700">
-                    Edit Pengurus - Step 2 dari 3
-                </h1>
-                <div class="flex flex-col sm:flex-row flex-wrap gap-2 w-full md:w-auto">
-                    <a href="{{ route('pengurus.edit', $pengurus->id) }}"
-                        class="inline-flex items-center justify-center px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition w-full sm:w-auto">
-                        <i class="fas fa-arrow-left mr-2"></i> Step 1
-                    </a>
-                    <a href="{{ route('pengurus.show', $pengurus->id) }}"
-                        class="inline-flex items-center justify-center px-3 py-2 bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200 transition w-full sm:w-auto">
-                        <i class="fas fa-eye mr-2"></i> Lihat Detail
-                    </a>
-                    <a href="{{ route('pengurus.index') }}"
-                        class="inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition w-full sm:w-auto">
-                        <i class="fas fa-times mr-2"></i> Batal
-                    </a>
-                </div>
+    <div class="max-w-5xl mx-auto px-4 sm:px-0">
+        <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-8 space-y-6">
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b pb-4">
+                <h1 class="text-xl sm:text-2xl font-bold text-emerald-700">Edit Pengurus - Step 2 dari 3</h1>
+                <a href="{{ route('pengurus.edit', $pengurus->id) }}"
+                    class="inline-flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition text-sm sm:text-base">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Step 1
+                </a>
             </div>
 
-            <!-- Progress Bar -->
-            <div class="w-full mt-3">
-                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div class="h-2 bg-emerald-500" style="width:66%"></div>
-                </div>
+            <!-- Progress -->
+            <div class="w-full bg-gray-100 rounded-full h-2">
+                <div class="bg-emerald-500 h-2 rounded-full" style="width: 66%"></div>
             </div>
 
-            <!-- Alerts -->
-            @if (session('success'))
-                <div class="p-3 sm:p-4 mb-4 text-green-700 bg-green-100 rounded-lg text-sm">
-                    {{ session('success') }}
-                </div>
-            @endif
-
+            <!-- Error -->
             @if ($errors->any())
-                <div class="p-3 sm:p-4 mb-4 text-red-700 bg-red-100 rounded-lg text-sm">
-                    <ul class="list-disc pl-5 mb-0">
+                <div class="p-4 rounded-lg bg-red-50 text-red-700 text-sm">
+                    <ul class="list-disc pl-5 space-y-1">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -50,133 +28,84 @@
                 </div>
             @endif
 
-            <!-- Summary Step 1 -->
-            <div class="p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-lg text-sm sm:text-base">
-                <h6 class="font-semibold mb-2"><i class="fas fa-info-circle mr-2"></i>Data Pengurus:</h6>
-                <p><strong>Nama:</strong> {{ $pengurus->title }}</p>
-                <p><strong>Email:</strong> {{ $pengurus->email }}</p>
-            </div>
-
+            <!-- Form -->
             <form action="{{ route('pengurus.edit.step2.update', $pengurus->id) }}" method="POST"
                 enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 @method('PUT')
 
-                <!-- Grid jadi 1 kolom di mobile -->
+                <!-- Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
                     <!-- Informasi Tambahan 1 -->
-                    <div class="bg-white rounded-xl shadow-md">
-                        <div class="bg-emerald-500 text-white px-4 py-2 rounded-t-lg">
-                            <h5 class="font-semibold">Informasi Tambahan 1</h5>
+                    <div class="space-y-4">
+                        <h5 class="font-semibold text-emerald-700 text-base">Informasi Tambahan 1</h5>
+                        <div>
+                            <label for="title2" class="block text-sm font-medium text-gray-700">Judul 2 <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" id="title2" name="title2"
+                                value="{{ old('title2', $pengurus->title2) }}"
+                                class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500 @error('title2') border-red-500 @enderror"
+                                required>
                         </div>
-                        <div class="p-4 space-y-4">
-                            <div>
-                                <label for="title2" class="block mb-1 font-medium text-sm">Judul 2 <span
-                                        class="text-red-500">*</span></label>
-                                <input type="text" id="title2" name="title2"
-                                    value="{{ old('title2', $pengurus->title2) }}"
-                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-emerald-500 focus:border-emerald-500 @error('title2') border-red-500 @enderror"
-                                    required>
-                                @error('title2')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
-                                <label for="description2" class="block text-sm font-medium text-gray-700">
-                                    Deskripsi <span class="text-red-500">*</span>
-                                </label>
-                                <textarea id="description2" name="description2"
-                                    class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-emerald-400 focus:border-emerald-500 @error('description2') border-red-500 @enderror"
-                                    required>{{ old('description2', $pengurus->description2) }}</textarea>
-                                @error('description2')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-
-                            <div>
-                                <label for="image2" class="block mb-1 font-medium text-sm">Gambar 2</label>
-                                @if ($pengurus->image2)
-                                    <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $pengurus->image2) }}" alt="Current Image 2"
-                                            class="w-20 h-20 object-cover rounded-lg">
-                                        <small class="text-gray-500 block">Gambar 2 saat ini</small>
-                                    </div>
-                                @endif
-                                <input type="file" id="image2" name="image2" accept="image/*"
-                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm @error('image2') border-red-500 @enderror">
-                                <small class="text-gray-500 block text-xs mt-1">Maksimal 2MB. Kosongkan jika tidak ingin
-                                    mengganti.</small>
-                                @error('image2')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
+                        <div>
+                            <label for="description2" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                            <textarea id="description2" name="description2" rows="3"
+                                class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">{{ old('description2', $pengurus->description2) }}</textarea>
+                        </div>
+                        <div>
+                            <label for="image2" class="block text-sm font-medium text-gray-700">Gambar 2</label>
+                            <input type="file" id="image2" name="image2" accept="image/*"
+                                class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
+                            @if ($pengurus->image2)
+                                <div class="mt-2">
+                                    <img src="{{ asset('storage/' . $pengurus->image2) }}" alt="Gambar 2"
+                                        class="h-24 rounded-lg border">
+                                </div>
+                            @endif
+                            <p class="text-xs text-gray-500 mt-1">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB</p>
                         </div>
                     </div>
 
                     <!-- Informasi Tambahan 2 -->
-                    <div class="bg-white rounded-xl shadow-md">
-                        <div class="bg-yellow-400 text-gray-800 px-4 py-2 rounded-t-lg">
-                            <h5 class="font-semibold">Informasi Tambahan 2</h5>
+                    <div class="space-y-4">
+                        <h5 class="font-semibold text-emerald-700 text-base">Informasi Tambahan 2</h5>
+                        <div>
+                            <label for="title3" class="block text-sm font-medium text-gray-700">Judul 3 <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" id="title3" name="title3"
+                                value="{{ old('title3', $pengurus->title3) }}"
+                                class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500 @error('title3') border-red-500 @enderror"
+                                required>
                         </div>
-                        <div class="p-4 space-y-4">
-                            <div>
-                                <label for="title3" class="block mb-1 font-medium text-sm">Judul 3 <span
-                                        class="text-red-500">*</span></label>
-                                <input type="text" id="title3" name="title3"
-                                    value="{{ old('title3', $pengurus->title3) }}"
-                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-emerald-500 focus:border-emerald-500 @error('title3') border-red-500 @enderror"
-                                    required>
-                                @error('title3')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
-                                <label for="description3" class="block text-sm font-medium text-gray-700">
-                                    Deskripsi <span class="text-red-500">*</span>
-                                </label>
-                                <textarea id="description3" name="description3"
-                                    class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-emerald-400 focus:border-emerald-500 @error('description3') border-red-500 @enderror"
-                                    required>{{ old('description3', $pengurus->description3) }}</textarea>
-                                @error('description3')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-
-                            <div>
-                                <label for="image3" class="block mb-1 font-medium text-sm">Gambar 3</label>
-                                @if ($pengurus->image3)
-                                    <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $pengurus->image3) }}" alt="Current Image 3"
-                                            class="w-20 h-20 object-cover rounded-lg">
-                                        <small class="text-gray-500 block">Gambar 3 saat ini</small>
-                                    </div>
-                                @endif
-                                <input type="file" id="image3" name="image3" accept="image/*"
-                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm @error('image3') border-red-500 @enderror">
-                                <small class="text-gray-500 block text-xs mt-1">Maksimal 2MB. Kosongkan jika tidak ingin
-                                    mengganti.</small>
-                                @error('image3')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
+                        <div>
+                            <label for="description3" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                            <textarea id="description3" name="description3" rows="3"
+                                class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">{{ old('description3', $pengurus->description3) }}</textarea>
+                        </div>
+                        <div>
+                            <label for="image3" class="block text-sm font-medium text-gray-700">Gambar 3</label>
+                            <input type="file" id="image3" name="image3" accept="image/*"
+                                class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
+                            @if ($pengurus->image3)
+                                <div class="mt-2">
+                                    <img src="{{ asset('storage/' . $pengurus->image3) }}" alt="Gambar 3"
+                                        class="h-24 rounded-lg border">
+                                </div>
+                            @endif
+                            <p class="text-xs text-gray-500 mt-1">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tombol Navigasi -->
-                <div class="flex flex-col sm:flex-row justify-between gap-3 mt-6">
+                <!-- Submit -->
+                <div class="flex justify-between">
                     <a href="{{ route('pengurus.edit', $pengurus->id) }}"
-                        class="inline-flex items-center justify-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition w-full sm:w-auto">
-                        <i class="fas fa-arrow-left mr-2"></i> Step 1
+                        class="inline-flex items-center gap-2 px-5 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 text-sm sm:text-base">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Step 1
                     </a>
                     <button type="submit"
-                        class="inline-flex items-center justify-center px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition w-full sm:w-auto">
-                        Lanjut ke Step 3 <i class="fas fa-arrow-right ml-2"></i>
+                        class="inline-flex items-center gap-2 px-5 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 text-sm sm:text-base">
+                        Lanjut ke Step 3 <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
             </form>
@@ -184,15 +113,7 @@
     </div>
 
     <script>
-        ClassicEditor
-            .create(document.querySelector('#description2'))
-            .catch(error => {
-                console.error(error);
-            });
-        ClassicEditor
-            .create(document.querySelector('#description3'))
-            .catch(error => {
-                console.error(error);
-            });
+        ClassicEditor.create(document.querySelector('#description2')).catch(error => console.error(error));
+        ClassicEditor.create(document.querySelector('#description3')).catch(error => console.error(error));
     </script>
 @endsection

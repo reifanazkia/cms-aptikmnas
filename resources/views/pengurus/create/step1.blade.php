@@ -39,7 +39,8 @@
                     <div>
                         <label for="title" class="block text-sm font-medium text-gray-700">Title <span
                                 class="text-red-500">*</span></label>
-                        <input type="text" id="title" name="title" value="{{ old('title') }}"
+                        <input type="text" id="title" name="title"
+                            value="{{ old('title', $pengurus->title ?? '') }}"
                             class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
                     </div>
 
@@ -48,7 +49,7 @@
                         <label for="address" class="block text-sm font-medium text-gray-700">Alamat <span
                                 class="text-red-500">*</span></label>
                         <textarea id="address" name="address" rows="2"
-                            class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 text-sm">{{ old('address') }}</textarea>
+                            class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 text-sm">{{ old('address', $pengurus->address ?? '') }}</textarea>
                     </div>
                 </div>
 
@@ -56,19 +57,21 @@
                 <div>
                     <label for="descroption" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                     <textarea id="descroption" name="descroption" rows="3"
-                        class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 text-sm">{{ old('descroption') }}</textarea>
+                        class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 text-sm">{{ old('descroption', $pengurus->descroption ?? '') }}</textarea>
                 </div>
 
                 <!-- Kontak -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700">Telepon</label>
-                        <input type="text" id="phone" name="phone" value="{{ old('phone') }}"
+                        <input type="text" id="phone" name="phone"
+                            value="{{ old('phone', $pengurus->phone ?? '') }}"
                             class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
                     </div>
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" id="email" name="email" value="{{ old('email') }}"
+                        <input type="email" id="email" name="email"
+                            value="{{ old('email', $pengurus->email ?? '') }}"
                             class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
                     </div>
                 </div>
@@ -77,7 +80,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="category_daftar_id" class="block text-sm font-medium text-gray-700">
-                            Daftar Pengurus DPD
+                            Pengurus DPD
                         </label>
                         <div class="relative mt-1">
                             <select id="category_daftar_id" name="category_daftar_id"
@@ -85,13 +88,11 @@
                                 <option value="">Pilih Pengurus</option>
                                 @foreach ($categoryDaftar as $category)
                                     <option value="{{ $category->id }}"
-                                        {{ old('category_daftar_id') == $category->id ? 'selected' : '' }}>
+                                        {{ old('category_daftar_id', $pengurus->category_daftar_id ?? '') == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
                             </select>
-
-                            <!-- SVG panah dropdown -->
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                 <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -101,7 +102,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     <div>
                         <label for="category_pengurus_id" class="block text-sm font-medium text-gray-700">
@@ -113,13 +113,11 @@
                                 <option value="">Pilih Kategori Pengurus</option>
                                 @foreach ($categoryPengurus as $category)
                                     <option value="{{ $category->id }}"
-                                        {{ old('category_pengurus_id') == $category->id ? 'selected' : '' }}>
+                                        {{ old('category_pengurus_id', $pengurus->category_pengurus_id ?? '') == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
                             </select>
-
-                            <!-- SVG dropdown icon -->
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                 <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -129,7 +127,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <!-- Foto & Media -->
@@ -137,16 +134,26 @@
                     <label for="image" class="block text-sm font-medium text-gray-700">Foto</label>
                     <input type="file" id="image" name="image"
                         class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
+                    @if (!empty($pengurus->image))
+                        <div class="mt-2">
+                            <img src="{{ asset('storage/' . $pengurus->image) }}" alt="Preview"
+                                class="h-24 rounded-lg border">
+                        </div>
+                    @endif
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <input type="url" name="fb" placeholder="Facebook URL"
+                        value="{{ old('fb', $pengurus->fb ?? '') }}"
                         class="rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
                     <input type="url" name="ig" placeholder="Instagram URL"
+                        value="{{ old('ig', $pengurus->ig ?? '') }}"
                         class="rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
                     <input type="url" name="tiktok" placeholder="TikTok URL"
+                        value="{{ old('tiktok', $pengurus->tiktok ?? '') }}"
                         class="rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
                     <input type="url" name="yt" placeholder="YouTube URL"
+                        value="{{ old('yt', $pengurus->yt ?? '') }}"
                         class="rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
 

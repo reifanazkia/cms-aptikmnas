@@ -190,14 +190,14 @@
         <div class="min-h-screen">
             <!-- Header with improved layout -->
             <header class="glass-effect sticky top-0 z-40 border-b border-emerald-100/50">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center justify-between h-16 lg:h-18">
 
                         <!-- Left Section: Logo + Navigation -->
                         <div class="flex items-center space-x-8">
                             <!-- Logo with improved styling -->
                             <div class="logo-glow flex-shrink-0">
-                                <div class="flex items-center space-x-2">
+                                <div class="flex items-center space-x-8">
                                     <div>
                                         <h1 class="text-xl font-black tracking-tight leading-none">
                                             <span class="text-emerald-600">AP</span><span
@@ -211,7 +211,7 @@
                             </div>
 
                             <!-- Desktop Navigation -->
-                            <nav class="hidden lg:flex items-center space-x-1">
+                            <nav class="hidden lg:flex items-center space-x-8">
                                 <!-- Dashboard -->
                                 <a href="/dashboard" class="nav-item">
                                     <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
@@ -297,20 +297,25 @@
                                         <a href="{{ route('aboutus.index') }}" class="dropdown-item">About Us</a>
                                         <a href="{{ route('agenda.index') }}" class="dropdown-item">Agenda</a>
                                         <a href="{{ route('applications.index') }}"
-                                            class="dropdown-item">Applications</a>
+                                            class="dropdown-item">Jobs</a>
                                     </div>
                                 </div>
 
                                 <!-- Informasi Dropdown -->
                                 <div class="dropdown-wrapper">
                                     <a href="#" class="nav-item">
-                                        <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10" />
-                                            <path d="M12 16v-4m0-4h.01" />
+                                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24">
+                                            <g fill="none" stroke="currentColor" stroke-linejoin="round"
+                                                stroke-width="1">
+                                                <circle cx="12" cy="12" r="9" stroke-linecap="round"
+                                                    stroke-width="2" />
+                                                <path stroke-width="3" d="M12 8h.01v.01H12z" />
+                                                <path stroke-linecap="round" stroke-width="2" d="M12 12v4" />
+                                            </g>
                                         </svg>
                                         Informasi
-                                        <svg class="w-3 h-3 ml-1 transition-transform duration-200" fill="none"
+                                        <svg class="w-3 h-3 ml-2 transition-transform duration-200" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M19 9l-7 7-7-7" />
