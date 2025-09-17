@@ -26,7 +26,7 @@
                 </select>
 
                 <!-- Custom Arrow -->
-                <div class="absolute inset-y-0 right-3 top-6 flex items-center pointer-events-none">
+                <div class="absolute inset-y-0 right-3 top-5 flex items-center pointer-events-none">
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />

@@ -102,7 +102,17 @@
                             <td class="px-6 py-4">{{ $item->email ?? '-' }}</td>
                             <td class="px-6 py-4 flex justify-center space-x-2">
                                 <button
-                                    onclick="openEditModal({{ $item->id }}, '{{ $item->name }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}', '{{ $item->notlp }}', '{{ $item->email }}')"
+                                    onclick="openEditModal(
+        {{ $item->id }},
+        '{{ $item->name }}',
+        '{{ $item->image ? asset('storage/' . $item->image) : '' }}',
+        '{{ $item->notlp }}',
+        '{{ $item->email }}',
+        '{{ $item->yt }}',
+        '{{ $item->fb }}',
+        '{{ $item->ig }}',
+        '{{ $item->tiktok }}'
+    )"
                                     class="flex items-center gap-1 px-3 py-2 bg-green-100 hover:bg-green-200 text-green-600 text-sm rounded-lg shadow">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor"
                                         viewBox="0 0 24 24">
@@ -113,6 +123,7 @@
                                     </svg>
                                     <span>Edit</span>
                                 </button>
+
                                 <button onclick="confirmDelete({{ $item->id }}, '{{ $item->name }}')"
                                     class="flex items-center gap-1 px-3 py-2 bg-red-200 hover:bg-red-300 text-red-600 text-sm rounded-lg shadow">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor"
@@ -164,6 +175,28 @@
                     <input type="email" name="email"
                         class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
+                <div class="grid md:grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">YouTube</label>
+                        <input type="text" name="yt"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Facebook</label>
+                        <input type="text" name="fb"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Instagram</label>
+                        <input type="text" name="ig"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">TikTok</label>
+                        <input type="text" name="tiktok"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                </div>
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeAddModal()"
                         class="px-5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Batal</button>
@@ -184,29 +217,53 @@
                 <div>
                     <label class="block text-sm font-semibold">Nama Kategori</label>
                     <input type="text" name="name" id="editName"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                        required>
                 </div>
                 <div>
                     <label class="block text-sm font-semibold">Gambar</label>
                     <input type="file" name="image" id="editImage" accept="image/*"
-                        class="w-full border border-gray-300 rounded-lg p-2">
+                        class="w-full px-2 py-2 border border-gray-300 rounded-lg p-2">
                     <img id="editPreview" src="" class="w-24 h-24 rounded-lg mt-2 object-cover hidden">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold">No.Telp</label>
                     <input type="text" name="notlp" id="editNotlp"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold">Email</label>
                     <input type="email" name="email" id="editEmail"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
+                <div class="grid md:grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-sm font-semibold">YouTube</label>
+                        <input type="text" name="yt" id="editYt"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Facebook</label>
+                        <input type="text" name="fb" id="editFb"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Instagram</label>
+                        <input type="text" name="ig" id="editIg"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">TikTok</label>
+                        <input type="text" name="tiktok" id="editTiktok"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                </div>
+
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeEditModal()"
                         class="px-5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Batal</button>
                     <button type="submit"
-                        class="px-5 py-2 rounded-lg bg-amber-500 text-white font-semibold hover:bg-amber-600">Update</button>
+                        class="px-5 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Update</button>
                 </div>
             </form>
         </div>
@@ -230,13 +287,16 @@
             document.getElementById('addModal').classList.add('hidden');
         }
 
-        // Modal Edit
-        function openEditModal(id, name, image, notlp, email) {
+        function openEditModal(id, name, image, notlp, email, yt, fb, ig, tiktok) {
             let url = '{{ route('category-daftar.update', ':id') }}'.replace(':id', id);
             document.getElementById('editForm').action = url;
             document.getElementById('editName').value = name;
             document.getElementById('editNotlp').value = notlp;
             document.getElementById('editEmail').value = email;
+            document.getElementById('editYt').value = yt;
+            document.getElementById('editFb').value = fb;
+            document.getElementById('editIg').value = ig;
+            document.getElementById('editTiktok').value = tiktok;
 
             const preview = document.getElementById('editPreview');
             if (image) {

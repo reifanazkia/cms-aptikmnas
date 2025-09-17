@@ -9,10 +9,6 @@
                 class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-emerald-100 pb-4 mb-4 gap-3">
                 <h1 class="text-xl sm:text-2xl font-bold text-emerald-700">Edit Pengurus - Step 1 dari 3</h1>
                 <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                    <a href="{{ route('pengurus.show', $pengurus->id) }}"
-                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center justify-center gap-1 w-full sm:w-auto">
-                        <i class="fas fa-eye"></i> Lihat Detail
-                    </a>
                     <a href="{{ route('pengurus.index') }}"
                         class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 flex items-center justify-center gap-1 w-full sm:w-auto">
                         <i class="fas fa-arrow-left"></i> Kembali
