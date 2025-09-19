@@ -129,18 +129,60 @@
                     </div>
                 </div>
 
-                <!-- Foto & Media -->
-                <div>
-                    <label for="image" class="block text-sm font-medium text-gray-700">Foto</label>
-                    <input type="file" id="image" name="image"
-                        class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
-                    @if (!empty($pengurus->image))
-                        <div class="mt-2">
-                            <img src="{{ asset('storage/' . $pengurus->image) }}" alt="Preview"
-                                class="h-24 rounded-lg border">
+                <!-- Drag & Drop Image Upload (Alpine.js + Tailwind) -->
+                <div x-data="imageDropzone(@json($pengurus->image ?? null))" class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Image</label>
+
+                    <!-- Dropzone (hanya muncul kalau tidak ada preview & tidak ada existing) -->
+                    <div x-show="!previewUrl && !existingUrl" x-ref="dropzone" @click="$refs.file.click()"
+                        @dragover.prevent="isDrag = true" @dragleave.prevent="isDrag = false"
+                        @drop.prevent="handleDrop($event)"
+                        :class="{
+                            'border-emerald-400 bg-emerald-50': isDrag,
+                            'border-gray-300 bg-white': !isDrag
+                        }"
+                        class="flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-lg p-6 cursor-pointer transition-colors text-center"
+                        style="min-height: 150px;">
+                        <!-- SVG icon -->
+                        <svg class="w-12 h-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M7 16a4 4 0 01-.88-7.9A5.002 5.002 0 0117.9 9h.1a4.992 4.992 0 012.9 9.1M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+
+                        <p class="text-sm font-medium text-gray-700">Tarik & lepas gambar di sini</p>
+                        <p class="text-xs text-gray-500">atau klik untuk memilih (jpg, png, gif). Maks 2MB.</p>
+
+                        <!-- Hidden file input -->
+                        <input x-ref="file" type="file" name="image" accept="image/*" class="hidden"
+                            @change="handleFile($event.target.files[0])">
+                    </div>
+
+                    <!-- Preview baru diunggah -->
+                    <div x-show="previewUrl" class="flex flex-col items-center">
+                        <img :src="previewUrl" alt="Preview" class="h-40 rounded-lg border object-contain">
+                        <div class="flex items-center justify-between w-full mt-2">
+                            <span class="text-xs text-gray-600 truncate" x-text="fileName || 'Preview'"></span>
+                            <button type="button" @click="removeFile()"
+                                class="px-2 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200">
+                                Hapus
+                            </button>
                         </div>
-                    @endif
+                    </div>
+
+                    <!-- Preview gambar lama (jika ada dan belum diganti) -->
+                    <div x-show="!previewUrl && existingUrl" class="flex flex-col items-center">
+                        <img :src="existingUrl" alt="Existing image" class="h-40 rounded-lg border object-contain">
+                        <p class="text-xs text-gray-500 mt-1">Gambar saat ini</p>
+                    </div>
+
+                    <!-- Validation -->
+                    @error('image')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
+
+
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <input type="url" name="fb" placeholder="Facebook URL"
@@ -170,5 +212,53 @@
 
     <script>
         ClassicEditor.create(document.querySelector('#descroption')).catch(error => console.error(error));
+    </script>
+
+    <script>
+        function imageDropzone(existingPath = null) {
+            return {
+                isDrag: false,
+                previewUrl: null,
+                fileName: '',
+                existingUrl: existingPath ? ('{{ asset('storage') }}' + '/' + existingPath).replace(/\/+/g, '/') : null,
+                handleDrop(e) {
+                    const dt = e.dataTransfer;
+                    if (!dt || !dt.files || !dt.files.length) return;
+                    const file = dt.files[0];
+                    this.handleFile(file);
+                    this.isDrag = false;
+                },
+                handleFile(file) {
+                    if (!file) return;
+                    // simple size/type checks (adjust as needed)
+                    if (!file.type.startsWith('image/')) {
+                        alert('File harus gambar.');
+                        return;
+                    }
+                    if (file.size > 2 * 1024 * 1024) { // 2MB
+                        alert('Ukuran file maksimal 2MB.');
+                        return;
+                    }
+                    this.fileName = file.name;
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        this.previewUrl = ev.target.result;
+                    };
+                    reader.readAsDataURL(file);
+
+                    // assign file to the hidden input (for browsers that preserve file input when replaced)
+                    // We already have input[name="image"]; setting value via DataTransfer for form submit:
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    this.$refs.file.files = dataTransfer.files;
+                },
+                removeFile() {
+                    this.previewUrl = null;
+                    this.fileName = '';
+                    // clear file input
+                    this.$refs.file.value = null;
+                }
+            }
+        }
     </script>
 @endsection

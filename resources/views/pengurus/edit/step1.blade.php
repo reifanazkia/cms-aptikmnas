@@ -167,19 +167,76 @@
                 </div>
 
                 <!-- Foto Profil -->
-                <div>
+                <div x-data="imageDropzone({
+                    existingUrl: '{{ $pengurus->image ? asset('storage/' . $pengurus->image) : '' }}'
+                })" class="space-y-2">
                     <label for="image" class="block text-sm font-medium text-gray-700">Foto Profil</label>
-                    @if ($pengurus->image)
+
+                    <!-- Current image (server-side) -->
+                    <template x-if="showExisting && existingUrl">
                         <div class="mb-2">
-                            <img src="{{ asset('storage/' . $pengurus->image) }}" alt="Current Image"
+                            <img :src="existingUrl" alt="Current Image"
                                 class="border border-gray-300 rounded-lg w-24 sm:w-32">
                             <small class="text-gray-500 block">Gambar saat ini</small>
+                            <button type="button" @click="removeExisting()"
+                                class="mt-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
+                                Hapus Foto Lama
+                            </button>
                         </div>
-                    @endif
-                    <input type="file" id="image" name="image"
-                        class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-emerald-400 focus:border-emerald-500 @error('image') border-red-500 @enderror"
-                        accept="image/*">
-                    <p class="text-xs text-gray-500 mt-1">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB.</p>
+                    </template>
+
+                    <!-- Dropzone upload (muncul setelah foto lama dihapus atau tidak ada foto) -->
+                    <template x-if="!showExisting">
+                        <div>
+                            <div x-ref="dropzone" @click="$refs.fileInput.click()" @dragover.prevent="isDrag = true"
+                                @dragleave.prevent="isDrag = false" @drop.prevent="handleDrop($event)"
+                                :class="isDrag ? 'ring-2 ring-emerald-300 bg-emerald-50' : 'bg-white'"
+                                class="relative flex items-center justify-center border-2 border-gray-200 rounded-lg p-4 cursor-pointer transition-all">
+
+                                <!-- SVG cloud -->
+                                <div class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path
+                                            d="M20 17.58A4.42 4.42 0 0 0 15.58 13H15a5 5 0 0 0-9.9 1.1A3.5 3.5 0 0 0 6.5 20H19a1 1 0 0 0 1-1v-1.42z" />
+                                        <path d="M16 13a4 4 0 0 0-8 0" />
+                                    </svg>
+
+                                    <div class="text-left">
+                                        <p class="text-sm font-medium text-gray-700"
+                                            x-text="previewUrl ? 'Preview Gambar' : 'Tarik & lepas gambar di sini, atau klik untuk memilih'">
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-1">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Preview gambar baru -->
+                                <template x-if="previewUrl">
+                                    <div class="mt-2 flex justify-center">
+                                        <img :src="previewUrl" alt="Preview"
+                                            class="max-h-40 rounded-lg border border-gray-200 shadow-sm" />
+                                    </div>
+                                </template>
+
+                            </div>
+
+                            <!-- Hidden input -->
+                            <input x-ref="fileInput" id="image" type="file" name="image" accept="image/*"
+                                class="hidden" @change="onFileChange($event)">
+
+                            <!-- Tombol hapus file baru -->
+                            <div class="flex items-center gap-2">
+                                <button type="button" x-show="previewUrl" @click="clearFile()"
+                                    class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm">
+                                    Hapus Pilihan
+                                </button>
+                                <p class="text-red-500 text-xs" x-text="error" x-show="error"></p>
+                            </div>
+                        </div>
+                    </template>
+
                     @error('image')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -246,5 +303,63 @@
             .catch(error => {
                 console.error(error);
             });
+    </script>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('imageDropzone', (opts = {}) => ({
+                existingUrl: opts.existingUrl || '',
+                showExisting: opts.existingUrl ? true : false,
+                isDrag: false,
+                previewUrl: '',
+                file: null,
+                error: '',
+
+                removeExisting() {
+                    this.showExisting = false;
+                },
+
+                onFileChange(e) {
+                    const f = e.target.files[0];
+                    this.processFile(f);
+                },
+
+                handleDrop(e) {
+                    this.isDrag = false;
+                    const f = e.dataTransfer.files[0];
+                    this.processFile(f);
+                },
+
+                processFile(f) {
+                    this.error = '';
+                    if (!f) return;
+
+                    const allowed = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+                    if (!allowed.includes(f.type)) {
+                        this.error = 'Format tidak didukung.';
+                        this.clearFile();
+                        return;
+                    }
+                    if (f.size > 2 * 1024 * 1024) {
+                        this.error = 'Ukuran maksimal 2MB.';
+                        this.clearFile();
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        this.previewUrl = ev.target.result;
+                    };
+                    reader.readAsDataURL(f);
+                    this.file = f;
+                },
+
+                clearFile() {
+                    this.previewUrl = '';
+                    this.file = null;
+                    this.$refs.fileInput.value = '';
+                }
+            }))
+        })
     </script>
 @endsection

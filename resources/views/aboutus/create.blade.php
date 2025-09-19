@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Tambah Tentang Kami'])
 
 @section('content')
-    <div class="p-4 sm:p-6 bg-white rounded-lg shadow space-y-6 max-w-md mx-auto">
+    <div class="p-4 sm:p-6 bg-white rounded-lg shadow space-y-6 max-w-2xl mx-auto">
 
         <!-- Judul Halaman -->
         <div class="text-center">
@@ -75,11 +75,39 @@
                 @enderror
             </div>
 
-            <!-- Gambar -->
-            <div>
+            <!-- Upload Gambar Drag & Drop -->
+            <div x-data="imageUpload()" class="space-y-2">
                 <label class="block text-sm font-medium text-gray-700">Gambar</label>
-                <input type="file" name="image"
-                    class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500">
+
+                <!-- Area Drag & Drop -->
+                <div x-on:click="triggerInput" x-on:dragover.prevent="isDrag = true" x-on:dragleave.prevent="isDrag = false"
+                    x-on:drop.prevent="handleDrop($event)" :class="{ 'border-emerald-500 bg-emerald-50': isDrag }"
+                    class="relative flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-40 cursor-pointer transition-colors">
+
+                    <!-- Preview Gambar -->
+                    <template x-if="previewUrl">
+                        <img :src="previewUrl" alt="Preview" class="h-full object-contain">
+                    </template>
+
+                    <!-- Placeholder Upload -->
+                    <template x-if="!previewUrl">
+                        <div class="flex flex-col items-center justify-center text-gray-400">
+                            <!-- SVG Awan -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                class="h-12 w-12 text-emerald-600">
+                                <path d="M17.5 19a4.5 4.5 0 0 0 .5-9 6 6 0 0 0-11.5-1.5A4.5 4.5 0 0 0 6.5 19h11z" />
+                                <path d="M12 11v6" />
+                                <path d="M9 14l3-3 3 3" />
+                            </svg>
+                            <span>Drag & Drop atau klik untuk upload</span>
+                        </div>
+                    </template>
+                </div>
+
+                <input type="file" name="image" accept="image/*" x-ref="fileInput"
+                    x-on:change="handleFiles($event.target.files)" class="hidden">
+
                 @error('image')
                     <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
@@ -108,5 +136,31 @@
             .catch(error => {
                 console.error(error);
             });
+    </script>
+
+    <script>
+        function imageUpload() {
+            return {
+                previewUrl: null,
+                isDrag: false,
+                triggerInput() {
+                    this.$refs.fileInput.click();
+                },
+                handleFiles(files) {
+                    if (!files.length) return;
+                    const file = files[0];
+                    if (file.size > 2 * 1024 * 1024) { // maksimal 2MB
+                        alert('Ukuran file maksimal 2MB');
+                        return;
+                    }
+                    this.previewUrl = URL.createObjectURL(file);
+                },
+                handleDrop(event) {
+                    this.isDrag = false;
+                    const files = event.dataTransfer.files;
+                    this.handleFiles(files);
+                }
+            }
+        }
     </script>
 @endsection

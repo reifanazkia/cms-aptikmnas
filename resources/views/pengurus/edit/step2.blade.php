@@ -52,17 +52,43 @@
                             <textarea id="description2" name="description2" rows="3"
                                 class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">{{ old('description2', $pengurus->description2) }}</textarea>
                         </div>
-                        <div>
+                        <!-- Drag & Drop Upload Gambar 2 -->
+                        <div x-data="imageDropzone({ existingUrl: '{{ $pengurus->image2 ? asset('storage/' . $pengurus->image2) : '' }}' })" class="space-y-2">
                             <label for="image2" class="block text-sm font-medium text-gray-700">Gambar 2</label>
-                            <input type="file" id="image2" name="image2" accept="image/*"
-                                class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
-                            @if ($pengurus->image2)
-                                <div class="mt-2">
-                                    <img src="{{ asset('storage/' . $pengurus->image2) }}" alt="Gambar 2"
-                                        class="h-24 rounded-lg border">
+
+                            <!-- Area Drop -->
+                            <div x-show="!previewUrl" x-ref="dropzone" @click="$refs.file.click()"
+                                @dragover.prevent="isDrag = true" @dragleave.prevent="isDrag = false"
+                                @drop.prevent="handleDrop($event)"
+                                :class="{ 'ring-2 ring-emerald-400 bg-emerald-50': isDrag }"
+                                class="flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-gray-300 p-6 cursor-pointer transition">
+
+                                <svg class="w-12 h-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M7 16a4 4 0 01-.88-7.9A5.002 5.002 0 0117.9 9h.1a4.992 4.992 0 012.9 9.1M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                                <p class="mt-2 text-sm text-gray-600">Tarik & letakkan gambar di sini atau klik untuk pilih
+                                </p>
+                                <p class="mt-1 text-xs text-gray-500">Format: JPEG, PNG, JPG, GIF. Maks 2MB</p>
+                            </div>
+
+                            <!-- Preview -->
+                            <div x-show="previewUrl" class="flex items-center gap-3 mt-3">
+                                <img :src="previewUrl" alt="Preview"
+                                    class="h-20 w-20 object-cover rounded-lg border" />
+                                <div class="flex flex-col min-w-0">
+                                    <p class="text-sm text-gray-700 truncate max-w-[160px]" x-text="fileName"></p>
+                                    <button type="button" @click="removeFile()"
+                                        class="mt-1 px-3 py-1 bg-red-100 text-red-600 rounded-lg text-xs hover:bg-red-200 w-fit">
+                                        Hapus
+                                    </button>
                                 </div>
-                            @endif
-                            <p class="text-xs text-gray-500 mt-1">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB</p>
+                            </div>
+
+                            <!-- Input File (hidden) -->
+                            <input type="file" id="image2" name="image2" accept="image/*" x-ref="file"
+                                @change="fileChanged" class="hidden">
                         </div>
                     </div>
 
@@ -82,17 +108,43 @@
                             <textarea id="description3" name="description3" rows="3"
                                 class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">{{ old('description3', $pengurus->description3) }}</textarea>
                         </div>
-                        <div>
+                        <!-- Drag & Drop Upload Gambar 3 -->
+                        <div x-data="imageDropzone({ existingUrl: '{{ $pengurus->image3 ? asset('storage/' . $pengurus->image3) : '' }}' })" class="space-y-2">
                             <label for="image3" class="block text-sm font-medium text-gray-700">Gambar 3</label>
-                            <input type="file" id="image3" name="image3" accept="image/*"
-                                class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
-                            @if ($pengurus->image3)
-                                <div class="mt-2">
-                                    <img src="{{ asset('storage/' . $pengurus->image3) }}" alt="Gambar 3"
-                                        class="h-24 rounded-lg border">
+
+                            <!-- Area Drop -->
+                            <div x-show="!previewUrl" x-ref="dropzone" @click="$refs.file.click()"
+                                @dragover.prevent="isDrag = true" @dragleave.prevent="isDrag = false"
+                                @drop.prevent="handleDrop($event)"
+                                :class="{ 'ring-2 ring-emerald-400 bg-emerald-50': isDrag }"
+                                class="flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-gray-300 p-6 cursor-pointer transition">
+
+                                <svg class="w-12 h-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M7 16a4 4 0 01-.88-7.9A5.002 5.002 0 0117.9 9h.1a4.992 4.992 0 012.9 9.1M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                                <p class="mt-2 text-sm text-gray-600">Tarik & letakkan gambar di sini atau klik untuk pilih
+                                </p>
+                                <p class="mt-1 text-xs text-gray-500">Format: JPEG, PNG, JPG, GIF. Maks 2MB</p>
+                            </div>
+
+                            <!-- Preview -->
+                            <div x-show="previewUrl" class="flex items-center gap-3 mt-3">
+                                <img :src="previewUrl" alt="Preview"
+                                    class="h-20 w-20 object-cover rounded-lg border" />
+                                <div class="flex flex-col min-w-0">
+                                    <p class="text-sm text-gray-700 truncate max-w-[160px]" x-text="fileName"></p>
+                                    <button type="button" @click="removeFile()"
+                                        class="mt-1 px-3 py-1 bg-red-100 text-red-600 rounded-lg text-xs hover:bg-red-200 w-fit">
+                                        Hapus
+                                    </button>
                                 </div>
-                            @endif
-                            <p class="text-xs text-gray-500 mt-1">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB</p>
+                            </div>
+
+                            <!-- Input File (hidden) -->
+                            <input type="file" id="image3" name="image3" accept="image/*" x-ref="file"
+                                @change="fileChanged" class="hidden">
                         </div>
                     </div>
                 </div>
@@ -115,5 +167,65 @@
     <script>
         ClassicEditor.create(document.querySelector('#description2')).catch(error => console.error(error));
         ClassicEditor.create(document.querySelector('#description3')).catch(error => console.error(error));
+    </script>
+
+    <script>
+        function imageDropzone({
+            existingUrl = null
+        } = {}) {
+            return {
+                isDrag: false,
+                previewUrl: existingUrl || null,
+                fileName: existingUrl ? existingUrl.split('/').pop() : '',
+                maxSize: 2 * 1024 * 1024, // 2MB
+
+                fileChanged(e) {
+                    const f = e.target.files[0];
+                    if (!f) return this.removeFile();
+                    if (!f.type.startsWith('image/')) {
+                        alert('File harus gambar');
+                        this.$refs.file.value = '';
+                        return;
+                    }
+                    if (f.size > this.maxSize) {
+                        alert('Ukuran file max 2MB');
+                        this.$refs.file.value = '';
+                        return;
+                    }
+                    this.setFile(f);
+                },
+
+                handleDrop(e) {
+                    this.isDrag = false;
+                    const f = e.dataTransfer.files[0];
+                    if (!f) return;
+                    if (!f.type.startsWith('image/')) {
+                        alert('File harus gambar');
+                        return;
+                    }
+                    if (f.size > this.maxSize) {
+                        alert('Ukuran file max 2MB');
+                        return;
+                    }
+                    const dt = new DataTransfer();
+                    dt.items.add(f);
+                    this.$refs.file.files = dt.files;
+                    this.setFile(f);
+                },
+
+                setFile(f) {
+                    this.fileName = f.name;
+                    const reader = new FileReader();
+                    reader.onload = (e) => this.previewUrl = e.target.result;
+                    reader.readAsDataURL(f);
+                },
+
+                removeFile() {
+                    this.previewUrl = null;
+                    this.fileName = '';
+                    this.$refs.file.value = '';
+                }
+            }
+        }
     </script>
 @endsection

@@ -211,7 +211,7 @@
                             </div>
 
                             <!-- Desktop Navigation -->
-                            <nav class="hidden lg:flex items-center space-x-8">
+                            <nav class="hidden lg:flex items-center space-x-4">
                                 <!-- Dashboard -->
                                 <a href="/dashboard" class="nav-item">
                                     <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
