@@ -102,7 +102,17 @@
                             <td class="px-6 py-4">{{ $item->email ?? '-' }}</td>
                             <td class="px-6 py-4 flex justify-center space-x-2">
                                 <button
-                                    onclick="openEditModal({{ $item->id }}, '{{ $item->name }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}', '{{ $item->notlp }}', '{{ $item->email }}')"
+                                    onclick="openEditModal(
+        {{ $item->id }},
+        '{{ $item->name }}',
+        '{{ $item->image ? asset('storage/' . $item->image) : '' }}',
+        '{{ $item->notlp }}',
+        '{{ $item->email }}',
+        '{{ $item->yt }}',
+        '{{ $item->fb }}',
+        '{{ $item->ig }}',
+        '{{ $item->tiktok }}'
+    )"
                                     class="flex items-center gap-1 px-3 py-2 bg-green-100 hover:bg-green-200 text-green-600 text-sm rounded-lg shadow">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor"
                                         viewBox="0 0 24 24">
@@ -113,6 +123,7 @@
                                     </svg>
                                     <span>Edit</span>
                                 </button>
+
                                 <button onclick="confirmDelete({{ $item->id }}, '{{ $item->name }}')"
                                     class="flex items-center gap-1 px-3 py-2 bg-red-200 hover:bg-red-300 text-red-600 text-sm rounded-lg shadow">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor"
@@ -149,11 +160,46 @@
                         class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
                         required>
                 </div>
-                <div>
+                <div x-data="imageUpload()" x-init="init()" class="space-y-2">
                     <label class="block text-sm font-semibold mb-1">Gambar</label>
-                    <input type="file" name="image" accept="image/*"
-                        class="w-full border border-gray-300 rounded-lg p-2" required>
+
+                    <div x-on:click="triggerInput" x-on:dragover.prevent="isDrag=true" x-on:dragleave.prevent="isDrag=false"
+                        x-on:drop.prevent="handleDrop($event)"
+                        :class="{
+                            'border-emerald-400 bg-emerald-50': isDrag,
+                            'border-gray-300': !isDrag
+                        }"
+                        class="cursor-pointer rounded-lg border-2 border-dashed p-6 flex flex-col items-center justify-center text-center transition-colors">
+                        <!-- SVG awan -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-emerald-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M3 15a4 4 0 004 4h9a4 4 0 000-8 6 6 0 10-11 3z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 11v6m-3-3 3-3 3 3" />
+                        </svg>
+
+                        <p class="mt-2 text-sm text-gray-600">Klik atau seret gambar ke sini</p>
+                        <p class="text-xs text-gray-400">PNG, JPG, GIF (maks 5MB)</p>
+
+                        <!-- Input file asli (disembunyikan) -->
+                        <input type="file" name="image" accept="image/*" x-ref="fileInput" class="hidden" required
+                            x-on:change="handleFiles($event.target.files)" />
+
+                        <!-- Preview -->
+                        <template x-if="previewUrl">
+                            <div class="mt-4">
+                                <img :src="previewUrl" class="max-h-32 rounded-md shadow" />
+                                <button type="button" x-on:click.stop="clear()"
+                                    class="mt-2 px-3 py-1 text-xs rounded bg-red-100 text-red-600">
+                                    Hapus
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                    <p x-text="error" class="text-xs text-red-600"></p>
                 </div>
+
                 <div>
                     <label class="block text-sm font-semibold mb-1">No.Telp</label>
                     <input type="text" name="notlp"
@@ -163,6 +209,28 @@
                     <label class="block text-sm font-semibold mb-1">Email</label>
                     <input type="email" name="email"
                         class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                </div>
+                <div class="grid md:grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">YouTube</label>
+                        <input type="text" name="yt"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Facebook</label>
+                        <input type="text" name="fb"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Instagram</label>
+                        <input type="text" name="ig"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">TikTok</label>
+                        <input type="text" name="tiktok"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
                 </div>
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeAddModal()"
@@ -184,29 +252,90 @@
                 <div>
                     <label class="block text-sm font-semibold">Nama Kategori</label>
                     <input type="text" name="name" id="editName"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500" required>
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                        required>
                 </div>
-                <div>
+                <div x-data="imageUploadEdit()" x-init="init()" class="space-y-2">
                     <label class="block text-sm font-semibold">Gambar</label>
-                    <input type="file" name="image" id="editImage" accept="image/*"
-                        class="w-full border border-gray-300 rounded-lg p-2">
+
+                    <!-- Area Upload -->
+                    <div x-on:click="triggerInput" x-on:dragover.prevent="isDrag=true"
+                        x-on:dragleave.prevent="isDrag=false" x-on:drop.prevent="handleDrop($event)"
+                        :class="{
+                            'border-emerald-400 bg-emerald-50': isDrag,
+                            'border-gray-300': !isDrag
+                        }"
+                        class="cursor-pointer rounded-lg border-2 border-dashed p-6 flex flex-col items-center justify-center text-center transition-colors">
+                        <!-- Ikon SVG awan -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-emerald-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M3 15a4 4 0 004 4h9a4 4 0 000-8 6 6 0 10-11 3z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 11v6m-3-3 3-3 3 3" />
+                        </svg>
+
+                        <p class="mt-2 text-sm text-gray-600">Klik atau seret gambar baru</p>
+                        <p class="text-xs text-gray-400">PNG, JPG, GIF (maks 5MB)</p>
+
+                        <!-- Input file (disembunyikan) -->
+                        <input type="file" name="image" id="editImage" accept="image/*" x-ref="fileInput"
+                            class="hidden" x-on:change="handleFiles($event.target.files)" />
+
+                        <!-- Preview gambar baru -->
+                        <template x-if="previewUrl">
+                            <div class="mt-4">
+                                <img :src="previewUrl" class="max-h-32 rounded-md shadow" />
+                                <button type="button" x-on:click.stop="clear()"
+                                    class="mt-2 px-3 py-1 text-xs rounded bg-red-100 text-red-600">Hapus</button>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Preview gambar lama -->
                     <img id="editPreview" src="" class="w-24 h-24 rounded-lg mt-2 object-cover hidden">
+
+                    <p x-text="error" class="text-xs text-red-600"></p>
                 </div>
+
                 <div>
                     <label class="block text-sm font-semibold">No.Telp</label>
                     <input type="text" name="notlp" id="editNotlp"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold">Email</label>
                     <input type="email" name="email" id="editEmail"
-                        class="w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
+                <div class="grid md:grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-sm font-semibold">YouTube</label>
+                        <input type="text" name="yt" id="editYt"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Facebook</label>
+                        <input type="text" name="fb" id="editFb"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">Instagram</label>
+                        <input type="text" name="ig" id="editIg"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold">TikTok</label>
+                        <input type="text" name="tiktok" id="editTiktok"
+                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                </div>
+
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeEditModal()"
                         class="px-5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Batal</button>
                     <button type="submit"
-                        class="px-5 py-2 rounded-lg bg-amber-500 text-white font-semibold hover:bg-amber-600">Update</button>
+                        class="px-5 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Update</button>
                 </div>
             </form>
         </div>
@@ -230,13 +359,16 @@
             document.getElementById('addModal').classList.add('hidden');
         }
 
-        // Modal Edit
-        function openEditModal(id, name, image, notlp, email) {
+        function openEditModal(id, name, image, notlp, email, yt, fb, ig, tiktok) {
             let url = '{{ route('category-daftar.update', ':id') }}'.replace(':id', id);
             document.getElementById('editForm').action = url;
             document.getElementById('editName').value = name;
             document.getElementById('editNotlp').value = notlp;
             document.getElementById('editEmail').value = email;
+            document.getElementById('editYt').value = yt;
+            document.getElementById('editFb').value = fb;
+            document.getElementById('editIg').value = ig;
+            document.getElementById('editTiktok').value = tiktok;
 
             const preview = document.getElementById('editPreview');
             if (image) {
@@ -294,5 +426,97 @@
                 });
             }
         });
+    </script>
+
+    <script>
+        function imageUpload() {
+            return {
+                isDrag: false,
+                previewUrl: null,
+                error: '',
+                maxSize: 5 * 1024 * 1024,
+
+                init() {},
+
+                triggerInput() {
+                    this.$refs.fileInput.click();
+                },
+
+                handleFiles(files) {
+                    this.error = '';
+                    if (!files || !files.length) return;
+                    const file = files[0];
+                    if (!file.type.startsWith('image/')) {
+                        this.error = 'File harus berupa gambar.';
+                        return;
+                    }
+                    if (file.size > this.maxSize) {
+                        this.error = 'Ukuran maksimal 5MB.';
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = e => this.previewUrl = e.target.result;
+                    reader.readAsDataURL(file);
+                },
+
+                handleDrop(e) {
+                    this.isDrag = false;
+                    const dt = e.dataTransfer;
+                    if (!dt.files.length) return;
+                    this.handleFiles(dt.files);
+                    this.$refs.fileInput.files = dt.files;
+                },
+
+                clear() {
+                    this.previewUrl = null;
+                    this.$refs.fileInput.value = '';
+                }
+            }
+        }
+
+        function imageUploadEdit() {
+            return {
+                isDrag: false,
+                previewUrl: null,
+                error: '',
+                maxSize: 5 * 1024 * 1024,
+
+                init() {},
+
+                triggerInput() {
+                    this.$refs.fileInput.click();
+                },
+
+                handleFiles(files) {
+                    this.error = '';
+                    if (!files || !files.length) return;
+                    const file = files[0];
+                    if (!file.type.startsWith('image/')) {
+                        this.error = 'File harus berupa gambar.';
+                        return;
+                    }
+                    if (file.size > this.maxSize) {
+                        this.error = 'Ukuran maksimal 5MB.';
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = e => this.previewUrl = e.target.result;
+                    reader.readAsDataURL(file);
+                },
+
+                handleDrop(e) {
+                    this.isDrag = false;
+                    const dt = e.dataTransfer;
+                    if (!dt.files.length) return;
+                    this.handleFiles(dt.files);
+                    this.$refs.fileInput.files = dt.files;
+                },
+
+                clear() {
+                    this.previewUrl = null;
+                    this.$refs.fileInput.value = '';
+                }
+            }
+        }
     </script>
 @endsection

@@ -28,27 +28,105 @@
                 @enderror
             </div>
 
-            <!-- Gambar 1 -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Gambar 1</label>
-                <input type="file" name="image" class="w-full border border-gray-300 rounded-lg px-3 py-2">
-                @if ($about->image)
-                    <img src="{{ asset('storage/' . $about->image) }}" class="w-32 mt-2 rounded">
-                @endif
+            <!-- Gambar 1 (Edit) -->
+            <div class="space-y-1">
+                <label for="image" class="block text-sm font-semibold text-gray-700">Gambar 1</label>
+
+                <!-- Dropzone (hanya tampil kalau tidak ada gambar lama) -->
+                <div id="dropzone"
+                    class="{{ $about->image ? 'hidden' : '' }} relative w-full border-2 border-dashed border-gray-300 rounded-lg px-4 py-8 flex flex-col items-center justify-center cursor-pointer
+                hover:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-300 transition"
+                    onclick="document.getElementById('image').click()">
+
+                    <!-- SVG awan -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-gray-400 mb-3" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M3 15.5A4.5 4.5 0 017.5 11H9a5 5 0 0110 0h.5A3.5 3.5 0 0124 14.5 3.5 3.5 0 0120.5 18H6a3 3 0 01-3-2.5z" />
+                    </svg>
+
+                    <div class="text-sm text-gray-600 text-center">
+                        Seret & jatuhkan gambar di sini, atau <span class="text-emerald-600 font-medium">klik untuk
+                            memilih</span>
+                    </div>
+                    <div class="text-xs text-gray-400 mt-1">PNG, JPG, JPEG — maksimal 2MB</div>
+
+                    <!-- Hidden input -->
+                    <input id="image" name="image" type="file" accept="image/*" class="sr-only">
+                </div>
+
+                <!-- Preview (jika ada gambar lama atau setelah pilih baru) -->
+                <div id="previewContainer" class="{{ $about->image ? '' : 'hidden' }}">
+                    <div class="relative inline-block">
+                        <img id="previewImage" src="{{ $about->image ? asset('storage/' . $about->image) : '#' }}"
+                            alt="Preview gambar" class="max-h-60 rounded-lg shadow border object-contain" />
+
+                        <button type="button" id="removeImageBtn"
+                            class="absolute -top-3 -right-3 bg-white border rounded-full p-1 shadow hover:bg-gray-100"
+                            aria-label="Hapus gambar">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-600" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 8.586L15.293 3.293a1 1 0 111.414 1.414L11.414 10l5.293 5.293a1 1 0 01-1.414 1.414L10 11.414l-5.293 5.293a1 1 0 01-1.414-1.414L8.586 10 3.293 4.707A1 1 0 014.707 3.293L10 8.586z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
                 @error('image')
-                    <p class="text-sm text-red-600">{{ $message }}</p>
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <!-- Gambar 2 -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Gambar 2</label>
-                <input type="file" name="image2" class="w-full border border-gray-300 rounded-lg px-3 py-2">
-                @if ($about->image2)
-                    <img src="{{ asset('storage/' . $about->image2) }}" class="w-32 mt-2 rounded">
-                @endif
+            <!-- Gambar 2 (Edit) -->
+            <div class="space-y-1">
+                <label for="image2" class="block text-sm font-semibold text-gray-700">Gambar 2</label>
+
+                <!-- Dropzone (muncul kalau belum ada gambar lama) -->
+                <div id="dropzone2"
+                    class="{{ $about->image2 ? 'hidden' : '' }} relative w-full border-2 border-dashed border-gray-300 rounded-lg px-4 py-8 flex flex-col items-center justify-center cursor-pointer
+                hover:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-300 transition"
+                    onclick="document.getElementById('image2').click()">
+
+                    <!-- SVG awan -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-gray-400 mb-3" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M3 15.5A4.5 4.5 0 017.5 11H9a5 5 0 0110 0h.5A3.5 3.5 0 0124 14.5 3.5 3.5 0 0120.5 18H6a3 3 0 01-3-2.5z" />
+                    </svg>
+
+                    <div class="text-sm text-gray-600 text-center">
+                        Seret & jatuhkan gambar di sini, atau <span class="text-emerald-600 font-medium">klik untuk
+                            memilih</span>
+                    </div>
+                    <div class="text-xs text-gray-400 mt-1">PNG, JPG, JPEG — maksimal 2MB</div>
+
+                    <!-- Hidden input -->
+                    <input id="image2" name="image2" type="file" accept="image/*" class="sr-only">
+                </div>
+
+                <!-- Preview (muncul kalau ada gambar lama atau setelah pilih baru) -->
+                <div id="previewContainer2" class="{{ $about->image2 ? '' : 'hidden' }}">
+                    <div class="relative inline-block">
+                        <img id="previewImage2" src="{{ $about->image2 ? asset('storage/' . $about->image2) : '#' }}"
+                            alt="Preview gambar" class="max-h-60 rounded-lg shadow border object-contain" />
+
+                        <button type="button" id="removeImageBtn2"
+                            class="absolute -top-3 -right-3 bg-white border rounded-full p-1 shadow hover:bg-gray-100"
+                            aria-label="Hapus gambar">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-600" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 8.586L15.293 3.293a1 1 0 111.414 1.414L11.414 10l5.293 5.293a1 1 0 01-1.414 1.414L10 11.414l-5.293 5.293a1 1 0 01-1.414-1.414L8.586 10 3.293 4.707A1 1 0 014.707 3.293L10 8.586z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
                 @error('image2')
-                    <p class="text-sm text-red-600">{{ $message }}</p>
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -68,5 +146,121 @@
             .catch(error => {
                 console.error(error);
             });
+    </script>
+
+    <script>
+        (function() {
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('image');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const removeBtn = document.getElementById('removeImageBtn');
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
+                dropzone.addEventListener(ev, e => e.preventDefault());
+            });
+
+            dropzone.addEventListener('dragover', () => {
+                dropzone.classList.add('border-emerald-400', 'bg-emerald-50');
+            });
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.classList.remove('border-emerald-400', 'bg-emerald-50');
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                dropzone.classList.remove('border-emerald-400', 'bg-emerald-50');
+                const files = e.dataTransfer.files;
+                if (files && files.length) handleFile(files[0]);
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                const f = e.target.files && e.target.files[0];
+                if (f) handleFile(f);
+            });
+
+            removeBtn.addEventListener('click', () => {
+                fileInput.value = "";
+                previewImage.src = "#";
+                previewContainer.classList.add('hidden');
+                dropzone.classList.remove('hidden');
+            });
+
+            function handleFile(file) {
+                const maxSize = 2 * 1024 * 1024;
+                if (!file.type.startsWith('image/')) {
+                    alert('File harus berupa gambar.');
+                    return;
+                }
+                if (file.size > maxSize) {
+                    alert('Ukuran file terlalu besar (maks 2MB).');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    previewImage.src = ev.target.result;
+                    dropzone.classList.add('hidden');
+                    previewContainer.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        })();
+
+        (function() {
+            const dropzone = document.getElementById('dropzone2');
+            const fileInput = document.getElementById('image2');
+            const previewContainer = document.getElementById('previewContainer2');
+            const previewImage = document.getElementById('previewImage2');
+            const removeBtn = document.getElementById('removeImageBtn2');
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
+                dropzone.addEventListener(ev, e => e.preventDefault());
+            });
+
+            dropzone.addEventListener('dragover', () => {
+                dropzone.classList.add('border-emerald-400', 'bg-emerald-50');
+            });
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.classList.remove('border-emerald-400', 'bg-emerald-50');
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                dropzone.classList.remove('border-emerald-400', 'bg-emerald-50');
+                const files = e.dataTransfer.files;
+                if (files && files.length) handleFile(files[0]);
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                const f = e.target.files && e.target.files[0];
+                if (f) handleFile(f);
+            });
+
+            removeBtn.addEventListener('click', () => {
+                fileInput.value = "";
+                previewImage.src = "#";
+                previewContainer.classList.add('hidden');
+                dropzone.classList.remove('hidden');
+            });
+
+            function handleFile(file) {
+                const maxSize = 2 * 1024 * 1024;
+                if (!file.type.startsWith('image/')) {
+                    alert('File harus berupa gambar.');
+                    return;
+                }
+                if (file.size > maxSize) {
+                    alert('Ukuran file terlalu besar (maks 2MB).');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    previewImage.src = ev.target.result;
+                    dropzone.classList.add('hidden');
+                    previewContainer.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        })();
     </script>
 @endsection

@@ -16,11 +16,12 @@ return new class extends Migration
 
             // Step 1
             $table->string('title');
-            $table->string('descroption');
-            $table->string('address');
-            $table->string('phone');
-            $table->string('email');
+            $table->string('descroption')->nullable();
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->string('image')->nullable();
+            $table->string('jabatan')->nullable();
 
             // Step 2
             $table->string('title2')->nullable();

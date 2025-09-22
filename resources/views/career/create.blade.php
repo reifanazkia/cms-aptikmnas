@@ -26,22 +26,21 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-1">
                     <label class="block text-sm font-medium text-gray-700">Job Type</label>
-
                     <div class="relative">
                         <select name="job_type"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 pr-10
-                   focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200
-                   appearance-none bg-white">
+                                   focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200
+                                   appearance-none bg-white">
                             <option value="">-- Pilih Job Type --</option>
-                            <option value="Full Time"
-                                {{ old('job_type', $career->job_type) == 'Full Time' ? 'selected' : '' }}>Full Time</option>
-                            <option value="Part Time"
-                                {{ old('job_type', $career->job_type) == 'Part Time' ? 'selected' : '' }}>Part Time</option>
-                            <option value="Contract"
-                                {{ old('job_type', $career->job_type) == 'Contract' ? 'selected' : '' }}>Contract</option>
+                            <option value="Full Time" {{ old('job_type') == 'Full Time' ? 'selected' : '' }}>Full Time
+                            </option>
+                            <option value="Part Time" {{ old('job_type') == 'Part Time' ? 'selected' : '' }}>Part Time
+                            </option>
+                            <option value="Contract" {{ old('job_type') == 'Contract' ? 'selected' : '' }}>Contract</option>
+
                         </select>
 
-                        <!-- Custom arrow -->
+                        <!-- Custom arrow --> 
                         <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500"
                             viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd"
@@ -49,13 +48,10 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </div>
-
                     @error('job_type')
                         <p class="text-red-600 text-sm">{{ $message }}</p>
                     @enderror
                 </div>
-
-
 
                 <div class="space-y-1">
                     <label class="block text-sm font-medium text-gray-700">Lokasi</label>
@@ -106,14 +102,26 @@
             </div>
 
             <!-- Klasifikasi -->
-            <div class="space-y-1">
+            <div class="space-y-2">
                 <label class="block text-sm font-medium text-gray-700">Klasifikasi</label>
-                <input type="text" name="klasifikasi[]" value="{{ old('klasifikasi.0') }}"
-                    placeholder="Pisahkan beberapa klasifikasi dengan koma"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+
+                <!-- Container untuk input klasifikasi -->
+                <div id="klasifikasi-wrapper" class="space-y-2">
+                    <input type="text" name="klasifikasi[]" value="{{ old('klasifikasi.0') }}"
+                        placeholder="Tambahkan klasifikasi"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2
+                   focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+                </div>
+
                 @error('klasifikasi')
                     <p class="text-red-600 text-sm">{{ $message }}</p>
                 @enderror
+
+                <!-- Tombol tambah -->
+                <button type="button" onclick="tambahKlasifikasi()"
+                    class="mt-2 px-4 py-2 bg-emerald-500 text-white rounded-lg shadow hover:bg-emerald-600 transition">
+                    + Tambah Klasifikasi
+                </button>
             </div>
 
             <!-- Deskripsi -->
@@ -141,4 +149,27 @@
             </div>
         </form>
     </div>
+
+    <!-- Script untuk menambah input baru -->
+    <script>
+        function tambahKlasifikasi() {
+            const wrapper = document.getElementById('klasifikasi-wrapper');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'klasifikasi[]';
+            input.placeholder = 'Tambahkan klasifikasi';
+            input.className =
+                'w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200';
+            wrapper.appendChild(input);
+        }
+    </script>
+
+    <script>
+        // CKEditor
+        ClassicEditor
+            .create(document.querySelector('#description'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 @endsection

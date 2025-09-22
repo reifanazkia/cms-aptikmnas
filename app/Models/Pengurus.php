@@ -23,6 +23,7 @@ class Pengurus extends Model
         'ig',
         'tiktok',
         'yt',
+        'jabatan',
         'category_daftar_id',
         'category_pengurus_id',
 
@@ -70,6 +71,7 @@ class Pengurus extends Model
             'ig',
             'tiktok',
             'yt',
+            'jabatan',
             'category_daftar_id',
             'category_pengurus_id'
         ];
@@ -99,7 +101,7 @@ class Pengurus extends Model
     // Check if step is completed
     public function isStep1Completed()
     {
-        $requiredFields = ['title', 'descroption', 'address', 'phone', 'email', 'category_daftar_id', 'category_pengurus_id'];
+        $requiredFields = ['title'];
         foreach ($requiredFields as $field) {
             if (empty($this->$field)) {
                 return false;

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('no_telepon');
             $table->text('cover_letter')->nullable();
-            $table->string('file')->nullable(); // path file upload
+            $table->string('file'); // path file upload
             $table->timestamps();
         });
     }

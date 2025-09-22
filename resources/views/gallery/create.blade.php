@@ -56,13 +56,51 @@
                     @enderror
                 </div>
 
-                <!-- Image -->
-                <div>
+                <!-- Image Upload -->
+                <div x-data="imageUploadCreate()" class="space-y-2">
                     <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Gambar</label>
-                    <input type="file" name="image" id="image"
-                        class="w-full text-sm text-gray-700 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0
-                               file:text-sm file:font-medium file:bg-emerald-50 file:text-emerald-700
-                               hover:file:bg-emerald-100 @error('image') border-red-500 @enderror">
+
+                    <!-- Area Upload (kalau belum ada foto) -->
+                    <div x-show="!previewUrl" x-on:click="triggerInput" x-on:dragover.prevent="isDrag = true"
+                        x-on:dragleave.prevent="isDrag = false" x-on:drop.prevent="handleDrop($event)"
+                        :class="{
+                            'border-emerald-400 bg-emerald-50': isDrag,
+                            'border-gray-300': !isDrag
+                        }"
+                        class="cursor-pointer rounded-lg border-2 p-6 flex flex-col items-center justify-center text-center transition-colors">
+                        <!-- Icon Awan -->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            class="h-12 w-12 text-emerald-600">
+                            <path d="M17.5 19a4.5 4.5 0 0 0 .5-9 6 6 0 0 0-11.5-1.5A4.5 4.5 0 0 0 6.5 19h11z" />
+                            <path d="M12 11v6" />
+                            <path d="M9 14l3-3 3 3" />
+                        </svg>
+
+                        <p class="mt-2 text-sm text-gray-600">Klik atau seret gambar ke sini</p>
+                        <p class="text-xs text-gray-400">PNG, JPG, GIF (maks 2MB)</p>
+
+                        <input type="file" name="image" id="image" accept="image/*" x-ref="fileInput"
+                            class="hidden" x-on:change="handleFiles($event.target.files)" required />
+                    </div>
+
+                    <!-- Preview (kalau sudah ada foto) -->
+                    <div x-show="previewUrl" class="relative w-40">
+                        <img :src="previewUrl" alt="Preview"
+                            class="w-40 h-40 object-cover rounded-lg border shadow-sm">
+
+                        <div class="mt-2 flex gap-2">
+                            <button type="button" x-on:click="triggerInput"
+                                class="px-3 py-1 text-sm rounded-lg border hover:bg-gray-50">
+                                Ganti
+                            </button>
+                            <button type="button" x-on:click="removeFile"
+                                class="px-3 py-1 text-sm rounded-lg border text-red-600 hover:bg-red-50">
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+
                     @error('image')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -140,4 +178,51 @@
                 console.error(error);
             });
     </script>
+
+    <script>
+        function imageUploadCreate() {
+            return {
+                previewUrl: null,
+                isDrag: false,
+                file: null,
+
+                triggerInput() {
+                    this.$refs.fileInput.click();
+                },
+
+                handleFiles(files) {
+                    if (!files || files.length === 0) return;
+
+                    const file = files[0];
+
+                    // Validasi size (max 2MB)
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert("Ukuran file maksimal 2MB");
+                        return;
+                    }
+
+                    this.file = file;
+
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.previewUrl = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                },
+
+                handleDrop(event) {
+                    const files = event.dataTransfer.files;
+                    this.handleFiles(files);
+                    this.isDrag = false;
+                },
+
+                removeFile() {
+                    this.file = null;
+                    this.previewUrl = null;
+                    this.$refs.fileInput.value = "";
+                }
+            };
+        }
+    </script>
+
 @endsection

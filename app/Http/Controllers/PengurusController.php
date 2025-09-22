@@ -41,15 +41,16 @@ class PengurusController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
-            'descroption' => 'required|string|max:255', // Fix typo: should be 'description'
-            'address' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'descroption' => 'nullable|string|max:255', // Fix typo: should be 'description'
+            'address' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:750',
             'fb' => 'nullable|string|max:255',
             'ig' => 'nullable|string|max:255',
             'tiktok' => 'nullable|string|max:255',
             'yt' => 'nullable|string|max:255',
+            'jabatan' => 'nullable|string|max:255',
             'category_daftar_id' => 'nullable|exists:daftar_dpd_categories,id',
             'category_pengurus_id' => 'nullable|exists:pengurus_categories,id',
         ]);
@@ -204,6 +205,7 @@ class PengurusController extends Controller
             'ig' => 'nullable|string|max:255',
             'tiktok' => 'nullable|string|max:255',
             'yt' => 'nullable|string|max:255',
+            'jabatan' => 'nullable|string|max:255',
             'category_daftar_id' => 'nullable|exists:daftar_dpd_categories,id',
             'category_pengurus_id' => 'nullable|exists:pengurus_categories,id',
         ]);

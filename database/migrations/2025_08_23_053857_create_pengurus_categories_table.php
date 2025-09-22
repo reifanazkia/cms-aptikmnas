@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('daftar_dpd_categories', function (Blueprint $table) {
+        Schema::create('pengurus_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image');
-            $table->string('notlp');
-            $table->string('email');
+            $table->string('image')->nullable();
+            $table->string('notlp')->nullable();
+            $table->string('email')->nullable();
             $table->string('yt')->nullable();
             $table->string('fb')->nullable();
             $table->string('ig')->nullable();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('daftar_dpd_categories');
+        Schema::dropIfExists('pengurus_categories');
     }
 };
