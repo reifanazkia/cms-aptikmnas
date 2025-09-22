@@ -163,4 +163,13 @@
             wrapper.appendChild(input);
         }
     </script>
+
+    <script>
+        // CKEditor
+        ClassicEditor
+            .create(document.querySelector('#description'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 @endsection

@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Edit Tentang Kami'])
 
 @section('content')
-    <div class="p-4 sm:p-6 bg-white rounded-lg shadow space-y-6 max-w-md mx-auto">
+    <div class="p-4 sm:p-6 bg-white rounded-lg shadow space-y-6 max-w-2xl mx-auto">
 
         <!-- Judul Halaman -->
         <div class="text-center">
@@ -82,9 +82,10 @@
             </div>
 
             <!-- Gambar -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Gambar</label>
+            <div x-data="imageUpload()" class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Gambar</label>
 
+                <!-- Preview Current Image -->
                 @if ($aboutus->image)
                     <div class="mb-3">
                         <img src="{{ asset($aboutus->image) }}" alt="Current Image" class="h-32 rounded-lg border">
@@ -92,8 +93,35 @@
                     </div>
                 @endif
 
-                <input type="file" name="image"
-                    class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500">
+                <!-- Drag & Drop Area -->
+                <div x-bind:class="{ 'border-emerald-500 bg-emerald-50': isDrag }" x-on:click="triggerInput"
+                    x-on:dragover.prevent="isDrag = true" x-on:dragleave.prevent="isDrag = false"
+                    x-on:drop.prevent="handleFiles($event.dataTransfer.files)"
+                    class="flex flex-col items-center justify-center border-2 border-gray-300 rounded-lg h-40 cursor-pointer transition-colors duration-200">
+
+                    <template x-if="!previewUrl">
+                        <div class="flex flex-col items-center text-gray-400">
+                            <!-- SVG Awan -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                class="h-12 w-12 text-emerald-600">
+                                <path d="M17.5 19a4.5 4.5 0 0 0 .5-9 6 6 0 0 0-11.5-1.5A4.5 4.5 0 0 0 6.5 19h11z" />
+                                <path d="M12 11v6" />
+                                <path d="M9 14l3-3 3 3" />
+                            </svg>
+                            <p class="text-sm">Drag & drop file di sini atau klik untuk pilih</p>
+                        </div>
+                    </template>
+
+                    <!-- Preview Image -->
+                    <template x-if="previewUrl">
+                        <img :src="previewUrl" class="h-32 object-cover rounded-lg">
+                    </template>
+
+                    <input type="file" name="image" x-ref="fileInput" x-on:change="handleFiles($event.target.files)"
+                        class="hidden" accept="image/*">
+                </div>
+
                 <p class="text-xs text-gray-500 mt-1">Biarkan kosong jika tidak ingin mengubah gambar.</p>
                 @error('image')
                     <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
@@ -124,5 +152,28 @@
             .catch(error => {
                 console.error(error);
             });
+    </script>
+
+    <script>
+        function imageUpload() {
+            return {
+                previewUrl: null,
+                isDrag: false,
+                triggerInput() {
+                    this.$refs.fileInput.click();
+                },
+                handleFiles(files) {
+                    if (!files.length) return;
+                    const file = files[0];
+
+                    if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                        alert("Ukuran file maksimal 2MB");
+                        return;
+                    }
+
+                    this.previewUrl = URL.createObjectURL(file);
+                }
+            }
+        }
     </script>
 @endsection

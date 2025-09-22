@@ -30,7 +30,7 @@
                         <div class="flex space-x-2">
                             <!-- Edit -->
                             <button
-                                onclick="openEditModal({{ $item->id }}, '{{ $item->name }}', '{{ $item->notlp }}', '{{ $item->email }}', '{{ $item->yt }}', '{{ $item->fb }}', '{{ $item->ig }}', '{{ $item->tiktok }}')"
+                                onclick="openEditModal({{ $item->id }}, '{{ $item->name }}', '{{ $item->notlp }}', '{{ $item->email }}', '{{ $item->yt }}', '{{ $item->fb }}', '{{ $item->ig }}', '{{ $item->tiktok }}', '{{ $item->image }}')"
                                 class="p-2 bg-green-100 hover:bg-green-200 text-green-600 rounded-lg shadow">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor"
                                     viewBox="0 0 24 24">
@@ -81,7 +81,7 @@
                             <td class="px-6 py-4 flex space-x-3 justify-center">
                                 <!-- Edit -->
                                 <button
-                                    onclick="openEditModal({{ $item->id }}, '{{ $item->name }}', '{{ $item->notlp }}', '{{ $item->email }}', '{{ $item->yt }}', '{{ $item->fb }}', '{{ $item->ig }}', '{{ $item->tiktok }}')"
+                                    onclick="openEditModal({{ $item->id }}, '{{ $item->name }}', '{{ $item->notlp }}', '{{ $item->email }}', '{{ $item->yt }}', '{{ $item->fb }}', '{{ $item->ig }}', '{{ $item->tiktok }}', '{{ $item->image }}')"
                                     class="flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-green-200 text-green-600 text-sm rounded-lg shadow">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor"
                                         viewBox="0 0 24 24">
@@ -118,56 +118,109 @@
 
     <!-- Modal Tambah -->
     <div id="addModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
-            <h2 class="text-xl font-bold text-emerald-700 mb-4">Tambah Kategori</h2>
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl p-6">
+            <!-- Header -->
+            <h2 class="text-xl font-bold text-emerald-700 mb-6">Tambah Kategori</h2>
+
             <form id="addForm" action="{{ route('category-pengurus.store') }}" method="POST"
-                enctype="multipart/form-data" class="space-y-4">
+                enctype="multipart/form-data" class="space-y-6">
                 @csrf
-                <div class="grid grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-semibold">Nama Kategori</label>
-                        <input type="text" name="name"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
-                            required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold">No. Telp</label>
-                        <input type="text" name="notlp"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
-                            required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold">Email</label>
-                        <input type="email" name="email"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
-                            required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold">Image</label>
-                        <input type="file" name="image" accept="image/*" class="rounded-lg w-full px-2 py-2 border border-gray-300" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold">Youtube</label>
-                        <input type="text" name="yt"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold">Facebook</label>
-                        <input type="text" name="fb"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold">Instagram</label>
-                        <input type="text" name="ig"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold">TikTok</label>
-                        <input type="text" name="tiktok"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+
+                <!-- Data Utama -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-3">Data Utama</h3>
+                    <div class="grid grid-cols-2 grid-row-5 gap-5">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Nama Kategori</label>
+                            <input type="text" name="name"
+                                class="w-full rounded-lg px-3 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                                required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">No. Telp</label>
+                            <input type="text" name="notlp"
+                                class="w-full rounded-lg px-3 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                                required>
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium mb-1">Email</label>
+                            <input type="email" name="email"
+                                class="w-full rounded-lg px-3 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
+                                required>
+                        </div>
+
+                        <!-- Upload Image -->
+                        <div x-data="imageUploadCreate()" class="space-y-2 row-start-2 col-span-2">
+                            <label class="block text-sm font-medium mb-1">Image</label>
+
+                            <!-- Area Upload (hanya tampil kalau belum ada foto) -->
+                            <div x-show="!previewUrl" x-on:click="triggerInput" x-on:dragover.prevent="isDrag=true"
+                                x-on:dragleave.prevent="isDrag=false" x-on:drop.prevent="handleDrop($event)"
+                                :class="{
+                                    'border-emerald-400 bg-emerald-50': isDrag,
+                                    'border-gray-300': !isDrag
+                                }"
+                                class="cursor-pointer rounded-lg border-2 p-6 flex flex-col items-center justify-center text-center transition-colors">
+
+                                <!-- Icon Upload -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-emerald-600" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M3 15a4 4 0 004 4h9a4 4 0 000-8 6 6 0 10-11 3z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M12 11v6m-3-3 3-3 3 3" />
+                                </svg>
+
+                                <p class="mt-2 text-sm text-gray-600">Klik atau seret gambar ke sini</p>
+                                <p class="text-xs text-gray-400">PNG, JPG, GIF (maks 2MB)</p>
+
+                                <input type="file" name="image" accept="image/*" x-ref="fileInput" class="hidden"
+                                    x-on:change="handleFiles($event.target.files)" required />
+                            </div>
+
+                            <!-- Preview (hanya tampil kalau sudah ada foto) -->
+                            <div x-show="previewUrl" class="mt-2">
+                                <img :src="previewUrl" class="max-h-40 rounded-md shadow" />
+                                <button type="button" x-on:click="clear()"
+                                    class="mt-3 px-3 py-1 text-sm rounded-lg bg-red-100 text-red-600 hover:bg-red-200">
+                                    Hapus
+                                </button>
+                            </div>
+
+                            <p x-text="error" class="text-xs text-red-600"></p>
+                        </div>
                     </div>
                 </div>
-                <div class="flex justify-end space-x-3">
+
+                <!-- Sosial Media -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-3">Sosial Media</h3>
+                    <div class="grid grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">YouTube</label>
+                            <input type="text" name="yt"
+                                class="w-full rounded-lg px-3 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Facebook</label>
+                            <input type="text" name="fb"
+                                class="w-full rounded-lg px-3 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Instagram</label>
+                            <input type="text" name="ig"
+                                class="w-full rounded-lg px-3 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">TikTok</label>
+                            <input type="text" name="tiktok"
+                                class="w-full rounded-lg px-3 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex justify-end space-x-3 pt-4 border-t">
                     <button type="button" onclick="closeAddModal()"
                         class="px-5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Batal</button>
                     <button type="submit"
@@ -177,63 +230,119 @@
         </div>
     </div>
 
+
     <!-- Modal Edit -->
     <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
-            <h2 class="text-xl font-bold text-emerald-700 mb-4">Edit Kategori</h2>
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 relative">
+            <h2 class="text-xl font-bold text-emerald-700 mb-4">Edit Kategori Pengurus</h2>
+
             <form id="editForm" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
                 @method('PUT')
-                <div class="grid grid-cols-2 gap-6">
+
+                <!-- Nama -->
+                <div>
+                    <label class="block text-sm font-semibold">Nama</label>
+                    <input id="editName" type="text" name="name"
+                        class="w-full rounded-lg border border-gray-300 px-3 py-2" required>
+                </div>
+
+                <!-- Nomor Telepon -->
+                <div>
+                    <label class="block text-sm font-semibold">No. Telepon</label>
+                    <input id="editNotlp" type="text" name="notlp"
+                        class="w-full rounded-lg border border-gray-300 px-3 py-2">
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block text-sm font-semibold">Email</label>
+                    <input id="editEmail" type="email" name="email"
+                        class="w-full rounded-lg border border-gray-300 px-3 py-2">
+                </div>
+
+                <!-- Social Media -->
+                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold">Nama Kategori</label>
-                        <input type="text" name="name" id="editName"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
-                            required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold">No. Telp</label>
-                        <input type="text" name="notlp" id="editNotlp"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
-                            required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold">Email</label>
-                        <input type="email" name="email" id="editEmail"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
-                            required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold">Image</label>
-                        <input type="file" name="image" accept="image/*"
-                            class="rounded-lg w-full px-2 py-2 border border-gray-300">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold">Youtube</label>
-                        <input type="text" name="yt" id="editYt"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        <label class="block text-sm font-semibold">YouTube</label>
+                        <input id="editYt" type="text" name="yt"
+                            class="w-full rounded-lg border border-gray-300 px-3 py-2">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold">Facebook</label>
-                        <input type="text" name="fb" id="editFb"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        <input id="editFb" type="text" name="fb"
+                            class="w-full rounded-lg border border-gray-300 px-3 py-2">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold">Instagram</label>
-                        <input type="text" name="ig" id="editIg"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        <input id="editIg" type="text" name="ig"
+                            class="w-full rounded-lg border border-gray-300 px-3 py-2">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold">TikTok</label>
-                        <input type="text" name="tiktok" id="editTiktok"
-                            class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
+                        <input id="editTiktok" type="text" name="tiktok"
+                            class="w-full rounded-lg border border-gray-300 px-3 py-2">
                     </div>
                 </div>
-                <div class="flex justify-end space-x-3">
-                    <button type="button" onclick="closeEditModal()"
-                        class="px-5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Batal</button>
-                    <button type="submit"
-                        class="px-5 py-2 rounded-lg bg-amber-500 text-white font-semibold hover:bg-amber-600">Update</button>
+
+                <!-- Upload Image -->
+                <div id="editImageWrapper" x-data="imageUploadEdit()" class="space-y-2">
+                    <label class="block text-sm font-semibold">Image</label>
+
+                    <!-- Area Upload -->
+                    <div x-show="!previewUrl" x-on:click="triggerInput" x-on:dragover.prevent="isDrag=true"
+                        x-on:dragleave.prevent="isDrag=false" x-on:drop.prevent="handleDrop($event)"
+                        :class="{
+                            'border-emerald-400 bg-emerald-50': isDrag,
+                            'border-gray-300': !isDrag
+                        }"
+                        class="cursor-pointer rounded-lg border-2 border-dashed p-6 flex flex-col items-center justify-center text-center transition-colors">
+
+                        <!-- Icon Upload -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-emerald-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M3 15a4 4 0 004 4h9a4 4 0 000-8 6 6 0 10-11 3z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 11v6m-3-3 3-3 3 3" />
+                        </svg>
+
+                        <p class="mt-2 text-sm text-gray-600">Klik atau seret gambar ke sini</p>
+                        <p class="text-xs text-gray-400">PNG, JPG, GIF (maks 2MB)</p>
+
+                        <input type="file" name="image" accept="image/*" x-ref="fileInput" class="hidden"
+                            x-on:change="handleFiles($event.target.files)" />
+                    </div>
+
+                    <!-- Preview -->
+                    <div x-show="previewUrl" class="mt-2">
+                        <img :src="previewUrl" class="max-h-40 rounded-md shadow">
+                        <div class="mt-3 flex gap-2">
+                            <button type="button" x-on:click="triggerInput"
+                                class="px-3 py-1 text-sm rounded-lg border hover:bg-gray-50">
+                                Ganti
+                            </button>
+                            <button type="button" x-on:click="clear"
+                                class="px-3 py-1 text-sm rounded-lg bg-red-100 text-red-600 hover:bg-red-200">
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+
+                    <p x-text="error" class="text-xs text-red-600"></p>
+                </div>
+
+
+
+                <!-- Tombol -->
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="button" onclick="document.getElementById('editModal').classList.add('hidden')"
+                        class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-4 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700">
+                        Simpan Perubahan
+                    </button>
                 </div>
             </form>
         </div>
@@ -257,10 +366,12 @@
             document.getElementById('addModal').classList.add('hidden');
         }
 
-        // Modal Edit
-        function openEditModal(id, name, notlp, email, yt, fb, ig, tiktok) {
+        function openEditModal(id, name, notlp, email, yt, fb, ig, tiktok, image) {
+            // set action form
             let url = '{{ route('category-pengurus.update', ':id') }}'.replace(':id', id);
             document.getElementById('editForm').action = url;
+
+            // isi field input
             document.getElementById('editName').value = name;
             document.getElementById('editNotlp').value = notlp;
             document.getElementById('editEmail').value = email;
@@ -268,8 +379,19 @@
             document.getElementById('editFb').value = fb;
             document.getElementById('editIg').value = ig;
             document.getElementById('editTiktok').value = tiktok;
+
+            // preview gambar lama
+            const uploadComp = document.querySelector('#editImageWrapper');
+            if (uploadComp) {
+                const alpine = Alpine.$data(uploadComp);
+                alpine.previewUrl = image ? "{{ asset('storage') }}/" + image : null;
+                alpine.error = "";
+            }
+
+            // tampilkan modal
             document.getElementById('editModal').classList.remove('hidden');
         }
+
 
         function closeEditModal() {
             document.getElementById('editModal').classList.add('hidden');
@@ -312,5 +434,82 @@
                 });
             }
         });
+    </script>
+
+    <script>
+        function imageUploadCreate() {
+            return {
+                isDrag: false,
+                previewUrl: null,
+                error: "",
+                triggerInput() {
+                    this.$refs.fileInput.click();
+                },
+                handleFiles(files) {
+                    if (!files.length) return;
+                    const file = files[0];
+
+                    // Validasi jenis file
+                    if (!file.type.startsWith("image/")) {
+                        this.error = "File harus berupa gambar!";
+                        return;
+                    }
+
+                    // Validasi ukuran (2MB max)
+                    if (file.size > 2 * 1024 * 1024) {
+                        this.error = "Ukuran maksimal 2MB!";
+                        return;
+                    }
+
+                    this.error = "";
+                    this.previewUrl = URL.createObjectURL(file);
+                },
+                handleDrop(e) {
+                    this.isDrag = false;
+                    this.handleFiles(e.dataTransfer.files);
+                },
+                clear() {
+                    this.previewUrl = null;
+                    this.$refs.fileInput.value = "";
+                }
+            };
+        }
+    </script>
+
+    <script>
+        function imageUploadEdit(config = {}) {
+            return {
+                previewUrl: config.preview || null,
+                isDrag: false,
+                error: '',
+                triggerInput() {
+                    this.$refs.fileInput.click();
+                },
+                handleFiles(files) {
+                    if (!files.length) return;
+                    const file = files[0];
+
+                    // Validasi size (contoh: max 2MB)
+                    if (file.size > 2 * 1024 * 1024) {
+                        this.error = 'Ukuran file maksimal 2MB';
+                        return;
+                    }
+
+                    this.error = '';
+                    const reader = new FileReader();
+                    reader.onload = e => this.previewUrl = e.target.result;
+                    reader.readAsDataURL(file);
+                },
+                handleDrop(e) {
+                    this.isDrag = false;
+                    this.handleFiles(e.dataTransfer.files);
+                    this.$refs.fileInput.files = e.dataTransfer.files;
+                },
+                clear() {
+                    this.previewUrl = null;
+                    this.$refs.fileInput.value = '';
+                }
+            }
+        }
     </script>
 @endsection

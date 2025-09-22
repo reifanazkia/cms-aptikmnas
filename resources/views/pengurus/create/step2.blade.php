@@ -50,11 +50,50 @@
                             <textarea id="description2" name="description2" rows="3"
                                 class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">{{ old('description2') }}</textarea>
                         </div>
-                        <div>
+                        <!-- Drag & Drop Upload Gambar 2 -->
+                        <div x-data="imageDropzone2()" class="space-y-2">
                             <label for="image2" class="block text-sm font-medium text-gray-700">Gambar 2</label>
-                            <input type="file" id="image2" name="image2" accept="image/*"
-                                class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
-                            <p class="text-xs text-gray-500 mt-1">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB</p>
+
+                            <!-- Dropzone hanya muncul kalau belum ada preview -->
+                            <div x-show="!previewUrl" x-ref="dropzone" @click="$refs.file.click()"
+                                @dragover.prevent="isDrag = true" @dragleave.prevent="isDrag = false"
+                                @drop.prevent="handleDrop($event)"
+                                :class="{
+                                    'border-emerald-400 bg-emerald-50': isDrag,
+                                    'border-gray-300 bg-white': !isDrag
+                                }"
+                                class="flex flex-col items-center justify-center gap-2 border-2 rounded-lg p-6 cursor-pointer transition-colors text-center"
+                                style="min-height: 150px;">
+                                <!-- SVG Awan Upload -->
+                                <svg class="w-12 h-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M7 16a4 4 0 01-.88-7.9A5.002 5.002 0 0117.9 9h.1a4.992 4.992 0 012.9 9.1M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+
+                                <p class="text-sm font-medium text-gray-700">Tarik & lepas gambar di sini</p>
+                                <p class="text-xs text-gray-500">atau klik untuk pilih (JPEG, PNG, JPG, GIF, maks. 2MB)</p>
+                                <p x-text="fileName" class="text-xs mt-1 text-emerald-600" x-show="fileName"></p>
+
+                                <!-- Hidden file input -->
+                                <input x-ref="file" type="file" id="image2" name="image2" accept="image/*"
+                                    class="hidden" @change="handleFile($event.target.files[0])">
+                            </div>
+
+                            <!-- Preview hanya muncul kalau ada file -->
+                            <div x-show="previewUrl" class="flex flex-col items-center">
+                                <img :src="previewUrl" alt="Preview" class="h-40 rounded-lg border object-contain">
+                                <button type="button" @click="removeFile()"
+                                    class="mt-3 px-3 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200">
+                                    Hapus
+                                </button>
+                            </div>
+
+                            <p class="text-xs text-gray-500">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB</p>
+
+                            @error('image2')
+                                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
@@ -73,11 +112,50 @@
                             <textarea id="description3" name="description3" rows="3"
                                 class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">{{ old('description3') }}</textarea>
                         </div>
-                        <div>
+                        <!-- Drag & Drop Upload Gambar 3 -->
+                        <div x-data="imageDropzone3()" class="space-y-2">
                             <label for="image3" class="block text-sm font-medium text-gray-700">Gambar 3</label>
-                            <input type="file" id="image3" name="image3" accept="image/*"
-                                class="mt-1 block w-full rounded-lg border py-2 px-3 border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
-                            <p class="text-xs text-gray-500 mt-1">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB</p>
+
+                            <!-- Dropzone muncul hanya kalau belum ada preview -->
+                            <div x-show="!previewUrl" x-ref="dropzone" @click="$refs.file.click()"
+                                @dragover.prevent="isDrag = true" @dragleave.prevent="isDrag = false"
+                                @drop.prevent="handleDrop($event)"
+                                :class="{
+                                    'border-emerald-400 bg-emerald-50': isDrag,
+                                    'border-gray-300 bg-white': !isDrag
+                                }"
+                                class="flex flex-col items-center justify-center gap-2 border-2 rounded-lg p-6 cursor-pointer transition-colors text-center"
+                                style="min-height: 150px;">
+                                <!-- SVG Awan Upload -->
+                                <svg class="w-12 h-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M7 16a4 4 0 01-.88-7.9A5.002 5.002 0 0117.9 9h.1a4.992 4.992 0 012.9 9.1M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+
+                                <p class="text-sm font-medium text-gray-700">Tarik & lepas gambar di sini</p>
+                                <p class="text-xs text-gray-500">atau klik untuk pilih (JPEG, PNG, JPG, GIF, maks. 2MB)</p>
+                                <p x-text="fileName" class="text-xs mt-1 text-emerald-600" x-show="fileName"></p>
+
+                                <!-- Hidden file input -->
+                                <input x-ref="file" type="file" id="image3" name="image3" accept="image/*"
+                                    class="hidden" @change="handleFile($event.target.files[0])">
+                            </div>
+
+                            <!-- Preview muncul menggantikan dropzone -->
+                            <div x-show="previewUrl" class="flex flex-col items-center">
+                                <img :src="previewUrl" alt="Preview" class="h-40 rounded-lg border object-contain">
+                                <button type="button" @click="removeFile()"
+                                    class="mt-3 px-3 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200">
+                                    Hapus
+                                </button>
+                            </div>
+
+                            <p class="text-xs text-gray-500">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB</p>
+
+                            @error('image3')
+                                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -100,5 +178,81 @@
     <script>
         ClassicEditor.create(document.querySelector('#description2')).catch(error => console.error(error));
         ClassicEditor.create(document.querySelector('#description3')).catch(error => console.error(error));
+    </script>
+
+    <script>
+        function imageDropzone2() {
+            return {
+                isDrag: false,
+                previewUrl: null,
+                fileName: '',
+                handleDrop(e) {
+                    const file = e.dataTransfer.files[0];
+                    this.handleFile(file);
+                    this.isDrag = false;
+                },
+                handleFile(file) {
+                    if (!file) return;
+                    if (!file.type.startsWith('image/')) {
+                        alert('File harus berupa gambar.');
+                        return;
+                    }
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('Ukuran maksimal 2MB.');
+                        return;
+                    }
+                    this.fileName = file.name;
+                    const reader = new FileReader();
+                    reader.onload = e => this.previewUrl = e.target.result;
+                    reader.readAsDataURL(file);
+
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    this.$refs.file.files = dt.files;
+                },
+                removeFile() {
+                    this.previewUrl = null;
+                    this.fileName = '';
+                    this.$refs.file.value = null;
+                }
+            }
+        }
+
+        function imageDropzone3() {
+            return {
+                isDrag: false,
+                previewUrl: null,
+                fileName: '',
+                handleDrop(e) {
+                    const file = e.dataTransfer.files[0];
+                    this.handleFile(file);
+                    this.isDrag = false;
+                },
+                handleFile(file) {
+                    if (!file) return;
+                    if (!file.type.startsWith('image/')) {
+                        alert('File harus berupa gambar.');
+                        return;
+                    }
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('Ukuran maksimal 2MB.');
+                        return;
+                    }
+                    this.fileName = file.name;
+                    const reader = new FileReader();
+                    reader.onload = e => this.previewUrl = e.target.result;
+                    reader.readAsDataURL(file);
+
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    this.$refs.file.files = dt.files;
+                },
+                removeFile() {
+                    this.previewUrl = null;
+                    this.fileName = '';
+                    this.$refs.file.value = null;
+                }
+            }
+        }
     </script>
 @endsection

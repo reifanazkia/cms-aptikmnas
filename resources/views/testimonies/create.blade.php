@@ -30,7 +30,8 @@
                             focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 appearance-none text-sm">
                             <option value="">-- Pilih Kategori --</option>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category_dpd_id') == $category->id ? 'selected' : '' }}>
+                                <option value="{{ $category->id }}"
+                                    {{ old('category_dpd_id') == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
                                 </option>
                             @endforeach
@@ -38,8 +39,8 @@
 
                         <!-- Arrow SVG -->
                         <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="2">
                             <path d="M6 9l6 6 6-6" />
                         </svg>
                     </div>
@@ -82,12 +83,50 @@
                     @enderror
                 </div>
 
-                <!-- Upload Gambar -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload Gambar</label>
-                    <input type="file" name="image"
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm
-                        focus:ring-emerald-500 focus:border-emerald-500">
+                <div x-data="imageUploadCreate()" class="space-y-2">
+                    <label class="block text-sm font-medium mb-1">Image</label>
+
+                    <!-- Area Upload (tampil kalau belum ada foto) -->
+                    <div x-show="!previewUrl" x-on:click="triggerInput" x-on:dragover.prevent="isDrag = true"
+                        x-on:dragleave.prevent="isDrag = false" x-on:drop.prevent="handleDrop($event)"
+                        :class="{
+                            'border-emerald-400 bg-emerald-50': isDrag,
+                            'border-gray-300': !isDrag
+                        }"
+                        class="cursor-pointer rounded-lg border-2 p-6 flex flex-col items-center justify-center text-center transition-colors">
+                        <!-- Icon Awan Rapi -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                            class="h-12 w-12 text-emerald-600">
+                            <path d="M17.5 19a4.5 4.5 0 0 0 .5-9 6 6 0 0 0-11.5-1.5A4.5 4.5 0 0 0 6.5 19h11z" />
+                            <path d="M12 11v6" />
+                            <path d="M9 14l3-3 3 3" />
+                        </svg>
+
+                        <p class="mt-2 text-sm text-gray-600">Klik atau seret gambar ke sini</p>
+                        <p class="text-xs text-gray-400">PNG, JPG, GIF (maks 2MB)</p>
+
+                        <input type="file" name="image" accept="image/*" x-ref="fileInput" class="hidden"
+                            x-on:change="handleFiles($event.target.files)" required />
+                    </div>
+
+                    <!-- Preview (tampil kalau sudah ada foto) -->
+                    <div x-show="previewUrl" class="relative w-40">
+                        <img :src="previewUrl" alt="Preview"
+                            class="w-40 h-40 object-cover rounded-lg border shadow-sm">
+
+                        <div class="mt-2 flex gap-2">
+                            <button type="button" x-on:click="triggerInput"
+                                class="px-3 py-1 text-sm rounded-lg border hover:bg-gray-50">
+                                Ganti
+                            </button>
+                            <button type="button" x-on:click="removeFile"
+                                class="px-3 py-1 text-sm rounded-lg border text-red-600 hover:bg-red-50">
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+
                     @error('image')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -114,5 +153,50 @@
             .catch(error => {
                 console.error(error);
             });
+    </script>
+
+    <script>
+        function imageUploadCreate() {
+            return {
+                isDrag: false,
+                previewUrl: null,
+                triggerInput() {
+                    this.$refs.fileInput.click();
+                },
+                handleDrop(e) {
+                    this.isDrag = false;
+                    if (e.dataTransfer.files.length) {
+                        this.$refs.fileInput.files = e.dataTransfer.files;
+                        this.handleFiles(e.dataTransfer.files);
+                    }
+                },
+                handleFiles(files) {
+                    const file = files[0];
+                    if (!file) return;
+
+                    // Validasi ukuran (2MB)
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('Ukuran file maksimal 2MB.');
+                        this.removeFile();
+                        return;
+                    }
+
+                    // Validasi tipe
+                    if (!file.type.startsWith('image/')) {
+                        alert('Hanya file gambar yang diperbolehkan.');
+                        this.removeFile();
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = e => this.previewUrl = e.target.result;
+                    reader.readAsDataURL(file);
+                },
+                removeFile() {
+                    this.$refs.fileInput.value = '';
+                    this.previewUrl = null;
+                }
+            }
+        }
     </script>
 @endsection
