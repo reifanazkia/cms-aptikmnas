@@ -40,8 +40,6 @@
                                 <th class="px-4 py-2 text-center">Nama</th>
                                 <th class="px-4 py-2 text-center">Email</th>
                                 <th class="px-4 py-2 text-center">Telepon</th>
-                                {{-- <th class="px-4 py-2 text-center">Daftar Pengurus DPD</th>
-                                <th class="px-4 py-2 text-center">Kategori Pengurus</th> --}}
                                 <th class="px-4 py-2 text-center">Aksi</th>
                             </tr>
                         </thead>
