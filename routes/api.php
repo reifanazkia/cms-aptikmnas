@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\ApiSliderController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AboutusController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\Api\ApiCategoryDaftarDPDController;
 use App\Http\Controllers\Api\PodcastsApiController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CareerController;
@@ -35,9 +36,6 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::get('/aboutus', [ApiAboutusController::class, 'index']);
 Route::get('/category/{id}', [ApiAboutusController::class, 'getByCategory']);
@@ -71,9 +69,11 @@ Route::get('/podcast/{id}', [PodcastsApiController::class, 'show']);
 Route::get('/report', [ApiReportController::class, 'index']);
 Route::get('/{id}', [ApiReportController::class, 'show']);
 Route::post('/', [ApiReportController::class, 'store']);
+Route::get('/categories', [ApiCategoryDaftarDPDController::class, 'index']);    
+Route::get('/categories/{id}', [ApiCategoryDaftarDPDController::class, 'show']);
+Route::get('/categories/name/{name}', [ApiCategoryDaftarDPDController::class, 'getByCategoryName']);
 
 
-Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('contact')->name('contact.')->group(function () {
         Route::post('/', [ContactController::class, 'store'])->name('store');
@@ -190,6 +190,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     Route::post('/logout', [UserController::class, 'logout']);
-});
 
 Route::post('/login', [UserController::class, 'login']);
