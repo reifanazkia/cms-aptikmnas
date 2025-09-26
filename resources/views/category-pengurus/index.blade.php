@@ -118,12 +118,16 @@
 
     <!-- Modal Tambah -->
     <div id="addModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl p-6">
-            <!-- Header -->
-            <h2 class="text-xl font-bold text-emerald-700 mb-6">Tambah Kategori</h2>
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg">
 
+            <!-- Header (tetap di atas) -->
+            <div class="px-6 pt-6 pb-4">
+                <h2 class="text-xl font-bold text-emerald-700">Tambah Kategori</h2>
+            </div>
+
+            <!-- Form Scrollable -->
             <form id="addForm" action="{{ route('category-pengurus.store') }}" method="POST"
-                enctype="multipart/form-data" class="space-y-6">
+                enctype="multipart/form-data" class="px-6 py-6 space-y-6 max-h-[65vh] overflow-y-auto">
                 @csrf
 
                 <!-- Data Utama -->
@@ -218,17 +222,19 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Action Buttons -->
-                <div class="flex justify-end space-x-3 pt-4 border-t">
-                    <button type="button" onclick="closeAddModal()"
-                        class="px-5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Batal</button>
-                    <button type="submit"
-                        class="px-5 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Simpan</button>
-                </div>
             </form>
+
+            <!-- Footer (tetap di bawah) -->
+            <div class="px-6 py-4 flex justify-end space-x-3">
+                <button type="button" onclick="closeAddModal()"
+                    class="px-5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Batal</button>
+                <button type="submit" form="addForm"
+                    class="px-5 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Simpan</button>
+            </div>
         </div>
     </div>
+
+
 
 
     <!-- Modal Edit -->

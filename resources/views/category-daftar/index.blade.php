@@ -149,10 +149,15 @@
 
     <!-- Modal Tambah -->
     <div id="addModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
-            <h2 class="text-xl font-bold text-emerald-700 mb-4">Tambah Kategori</h2>
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg">
+            <!-- Header -->
+            <div class="px-6 pt-6 pb-3">
+                <h2 class="text-xl font-bold text-emerald-700">Tambah Kategori</h2>
+            </div>
+
+            <!-- Body / Form dengan scroll -->
             <form id="addForm" action="{{ route('category-daftar.store') }}" method="POST" enctype="multipart/form-data"
-                class="space-y-4">
+                class="px-6 py-4 space-y-4 max-h-[65vh] overflow-y-auto">
                 @csrf
                 <div>
                     <label class="block text-sm font-semibold mb-1">Nama Kategori</label>
@@ -160,9 +165,10 @@
                         class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
                         required>
                 </div>
+
+                <!-- Upload gambar -->
                 <div x-data="imageUpload()" x-init="init()" class="space-y-2">
                     <label class="block text-sm font-semibold mb-1">Gambar</label>
-
                     <div x-on:click="triggerInput" x-on:dragover.prevent="isDrag=true" x-on:dragleave.prevent="isDrag=false"
                         x-on:drop.prevent="handleDrop($event)"
                         :class="{
@@ -170,7 +176,6 @@
                             'border-gray-300': !isDrag
                         }"
                         class="cursor-pointer rounded-lg border-2 border-dashed p-6 flex flex-col items-center justify-center text-center transition-colors">
-                        <!-- SVG awan -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-emerald-600" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -182,11 +187,9 @@
                         <p class="mt-2 text-sm text-gray-600">Klik atau seret gambar ke sini</p>
                         <p class="text-xs text-gray-400">PNG, JPG, GIF (maks 5MB)</p>
 
-                        <!-- Input file asli (disembunyikan) -->
                         <input type="file" name="image" accept="image/*" x-ref="fileInput" class="hidden" required
                             x-on:change="handleFiles($event.target.files)" />
 
-                        <!-- Preview -->
                         <template x-if="previewUrl">
                             <div class="mt-4">
                                 <img :src="previewUrl" class="max-h-32 rounded-md shadow" />
@@ -205,11 +208,13 @@
                     <input type="text" name="notlp"
                         class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
+
                 <div>
                     <label class="block text-sm font-semibold mb-1">Email</label>
                     <input type="email" name="email"
                         class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
+
                 <div class="grid md:grid-cols-2 gap-2">
                     <div>
                         <label class="block text-sm font-semibold mb-1">YouTube</label>
@@ -232,15 +237,19 @@
                             class="w-full rounded-lg px-2 py-2 border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
                 </div>
-                <div class="flex justify-end space-x-3">
-                    <button type="button" onclick="closeAddModal()"
-                        class="px-5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Batal</button>
-                    <button type="submit"
-                        class="px-5 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Simpan</button>
-                </div>
             </form>
+
+            <!-- Footer -->
+            <div class="px-6 py-4 flex justify-end space-x-3">
+                <button type="button" onclick="closeAddModal()"
+                    class="px-5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Batal</button>
+                <button type="submit" form="addForm"
+                    class="px-5 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Simpan</button>
+            </div>
         </div>
     </div>
+
+
 
     <!-- Modal Edit -->
     <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-50">
