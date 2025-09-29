@@ -96,4 +96,37 @@ class CategoryDaftarDPDController extends Controller
 
         return redirect()->back()->with('success', 'Kategori berhasil dihapus');
     }
+
+    public function getByCategoryName($categoryName)
+{
+    try {
+        // Cari kategori berdasarkan name
+        $category = CategoryDaftar::where('name', $categoryName)->first();
+
+        if (!$category) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        // Ambil data daftar yang punya kategori ini
+        $daftar = CategoryDaftar::where('id', $category->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'category' => $category->name,
+            'data' => $daftar
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
 }

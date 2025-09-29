@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Agenda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class AgendaController extends Controller
 {
@@ -13,10 +14,9 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        $agendas = Agenda::orderBy('start_datetime', 'desc')->paginate(10); // paginate
+        $agendas = Agenda::orderBy('start_datetime', 'desc')->paginate(10);
         return view('agenda.index', compact('agendas'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -36,7 +36,7 @@ class AgendaController extends Controller
             'description'    => 'required|string',
             'start_datetime' => 'required|date',
             'end_datetime'   => 'nullable|date|after_or_equal:start_datetime',
-            'event_organizer' => 'nullable|string|max:255',
+            'event_organizer'=> 'nullable|string|max:255',
             'location'       => 'required|string|max:255',
             'youtube_link'   => 'nullable|url',
             'type'           => 'nullable|string|max:100',
@@ -46,7 +46,7 @@ class AgendaController extends Controller
         $imageName = null;
         if ($request->hasFile('image')) {
             $imageName = time() . '-' . Str::slug($request->title) . '.' . $request->image->getClientOriginalExtension();
-            $request->image->move(public_path('agenda'), $imageName);
+            $request->image->storeAs('agenda', $imageName, 'public');
         }
 
         Agenda::create([
@@ -54,7 +54,7 @@ class AgendaController extends Controller
             'description'    => $request->description,
             'start_datetime' => $request->start_datetime,
             'end_datetime'   => $request->end_datetime,
-            'event_organizer' => $request->event_organizer,
+            'event_organizer'=> $request->event_organizer,
             'location'       => $request->location,
             'youtube_link'   => $request->youtube_link,
             'type'           => $request->type,
@@ -65,14 +65,21 @@ class AgendaController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(Agenda $agenda)
+    {
+        return view('agenda.show', compact('agenda'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit($id)
     {
-        $agenda = Agenda::find($id); // atau findOrFail($id)
+        $agenda = Agenda::findOrFail($id);
         return view('agenda.edit', compact('agenda'));
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -84,7 +91,7 @@ class AgendaController extends Controller
             'description'    => 'required|string',
             'start_datetime' => 'required|date',
             'end_datetime'   => 'nullable|date|after_or_equal:start_datetime',
-            'event_organizer' => 'nullable|string|max:255',
+            'event_organizer'=> 'nullable|string|max:255',
             'location'       => 'required|string|max:255',
             'youtube_link'   => 'nullable|url',
             'type'           => 'nullable|string|max:100',
@@ -93,11 +100,13 @@ class AgendaController extends Controller
 
         $imageName = $agenda->image;
         if ($request->hasFile('image')) {
-            if ($agenda->image && file_exists(public_path('agenda/' . $agenda->image))) {
-                unlink(public_path('agenda/' . $agenda->image));
+            // hapus file lama
+            if ($agenda->image && Storage::disk('public')->exists('agenda/' . $agenda->image)) {
+                Storage::disk('public')->delete('agenda/' . $agenda->image);
             }
+            // upload baru
             $imageName = time() . '-' . Str::slug($request->title) . '.' . $request->image->getClientOriginalExtension();
-            $request->image->move(public_path('agenda'), $imageName);
+            $request->image->storeAs('agenda', $imageName, 'public');
         }
 
         $agenda->update([
@@ -105,7 +114,7 @@ class AgendaController extends Controller
             'description'    => $request->description,
             'start_datetime' => $request->start_datetime,
             'end_datetime'   => $request->end_datetime,
-            'event_organizer' => $request->event_organizer,
+            'event_organizer'=> $request->event_organizer,
             'location'       => $request->location,
             'youtube_link'   => $request->youtube_link,
             'type'           => $request->type,
@@ -118,13 +127,13 @@ class AgendaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Agenda $id)
+    public function destroy(Agenda $agenda)
     {
-        if ($id->image && file_exists(public_path('agenda/' . $id->image))) {
-            unlink(public_path('agenda/' . $id->image));
+        if ($agenda->image && Storage::disk('public')->exists('agenda/' . $agenda->image)) {
+            Storage::disk('public')->delete('agenda/' . $agenda->image);
         }
 
-        $id->delete();
+        $agenda->delete();
 
         return redirect()->route('agenda.index')->with('success', 'Agenda berhasil dihapus!');
     }

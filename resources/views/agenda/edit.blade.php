@@ -8,7 +8,7 @@
             <p class="text-gray-500 text-sm mt-1">Perbarui detail agenda sesuai kebutuhan.</p>
         </div>
 
-        <form action="{{ route('agenda.update', $agenda->id) }}" method="POST">
+        <form action="{{ route('agenda.update', $agenda->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -39,7 +39,6 @@
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
-
 
             <!-- Waktu -->
             <div class="grid md:grid-cols-2 gap-6">
@@ -81,7 +80,7 @@
 
             <!-- Gambar -->
             <!-- Drag & Drop Image Upload -->
-            <div x-data="imageUpload()" x-init="initPreview('{{ $agenda->image ? asset('agenda/' . $agenda->image) : '' }}')" class="space-y-2">
+            <div x-data="imageUpload()" x-init="initPreview('{{ $agenda->image ? asset('storage/' . $agenda->image) : '' }}')" class="space-y-2">
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Gambar</label>
 
                 <!-- Drop area -->
