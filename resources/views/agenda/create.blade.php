@@ -35,7 +35,7 @@
                 <textarea name="description" id="description" rows="4"
                     class="w-full rounded-lg px-3 py-2 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
                 @error('description')
-                    <p cla ss="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -84,22 +84,19 @@
                     :class="{ 'ring-2 ring-emerald-400 bg-emerald-50': isDrag, 'bg-gray-50': !isDrag }"
                     class="relative border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer transition">
 
-                    <!-- Hidden input tetap ada dengan name="image" -->
+                    <!-- Hidden input -->
                     <input type="file" x-ref="fileInput" name="image" accept="image/*" class="hidden"
                         @change="handleFiles($event.target.files)">
 
                     <!-- Jika belum ada preview -->
                     <template x-if="!previewUrl">
                         <div class="flex flex-col items-center gap-2 text-center">
-                            <!-- SVG awan -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                class="h-12 w-12 text-emerald-600">
+                                stroke="currentColor" class="h-12 w-12 text-emerald-600">
                                 <path d="M17.5 19a4.5 4.5 0 0 0 .5-9 6 6 0 0 0-11.5-1.5A4.5 4.5 0 0 0 6.5 19h11z" />
                                 <path d="M12 11v6" />
                                 <path d="M9 14l3-3 3 3" />
                             </svg>
-
                             <p class="text-sm font-medium text-gray-700">Tarik & lepas gambar di sini</p>
                             <p class="text-xs text-gray-500">atau klik untuk pilih file</p>
                         </div>
@@ -141,9 +138,8 @@
             .catch(error => {
                 console.error(error);
             });
-    </script>
 
-    <script>
+        // AlpineJS upload preview
         function imageUpload() {
             return {
                 isDrag: false,
@@ -163,7 +159,7 @@
                 },
                 handleDrop(e) {
                     const files = e.dataTransfer.files;
-                    this.$refs.fileInput.files = files; // penting! supaya file masuk ke input
+                    this.$refs.fileInput.files = files;
                     this.handleFiles(files);
                     this.isDrag = false;
                 },
