@@ -61,11 +61,39 @@
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 sm:px-4 sm:py-2.5 text-sm sm:text-base focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                     </div>
 
+                    <!-- Pembicara with Dynamic Fields -->
                     <div class="sm:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Pembicara</label>
-                        <input type="text" name="pembicara[]" placeholder="Pisahkan dengan koma"
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 sm:px-4 sm:py-2.5 text-sm sm:text-base focus:ring-2 focus:ring-emerald-500 focus:outline-none mb-1">
-                        <p class="text-xs text-gray-400">Contoh: John Doe, Jane Smith</p>
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="block text-sm font-medium text-gray-700">Pembicara</label>
+                            <button type="button" id="addPembicara"
+                                class="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4" />
+                                </svg>
+                                Tambah
+                            </button>
+                        </div>
+
+                        <div id="pembicaraContainer" class="space-y-2">
+                            <!-- Initial pembicara field -->
+                            <div class="pembicara-item flex gap-2">
+                                <input type="text" name="pembicara[]" value="{{ old('pembicara.0') }}"
+                                    placeholder="Nama pembicara"
+                                    class="flex-1 border border-gray-300 rounded-lg px-3 py-2 sm:px-4 sm:py-2.5 text-sm sm:text-base focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                <button type="button"
+                                    class="remove-pembicara px-3 py-2 text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition opacity-0 pointer-events-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-gray-400 mt-2">Klik tombol "Tambah" untuk menambahkan pembicara lainnya</p>
                     </div>
 
                     <div class="relative sm:col-span-2">
@@ -108,5 +136,58 @@
             .catch(error => {
                 console.error(error);
             });
+
+        // Dynamic Pembicara Fields
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('pembicaraContainer');
+            const addBtn = document.getElementById('addPembicara');
+
+            // Function to toggle remove buttons visibility
+            function toggleRemoveButtons() {
+                const items = container.querySelectorAll('.pembicara-item');
+                items.forEach((item, index) => {
+                    const removeBtn = item.querySelector('.remove-pembicara');
+                    if (items.length > 1) {
+                        removeBtn.classList.remove('opacity-0', 'pointer-events-none');
+                    } else {
+                        removeBtn.classList.add('opacity-0', 'pointer-events-none');
+                    }
+                });
+            }
+
+            // Add pembicara field
+            addBtn.addEventListener('click', function() {
+                const newField = document.createElement('div');
+                newField.className = 'pembicara-item flex gap-2';
+                newField.innerHTML = `
+                    <input type="text" name="pembicara[]" placeholder="Nama pembicara"
+                        class="flex-1 border border-gray-300 rounded-lg px-3 py-2 sm:px-4 sm:py-2.5 text-sm sm:text-base focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    <button type="button"
+                        class="remove-pembicara px-3 py-2 text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                `;
+                container.appendChild(newField);
+                toggleRemoveButtons();
+            });
+
+            // Remove pembicara field using event delegation
+            container.addEventListener('click', function(e) {
+                if (e.target.closest('.remove-pembicara')) {
+                    const item = e.target.closest('.pembicara-item');
+                    if (container.querySelectorAll('.pembicara-item').length > 1) {
+                        item.remove();
+                        toggleRemoveButtons();
+                    }
+                }
+            });
+
+            // Initialize
+            toggleRemoveButtons();
+        });
     </script>
 @endsection

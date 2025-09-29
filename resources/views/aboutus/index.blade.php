@@ -9,20 +9,6 @@
                 <p class="text-sm text-gray-500 mt-1">Kelola informasi tentang organisasi / perusahaan Anda</p>
             </div>
         </div>
-
-        <!-- Alert Messages -->
-        @if (session('success'))
-            <div class="p-4 bg-emerald-100 text-emerald-700 rounded-lg">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if (session('error'))
-            <div class="p-4 bg-red-100 text-red-700 rounded-lg">
-                {{ session('error') }}
-            </div>
-        @endif
-
-
         <!-- Header Filter + Button -->
         <div class="grid grid-cols-1 md:grid-cols-2 md:items-center md:justify-between gap-4 mb-6">
 
@@ -32,7 +18,7 @@
                     class="appearance-none w-full rounded-lg px-4 py-2 pr-10 text-sm border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500">
                     <option value="">Semua Lokasi</option>
                     @foreach ($categories as $loc)
-                        <option value="{{ $loc->id }}">{{ $loc->nama }}</option>
+                        <option value="{{ $loc->id }}">{{ $loc->name }}</option>
                     @endforeach
                 </select>
 
@@ -116,12 +102,11 @@
                         </a>
 
                         <!-- Tombol Hapus -->
-                        <form action="{{ route('aboutus.destroy', $item) }}" method="POST"
-                            onsubmit="return confirm('Yakin ingin menghapus item ini?')">
+                        <form action="{{ route('aboutus.destroy', $item) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
-                                class="px-3 py-1.5 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 text-xs inline-flex items-center gap-1">
+                                class="px-3 py-1.5 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 text-xs inline-flex items-center gap-1 delete-btn-mobile">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24"
                                     fill="currentColor">
                                     <path fill-rule="evenodd" d="M9 3a1 1 0 00-.894.553L7.382
@@ -148,7 +133,6 @@
         </div>
 
         <!-- Versi Desktop (Tabel) -->
-        <!-- Table View About Us -->
         <div class="overflow-x-auto bg-white rounded-lg shadow-sm border border-emerald-100 hidden md:block">
             <table class="min-w-full text-sm divide-y divide-emerald-100">
                 <thead class="bg-emerald-100 text-emerald-800 uppercase text-xs font-semibold">
@@ -157,13 +141,12 @@
                         <th class="px-4 py-3 text-center">Judul</th>
                         <th class="px-4 py-3 text-center">Deskripsi</th>
                         <th class="px-4 py-3 text-center">Kategori</th>
-                        {{-- <th class="px-4 py-3 text-center">Home</th> --}}
                         <th class="px-4 py-3 text-center w-90">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-emerald-100">
                     @forelse($aboutus as $item)
-                        <tr class="hover:bg-emerald-50 transition">
+                        <tr class="hover:bg-emerald-50 transition aboutus-row" data-category="{{ $item->category_aboutus_id }}">
                             <td class="px-4 py-3 text-center">
                                 @if ($item->image)
                                     <img src="{{ asset($item->image) }}" alt="{{ $item->title }}"
@@ -182,18 +165,6 @@
                                 {{ strip_tags($item->description) }}
                             </td>
                             <td class="px-4 py-3 text-center">{{ $item->category->name ?? '-' }}</td>
-                            {{-- <td class="px-4 py-3 text-center">
-                                @if ($item->display_on_home)
-                                    <span
-                                        class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium">
-                                        Ya
-                                    </span>
-                                @else
-                                    <span class="px-2 py-1 bg-gray-100 text-gray-500 rounded-full text-xs font-medium">
-                                        Tidak
-                                    </span>
-                                @endif
-                            </td> --}}
                             <td class="px-4 py-3 text-center align-middle">
                                 <div class="flex justify-center gap-2 mt-2">
                                     <a href="{{ route('aboutus.edit', $item) }}"
@@ -211,7 +182,7 @@
                                         class="inline delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button"
+                                        <button type="submit"
                                             class="px-3 py-2 flex items-center gap-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-xs font-medium transition delete-btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                 fill="currentColor" viewBox="-3 -2 24 24">
@@ -226,7 +197,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-4 py-6 text-center text-gray-400">
+                            <td colspan="5" class="px-4 py-6 text-center text-gray-400">
                                 Belum ada data "Tentang Kami".
                             </td>
                         </tr>
@@ -236,9 +207,12 @@
         </div>
     </div>
 
-    <!-- Script filter kategori client-side -->
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        document.getElementById('categoryFilter').addEventListener('change', function() {
+        // Filter kategori untuk mobile dan desktop
+        document.getElementById('locationFilter').addEventListener('change', function() {
             let selected = this.value;
             document.querySelectorAll('.aboutus-row').forEach(row => {
                 if (selected === '' || row.dataset.category === selected) {
@@ -248,5 +222,71 @@
                 }
             });
         });
+
+        // Konfirmasi hapus untuk desktop dengan SweetAlert
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const form = this.closest('form');
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#10b981',
+                    cancelButtonColor: '#ef4444',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+        // Konfirmasi hapus untuk mobile dengan SweetAlert
+        document.querySelectorAll('.delete-btn-mobile').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const form = this.closest('form');
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#10b981',
+                    cancelButtonColor: '#ef4444',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+        // SweetAlert untuk notifikasi success/error
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#10b981',
+                timer: 3000
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#ef4444'
+            });
+        @endif
     </script>
 @endsection
