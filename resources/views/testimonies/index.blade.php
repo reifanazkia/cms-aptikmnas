@@ -105,7 +105,7 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-2 text-center">{{ $testimonies->firstItem() + $index }}</td>
                             <td class="px-4 py-2 text-center">
-                                <img src="{{ asset($testimony->image) }}" alt="{{ $testimony->name }}"
+                                <img src="{{ asset('storage/' . $testimony->image) }}"   alt="{{ $testimony->name }}"
                                     class="h-12 w-12 object-cover rounded-lg mx-auto hover:scale-110 transition">
                             </td>
                             <td class="px-4 py-2 text-center">{{ $testimony->name }}</td>

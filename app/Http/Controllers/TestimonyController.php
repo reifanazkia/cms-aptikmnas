@@ -19,7 +19,6 @@ class TestimonyController extends Controller
 
         $testimonies = $query->paginate(10);
 
-
         return view('testimonies.index', compact('testimonies'));
     }
 
@@ -40,8 +39,8 @@ class TestimonyController extends Controller
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:750'
         ]);
 
-        $imageName = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('testimonies'), $imageName);
+        // simpan ke storage/app/public/testimonies
+        $path = $request->file('image')->store('testimonies', 'public');
 
         Testimony::create([
             'display_homepage' => $request->has('display_homepage'),
@@ -49,7 +48,7 @@ class TestimonyController extends Controller
             'name' => $request->name,
             'title' => $request->title,
             'description' => $request->description,
-            'image' => 'testimonies/' . $imageName
+            'image' => $path // simpan path relatif, misalnya "testimonies/xxxx.jpg"
         ]);
 
         return redirect()->route('testimonies.index')->with('success', 'Testimony berhasil ditambahkan.');
@@ -76,13 +75,14 @@ class TestimonyController extends Controller
         $data['display_homepage'] = $request->has('display_homepage');
 
         if ($request->hasFile('image')) {
-            if ($testimony->image && file_exists(public_path($testimony->image))) {
-                unlink(public_path($testimony->image));
+            // hapus file lama
+            if ($testimony->image && Storage::disk('public')->exists($testimony->image)) {
+                Storage::disk('public')->delete($testimony->image);
             }
 
-            $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('testimonies'), $imageName);
-            $data['image'] = 'testimonies/' . $imageName;
+            // simpan file baru
+            $path = $request->file('image')->store('testimonies', 'public');
+            $data['image'] = $path;
         }
 
         $testimony->update($data);
@@ -92,8 +92,8 @@ class TestimonyController extends Controller
 
     public function destroy(Testimony $testimony)
     {
-        if ($testimony->image && file_exists(public_path($testimony->image))) {
-            unlink(public_path($testimony->image));
+        if ($testimony->image && Storage::disk('public')->exists($testimony->image)) {
+            Storage::disk('public')->delete($testimony->image);
         }
 
         $testimony->delete();
